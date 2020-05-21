@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="笔记来自于《MATLAB2018从入门到精通》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="matlab">
+<meta property="og:url" content="http://yoursite.com/2020/01/09/matlab/index.html">
+<meta property="og:site_name" content="Seclusion">
+<meta property="og:description" content="笔记来自于《MATLAB2018从入门到精通》">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_1.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_4.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_5.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_6.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_7.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_8.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_9.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_10.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_11.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_12.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_13.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_14.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_15.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_16.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/1_17.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_1.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_4.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_5.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_6.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_7.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_8.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_9.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_10.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_11.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_12.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_13.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_14.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_15.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_16.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_17.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_18.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_19.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_20.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_21.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_22.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/2_23.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_1.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_4.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_5.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_6.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_7.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_8.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_9.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_10.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_11.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_12.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_13.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/3_14.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_1.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_4.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_5.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_6.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_7.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_8.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_9.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_10.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_11.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_12.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_13.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_14.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_15.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_16.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_17.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_18.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_19.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_20.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_21.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_22.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_23.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_24.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_25.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_26.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_27.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_28.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_29.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_30.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_31.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_32.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_33.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_34.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_35.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_36.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_37.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_38.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_39.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_40.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/4_41.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_1.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_4.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_5.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_6.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_7.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_8.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_9.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_10.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_11.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_12.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_13.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_14.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_15.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_16.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_17.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_18.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_19.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_20.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_21.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_22.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_23.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_24.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_25.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_26.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_27.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_28.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_29.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_30.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_31.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_32.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_33.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_34.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_35.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_36.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_37.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_38.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_39.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_40.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_41.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_42.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_43.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_44.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_45.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_46.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_47.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_48.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_49.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_50.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_51.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_52.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_53.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_54.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_55.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_56.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_57.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_59.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_60.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_61.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_62.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_63.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_64.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_65.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_66.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_67.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_68.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/09/matlab/5_69.png">
+<meta property="article:published_time" content="2020-01-09T00:56:44.000Z">
+<meta property="article:modified_time" content="2020-05-21T10:02:47.368Z">
+<meta property="article:author" content="Miroier">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/01/09/matlab/1_1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/01/09/matlab/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>matlab | Seclusion</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Seclusion</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/09/matlab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Miroier">
+      <meta itemprop="description" content="keep calm and carry on">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Seclusion">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          matlab
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-09 08:56:44" itemprop="dateCreated datePublished" datetime="2020-01-09T08:56:44+08:00">2020-01-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>笔记来自于《MATLAB2018从入门到精通》</p>
+<a id="more"></a>
+<h2 id="向量与多项式"><a class="markdownIt-Anchor" href="#向量与多项式"></a> 向量与多项式</h2>
+<h3 id="向量"><a class="markdownIt-Anchor" href="#向量"></a> 向量</h3>
+<h4 id="向量的生成"><a class="markdownIt-Anchor" href="#向量的生成"></a> 向量的生成</h4>
+<h5 id="直接输入法"><a class="markdownIt-Anchor" href="#直接输入法"></a> 直接输入法</h5>
+<img src="/2020/01/09/matlab/1_1.png" class="">
+<img src="/2020/01/09/matlab/1_2.png" class="">
+<h5 id="冒号法"><a class="markdownIt-Anchor" href="#冒号法"></a> 冒号法</h5>
+<img src="/2020/01/09/matlab/1_3.png" class="">
+<h5 id="利用函数linspace创建向量"><a class="markdownIt-Anchor" href="#利用函数linspace创建向量"></a> 利用函数linspace创建向量</h5>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">linspace</span>(first_value, last_value, number)</span><br></pre></td></tr></table></figure>
+<img src="/2020/01/09/matlab/1_4.png" class="">
+<h5 id="利用函数logspace创建对数分割的向量"><a class="markdownIt-Anchor" href="#利用函数logspace创建对数分割的向量"></a> 利用函数logspace创建对数分割的向量</h5>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">logspace</span>(first_value, last_value, number)</span><br></pre></td></tr></table></figure>
+<img src="/2020/01/09/matlab/1_5.png" class="">
+<h4 id="向量元素的引用"><a class="markdownIt-Anchor" href="#向量元素的引用"></a> 向量元素的引用</h4>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x(n)</td>
+<td>表示向量中的第n个元素</td>
+</tr>
+<tr>
+<td>x(n1:n2)</td>
+<td>表示向量中的第n1至n2个元素</td>
+</tr>
+</tbody>
+</table>
+<h4 id="向量运算"><a class="markdownIt-Anchor" href="#向量运算"></a> 向量运算</h4>
+<h5 id="四则运算"><a class="markdownIt-Anchor" href="#四则运算"></a> 四则运算</h5>
+<img src="/2020/01/09/matlab/1_6.png" class="" title="对向量进行定义、赋值">
+<img src="/2020/01/09/matlab/1_7.png" class="" title="加法">
+<img src="/2020/01/09/matlab/1_8.png" class="" title="减法">
+<img src="/2020/01/09/matlab/1_9.png" class="" title="乘法">
+<img src="/2020/01/09/matlab/1_10.png" class="" title="除法">
+<h5 id="点积运算"><a class="markdownIt-Anchor" href="#点积运算"></a> 点积运算</h5>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dot(a,b)</td>
+<td>返回向量a与b的点积。a和b必须同维,当a、b都是列向量时，dot(a,b)等同于a.*b</td>
+</tr>
+<tr>
+<td>dot(a,b,dim)</td>
+<td>返回向量a和b在dim维的点积</td>
+</tr>
+</tbody>
+</table>
+<img src="/2020/01/09/matlab/1_11.png" class="">
+<h5 id="叉积运算"><a class="markdownIt-Anchor" href="#叉积运算"></a> 叉积运算</h5>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cross(a,b)</td>
+<td>返回向量a与b的叉积。a和b必须是三维的向量</td>
+</tr>
+<tr>
+<td>cross(a,b,dim)</td>
+<td>返回向量a和b在dim维的点积。a和b需要有相同的维数，size(a,dim)和size(b,dim)的结果必须为3</td>
+</tr>
+</tbody>
+</table>
+<img src="/2020/01/09/matlab/1_12.png" class="">
+<h5 id="混合积运算"><a class="markdownIt-Anchor" href="#混合积运算"></a> 混合积运算</h5>
+<img src="/2020/01/09/matlab/1_13.png" class="">
+<h3 id="多项式"><a class="markdownIt-Anchor" href="#多项式"></a> 多项式</h3>
+<h4 id="多项式的创建"><a class="markdownIt-Anchor" href="#多项式的创建"></a> 多项式的创建</h4>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">poly2sym(p) <span class="comment">%p为多项式的系数</span></span><br></pre></td></tr></table></figure>
+<img src="/2020/01/09/matlab/1_14.png" class="">
+<h4 id="多项式四则运算"><a class="markdownIt-Anchor" href="#多项式四则运算"></a> 多项式四则运算</h4>
+<h5 id="乘法"><a class="markdownIt-Anchor" href="#乘法"></a> 乘法</h5>
+<p><code>conv(p1,p2)</code></p>
+<img src="/2020/01/09/matlab/1_15.png" class="">
+<h5 id="除法"><a class="markdownIt-Anchor" href="#除法"></a> 除法</h5>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[k,r]=deconv(p,q)</span><br></pre></td></tr></table></figure>
+<p>k是p除以q的商，r是余式。<br />
+上式等价于</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p=conv[q,k]+r;</span><br></pre></td></tr></table></figure>
+<img src="/2020/01/09/matlab/1_16.png" class="">
+<h4 id="多项式导数运算"><a class="markdownIt-Anchor" href="#多项式导数运算"></a> 多项式导数运算</h4>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">polyder(p) <span class="comment">%p为多项式的系数</span></span><br></pre></td></tr></table></figure>
+<img src="/2020/01/09/matlab/1_17.png" class="">
+<h2 id="矩阵运算"><a class="markdownIt-Anchor" href="#矩阵运算"></a> 矩阵运算</h2>
+<h3 id="矩阵创建"><a class="markdownIt-Anchor" href="#矩阵创建"></a> 矩阵创建</h3>
+<h4 id="利用m文件创建"><a class="markdownIt-Anchor" href="#利用m文件创建"></a> 利用M文件创建</h4>
+<img src="/2020/01/09/matlab/2_1.png" class="">
+<img src="/2020/01/09/matlab/2_2.png" class="">
+<h4 id="利用文本创建"><a class="markdownIt-Anchor" href="#利用文本创建"></a> 利用文本创建</h4>
+<img src="/2020/01/09/matlab/2_3.png" class="">
+<img src="/2020/01/09/matlab/2_4.png" class="">
+<h4 id="创建特殊矩阵"><a class="markdownIt-Anchor" href="#创建特殊矩阵"></a> 创建特殊矩阵</h4>
+<img src="/2020/01/09/matlab/2_5.png" class="">
+<h3 id="矩阵元素的运算"><a class="markdownIt-Anchor" href="#矩阵元素的运算"></a> 矩阵元素的运算</h3>
+<h4 id="矩阵元素的修改"><a class="markdownIt-Anchor" href="#矩阵元素的修改"></a> 矩阵元素的修改</h4>
+<table>
+<thead>
+<tr>
+<th>命令名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D=[A;B C]</td>
+<td>A为原矩阵，B、C中包含要扩充的元素，D为扩充后的矩阵</td>
+</tr>
+<tr>
+<td>A(m;:)=[]</td>
+<td>删除A的第m行</td>
+</tr>
+<tr>
+<td>A(:,n)</td>
+<td>删除A的第n列</td>
+</tr>
+<tr>
+<td>A(m,n)=a; A(m,:)=[a b …]; A(:,n)=[a b …]</td>
+<td>对A的第m列第n行的元素赋值；对A的第m行赋值；对A的第n列赋值</td>
+</tr>
+</tbody>
+</table>
+<img src="/2020/01/09/matlab/2_6.png" class="">
+<h4 id="矩阵的变维"><a class="markdownIt-Anchor" href="#矩阵的变维"></a> 矩阵的变维</h4>
+<img src="/2020/01/09/matlab/2_7.png" class="">
+<img src="/2020/01/09/matlab/2_8.png" class="">
+<h4 id="矩阵的变向"><a class="markdownIt-Anchor" href="#矩阵的变向"></a> 矩阵的变向</h4>
+<table>
+<thead>
+<tr>
+<th>命令名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rot(90)</td>
+<td>将A逆时针方向旋转90°</td>
+</tr>
+<tr>
+<td>Rot(90,k)</td>
+<td>将A逆时针方向旋转90° *k，k可为正整数或负整数</td>
+</tr>
+<tr>
+<td>Fliplr(X)</td>
+<td>将X左右翻转</td>
+</tr>
+<tr>
+<td>flipud(X)</td>
+<td>将X上下翻转</td>
+</tr>
+<tr>
+<td>flipdim(X,dim)</td>
+<td>dim=1时对行翻转,dim=2时对列翻转</td>
+</tr>
+</tbody>
+</table>
+<img src="/2020/01/09/matlab/2_9.png" class="">
+<h4 id="矩阵的抽取"><a class="markdownIt-Anchor" href="#矩阵的抽取"></a> 矩阵的抽取</h4>
+<p>矩阵的抽取主要是指对角元素和上（下）三角阵的抽取。</p>
+<img src="/2020/01/09/matlab/2_10.png" class="">
+<img src="/2020/01/09/matlab/2_11.png" class="">
+<h3 id="矩阵的数学运算"><a class="markdownIt-Anchor" href="#矩阵的数学运算"></a> 矩阵的数学运算</h3>
+<h4 id="加减"><a class="markdownIt-Anchor" href="#加减"></a> 加减</h4>
+<p>只有相同维度的矩阵才能进行计算</p>
+<img src="/2020/01/09/matlab/2_12.png" class="">
+<p>减法只需将<code>+</code>改成<code>-</code></p>
+<h4 id="乘法-2"><a class="markdownIt-Anchor" href="#乘法-2"></a> 乘法</h4>
+<h5 id="数乘"><a class="markdownIt-Anchor" href="#数乘"></a> 数乘</h5>
+<img src="/2020/01/09/matlab/2_13.png" class="">
+<h5 id="矩阵乘法"><a class="markdownIt-Anchor" href="#矩阵乘法"></a> 矩阵乘法</h5>
+<img src="/2020/01/09/matlab/2_14.png" class="">
+<h5 id="点乘"><a class="markdownIt-Anchor" href="#点乘"></a> 点乘</h5>
+<img src="/2020/01/09/matlab/2_15.png" class="">
+<h4 id="除法-2"><a class="markdownIt-Anchor" href="#除法-2"></a> 除法</h4>
+<p>计算左除A\B时，A的行数要与B的行数一致，计算右除A/B时，A的列数要与B的列数一致。</p>
+<h5 id="左除"><a class="markdownIt-Anchor" href="#左除"></a> 左除</h5>
+<img src="/2020/01/09/matlab/2_16.png" class="">
+<h5 id="右除"><a class="markdownIt-Anchor" href="#右除"></a> 右除</h5>
+<img src="/2020/01/09/matlab/2_17.png" class="">
+<h3 id="矩阵运算-2"><a class="markdownIt-Anchor" href="#矩阵运算-2"></a> 矩阵运算</h3>
+<img src="/2020/01/09/matlab/2_18.png" class="">
+<h4 id="幂函数"><a class="markdownIt-Anchor" href="#幂函数"></a> 幂函数</h4>
+<img src="/2020/01/09/matlab/2_19.png" class="">
+<p>另外还有指数函数，对数函数，平方根函数等。</p>
+<h4 id="矩阵的逆"><a class="markdownIt-Anchor" href="#矩阵的逆"></a> 矩阵的逆</h4>
+<img src="/2020/01/09/matlab/2_20.png" class="">
+<img src="/2020/01/09/matlab/2_21.png" class="">
+<p>操作的对象必须是方阵</p>
+<h4 id="矩阵的条件数"><a class="markdownIt-Anchor" href="#矩阵的条件数"></a> 矩阵的条件数</h4>
+<img src="/2020/01/09/matlab/2_22.png" class="">
+<h4 id="矩阵的范数"><a class="markdownIt-Anchor" href="#矩阵的范数"></a> 矩阵的范数</h4>
+<img src="/2020/01/09/matlab/2_23.png" class="">
+<h2 id="二维绘图"><a class="markdownIt-Anchor" href="#二维绘图"></a> 二维绘图</h2>
+<h3 id="二维绘图-2"><a class="markdownIt-Anchor" href="#二维绘图-2"></a> 二维绘图</h3>
+<h4 id="plot"><a class="markdownIt-Anchor" href="#plot"></a> plot</h4>
+<p><code>plot(x)</code></p>
+<img src="/2020/01/09/matlab/3_1.png" class="">
+<p><code>plot(x,y)</code></p>
+<img src="/2020/01/09/matlab/3_2.png" class="">
+<p><code>subplot(x,y)</code></p>
+<img src="/2020/01/09/matlab/3_3.png" class="">
+<p><code>plot(x,y,s)</code><br />
+s用来设置所画数据点的类型、大小、颜色以及数据点之间连线的类型、粗细、颜色等。</p>
+<img src="/2020/01/09/matlab/3_4.png" class="" title="颜色控制字符表">
+<img src="/2020/01/09/matlab/3_5.png" class="" title="线性符号及说明">
+<img src="/2020/01/09/matlab/3_6.png" class="" title="hanzibuxing">
+<p><code>plot(x1,y1,s1,x2,y2,s2,···)</code><br />
+运行此命令等价于依次执行plot(xi,yi,si),i=1,2,…</p>
+<h4 id="fplot"><a class="markdownIt-Anchor" href="#fplot"></a> fplot</h4>
+<p>  fplot命令也是MATLAB提供的一个画图命令，它是一个专门用于画一元函数图像的命令。<br />
+  虽然plot命令也可以画一元函数图像，但plot命令是依据我们给定的数据点来作图的，而在实际情况中，一般并不清楚函数的具体情况，因此依据我们所选取的数据点作的图像可能会忽略真实函数的某些重要特性，给科研工作造成不可估计的损失。MATLAB提供了专门绘制一元函数图像的fplot命令，它用来指导数据点的选取，通过其内部自适应算法，在函数变化比较平稳处，它所取的数据点就会相对稀疏一点，在函数变化明显处所取的数据点就会自动密一些，因此用fplot命令所作出的图像要比用plot命令作出的图像光滑准确。</p>
+<img src="/2020/01/09/matlab/3_7.png" class="" title="fplot的调用格式">
+<img src="/2020/01/09/matlab/3_8.png" class="" title="对于上面用法的几点说明">
+<h4 id="ezplot"><a class="markdownIt-Anchor" href="#ezplot"></a> ezplot</h4>
+<p>ezplot可以很容易地将一个符号函数图形化</p>
+<img src="/2020/01/09/matlab/3_9.png" class="" title="ezplot 命令的调用格式">
+<img src="/2020/01/09/matlab/3_10.png" class="">
+<img src="/2020/01/09/matlab/3_11.png" class="">
+<h3 id="不同坐标系下的绘图命令"><a class="markdownIt-Anchor" href="#不同坐标系下的绘图命令"></a> 不同坐标系下的绘图命令</h3>
+<h4 id="极坐标系下绘图"><a class="markdownIt-Anchor" href="#极坐标系下绘图"></a> 极坐标系下绘图</h4>
+<img src="/2020/01/09/matlab/3_12.png" class="">
+<img src="/2020/01/09/matlab/3_13.png" class="">
+<img src="/2020/01/09/matlab/3_14.png" class="">
+<h2 id="图形标注"><a class="markdownIt-Anchor" href="#图形标注"></a> 图形标注</h2>
+<h3 id="图形属性设置"><a class="markdownIt-Anchor" href="#图形属性设置"></a> 图形属性设置</h3>
+<h4 id="坐标系与坐标轴"><a class="markdownIt-Anchor" href="#坐标系与坐标轴"></a> 坐标系与坐标轴</h4>
+<h5 id="坐标系的调整"><a class="markdownIt-Anchor" href="#坐标系的调整"></a> 坐标系的调整</h5>
+<p>  MATLAB的绘图函数可根据要绘制的曲线数据的范围自动选择合适的坐标系，使得曲线尽可能清晰的显示出来。所以，一般情况下用户不必自己选择绘图坐标。但是有些图形，如果用户感觉自动选择的坐标不合适，则可以利用函数axis()选择新的坐标系。<br />
+  函数axis()的调用格式为：<code>axis(xmin,xmax,ymin,ynax,zmin,zmax}</code><br />
+  这个函数格式的功能是设置x, y, z 坐标的最小值和最大值。函数输入参数可以是4个，也可以是6个，分别对应于二维或三维坐标系的最大和最小值。</p>
+<h5 id="坐标轴的调整"><a class="markdownIt-Anchor" href="#坐标轴的调整"></a> 坐标轴的调整</h5>
+<p>axis命令用于控制坐标轴的显示、刻度、长度等特征</p>
+<img src="/2020/01/09/matlab/4_1.png" class="" title="axis 命令的调用格式">
+<img src="/2020/01/09/matlab/4_2.png" class="">
+<img src="/2020/01/09/matlab/4_3.png" class="">
+<img src="/2020/01/09/matlab/4_4.png" class="">
+<h4 id="图形注释"><a class="markdownIt-Anchor" href="#图形注释"></a> 图形注释</h4>
+<h5 id="填充图形"><a class="markdownIt-Anchor" href="#填充图形"></a> 填充图形</h5>
+<p>fill 函数用于填充二维封闭多边形，其函数格式如下所示。</p>
+<img src="/2020/01/09/matlab/4_5.png" class="">
+<img src="/2020/01/09/matlab/4_6.png" class="">
+<img src="/2020/01/09/matlab/4_7.png" class="">
+<h5 id="注释图形标题及轴名称"><a class="markdownIt-Anchor" href="#注释图形标题及轴名称"></a> 注释图形标题及轴名称</h5>
+<p>MATLAB中，title命令用于给图形对象加标题。</p>
+<img src="/2020/01/09/matlab/4_8.png" class="" title="title 命令的格式调用">
+<p>**说明：**可以利用gcf 与gca 来获取当前图形窗口与当前坐标轴的旬柄。</p>
+<p>  对坐标轴进行标注，相应的命令为xlabel、ylabel、zlabel，作用分别是对x轴、y轴、z轴进行标注，它们的调用格式都是一样的。</p>
+<img src="/2020/01/09/matlab/4_9.png" class="" title="xlabel 命令的调用格式">
+<h5 id="图形标注-2"><a class="markdownIt-Anchor" href="#图形标注-2"></a> 图形标注</h5>
+<p>  在给所绘得的图形进行详细的标注时，最常用的两个命令是text与gtext，它们均可以在图形的具体部位进行标注。</p>
+<h5 id="text命令"><a class="markdownIt-Anchor" href="#text命令"></a> text命令</h5>
+<img src="/2020/01/09/matlab/4_10.png" class="" title="text 命令的调用格式">
+<img src="/2020/01/09/matlab/4_11.png" class="" title="text 命令属性列表">
+<img src="/2020/01/09/matlab/4_12.png" class="" title="续表">
+<p>上表中的这些属性及相应的值都可以通过get 命令来查看，以及用set 命令来修改。</p>
+<h5 id="gtext命令"><a class="markdownIt-Anchor" href="#gtext命令"></a> gtext命令</h5>
+<p>  gtext命令可以让鼠标在图形的任意位置进行标注。当光标进入图形窗口时，会变成一个大十字架形，等待用户的操作。调用格式如下：</p>
+<figure class="highlight m"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gtext (<span class="string">'string'</span>,<span class="string">'property'</span>, propertyvalue,···)</span><br></pre></td></tr></table></figure>
+<p>  调用这个函数后，图形窗口中的鼠标指针会成为十字光标，通过移动鼠标来进行定位，即光标移到预定位置后按下鼠标左键或键盘上的任意键都会在光标位置显示指定文本“string”。由于要用鼠标操作，该函数只能在MATLAB命令行窗口中进行。</p>
+<h5 id="图例标注"><a class="markdownIt-Anchor" href="#图例标注"></a> 图例标注</h5>
+<p>  当在一幅图中出现多种曲线时，用户可以根据自己的需要，利用legend 命令对不同的图例进行说明。</p>
+<img src="/2020/01/09/matlab/4_13.png" class="" title="legend 命令的调用格式">
+<img src="/2020/01/09/matlab/4_14.png" class="" title="pos取值">
+<h5 id="分隔线控制"><a class="markdownIt-Anchor" href="#分隔线控制"></a> 分隔线控制</h5>
+<img src="/2020/01/09/matlab/4_15.png" class="" title="grid 命令的调用格式">
+<h3 id="特殊图形"><a class="markdownIt-Anchor" href="#特殊图形"></a> 特殊图形</h3>
+<h4 id="统计图形"><a class="markdownIt-Anchor" href="#统计图形"></a> 统计图形</h4>
+<h5 id="条形图"><a class="markdownIt-Anchor" href="#条形图"></a> 条形图</h5>
+<p>  绘制条形图时可分为二维情况和三维情况，其中绘制二维条形图的命令为bar（竖直条形图）与barh（水平条形图）；绘制三维条形图的命令为bar3（竖直条形图）与bar3h（水平条形图）。它们的调用格式都是一样的，因此我们只介绍bar的调用格式</p>
+<img src="/2020/01/09/matlab/4_16.png" class="" title="bar 命令的调用格式">
+<h5 id="面积图"><a class="markdownIt-Anchor" href="#面积图"></a> 面积图</h5>
+<p>  面积图在实际中可以表现不同部分对整体的影响。在MATLAB中，绘制面积图的命令是area，它的调用格式见表</p>
+<img src="/2020/01/09/matlab/4_17.png" class="" title="area 命令的调用格式">
+<h5 id="饼图"><a class="markdownIt-Anchor" href="#饼图"></a> 饼图</h5>
+<p>  饼图用来显示向量或矩阵中各元素所占的比例，它可以用在一些统计数据可视化中。在二维情况下，创建饼图的命令是pie，三维情况下创建饼图的命令是pie3，二者的调用格式也非常相似，因此我们只介绍pie的调用格式。</p>
+<img src="/2020/01/09/matlab/4_18.png" class="" title="pie 命令的调用格式">
+<h5 id="柱状图"><a class="markdownIt-Anchor" href="#柱状图"></a> 柱状图</h5>
+<p>MATLAB中，绘制柱状图的命令有两个：<br />
+hist命令：它用来绘制直角坐标系下的柱状图。<br />
+rose命令：它用来绘制极坐标系下的柱状图。</p>
+<img src="/2020/01/09/matlab/4_19.png" class="" title="hist 命令的调用格式">
+<img src="/2020/01/09/matlab/4_20.png" class="" title="rose 命令的调用格式">
+<blockquote>
+<p>实例一一各个季度所占营利总额的比例统计图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/4_21.png" class="">
+<img src="/2020/01/09/matlab/4_22.png" class="">
+<p>**注意：**饼图的标注比较特别，其标签是作为文本图形对象来处理的，如果要修改标注文本字符串或位置，则首先要获取相应对象的字符串及其范围，然后再加以修改。</p>
+<blockquote>
+<p>实例一一绘制柱状图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/4_23.png" class="">
+<img src="/2020/01/09/matlab/4_24.png" class="">
+<img src="/2020/01/09/matlab/4_25.png" class="" title="直角坐标系和极坐标系下的柱状图">
+<h4 id="离散数据图形"><a class="markdownIt-Anchor" href="#离散数据图形"></a> 离散数据图形</h4>
+<p>  除了上面提到的统计图形外，MATLAB还提供了一些在工程计算中常用的离散数据图形，例如误差棒图、火柴杆图与阶梯图等。</p>
+<h5 id="误差棒图"><a class="markdownIt-Anchor" href="#误差棒图"></a> 误差棒图</h5>
+<p>MATLAB 中绘制误差棒图的命令为errorbar</p>
+<img src="/2020/01/09/matlab/4_26.png" class="" title="errorbar 命令的调用格式">
+<blockquote>
+<p>实例一一绘制铸件尺寸误差棒图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/4_27.png" class="">
+<h5 id="火柴杆图"><a class="markdownIt-Anchor" href="#火柴杆图"></a> 火柴杆图</h5>
+<p>  用线条显示数据点与x轴的距离，用一小圆圈（默认标记〉或用指定的其他标记符号与线条相连，并在y轴上标记数据点的值，这样的图形称为火柴杆图。在二维情况下，实现这种操作的命令是stem。</p>
+<img src="/2020/01/09/matlab/4_28.png" class="" title="stem命令的调用格式">
+<p>在三维情况下，也有相应的画火柴杆图的命令stem3。</p>
+<img src="/2020/01/09/matlab/4_29.png" class="" title="stem3命令的调用格式">
+<blockquote>
+<p>实例一一绘制火柴杆图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/4_30.png" class="">
+<img src="/2020/01/09/matlab/4_31.png" class="">
+<h5 id="阶梯图"><a class="markdownIt-Anchor" href="#阶梯图"></a> 阶梯图</h5>
+<p>  阶梯图在电子信息工程以及控制理论中用得非常多，在MATLAB 中，实现这种作图的命令是stairs。</p>
+<img src="/2020/01/09/matlab/4_32.png" class="" title="stairs 命令的调用格式">
+<blockquote>
+<p>实例一一给制阶梯图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/4_33.png" class="">
+<img src="/2020/01/09/matlab/4_34.png" class="">
+<h4 id="向量图形"><a class="markdownIt-Anchor" href="#向量图形"></a> 向量图形</h4>
+<p>  由于物理等学科的需要，在实际中有时需要绘制一些带方向的图形，即向量图。对于这种图形的绘制， MATLAB 中也有相关的命令，本小节就来学一下几个常用的命令。</p>
+<h5 id="罗盘图"><a class="markdownIt-Anchor" href="#罗盘图"></a> 罗盘图</h5>
+<p>  罗盘图即起点为坐标原点的二维或三维向量，同时还在坐标系中显示圆形的分隔线。实现这种作图的命令是compass。</p>
+<img src="/2020/01/09/matlab/4_35.png" class="" title="compass 命令的调用格式">
+<h5 id="羽毛图"><a class="markdownIt-Anchor" href="#羽毛图"></a> 羽毛图</h5>
+<p>  羽毛图是在横坐标上等距地显示向量的图形，看起来就像鸟的羽毛一样。它的绘制命令是feather。</p>
+<img src="/2020/01/09/matlab/4_36.png" class="" title="feather 命令的调用格式">
+<blockquote>
+<p>实例一一罗盘图与羽毛图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/4_37.png" class="">
+<img src="/2020/01/09/matlab/4_38.png" class="">
+<h5 id="箭头图"><a class="markdownIt-Anchor" href="#箭头图"></a> 箭头图</h5>
+<p>  上面两个命令绘制的图也可以叫做箭头图，但即将要讲的箭头图比上面两个箭头图更像数学中的向量，即它的箭头方向为向量方向，箭头的长短表示向量的大小。这种图的绘制命令是quiver与quiver3 ，前者绘制的是二维图形，后者绘制是三维图形。它们的调用格式也十分相似，只是后者比前者多一个坐标参数，因此我们只介绍一下quiver的调用格式。</p>
+<img src="/2020/01/09/matlab/4_39.png" class="" title="quiver 命令的调用格式">
+<p>quiver与quiver3这两个命令经常与其他的绘图命令配合使用，见下例。</p>
+<blockquote>
+<p>实例一一绘制箭头图形</p>
+</blockquote>
+<img src="/2020/01/09/matlab/4_40.png" class="">
+<img src="/2020/01/09/matlab/4_41.png" class="">
+<h2 id="三维绘图"><a class="markdownIt-Anchor" href="#三维绘图"></a> 三维绘图</h2>
+<h3 id="三维绘图-2"><a class="markdownIt-Anchor" href="#三维绘图-2"></a> 三维绘图</h3>
+<p>  在实际的工程设计中， 二维绘图功能在某些场合往往无法更直观地表达数据的分析结果，常常需要将结果表示成三维图形。MATLAB 为此提供了相应的三维绘图功能，三维绘图与二维绘图功能有异曲同工之效。用于三维绘图的MATLAB 高级绘图函数中，对于上述许多问题都设置了默认值，应尽量使用默认值。<br />
+  为了显示三维图形， MATLAB 提供了各种各样的函数。有一些函数可在三维空间中画线，而另一些可以画曲面与线格框架。另外，颜色可以用来代表第四维。当颜色以这种方式使用时，不但它不再具有像照片中那样显示色彩的自然属性，而且也不具有基本数据的内在属性，所以把它称作为彩色。本章主要介绍三维图形的作图方法和效果。</p>
+<h4 id="三维曲线绘图命令"><a class="markdownIt-Anchor" href="#三维曲线绘图命令"></a> 三维曲线绘图命令</h4>
+<h5 id="plot3"><a class="markdownIt-Anchor" href="#plot3"></a> plot3</h5>
+<p>  plot3命令是二维绘图plot命令的扩展，因此它们的使用格式也基本相同，只是在参数中多加了一个第三维的信息。例如plot(x,y,z)与plot3(x,y,z,s)的意义是一样的，前者绘的是二维图，后者绘的是三维图，后面的参数s也是用来控制曲线的类型、粗细、颜色等。</p>
+<blockquote>
+<p>实例一一绘制空间直线</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_1.png" class="">
+<img src="/2020/01/09/matlab/5_2.png" class="">
+<blockquote>
+<p>实例一一绘制三维曲线</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_3.png" class="">
+<img src="/2020/01/09/matlab/5_4.png" class="">
+<h5 id="ezplot3"><a class="markdownIt-Anchor" href="#ezplot3"></a> ezplot3</h5>
+<p>  同二维情况一样， 三维绘图里也有一个专门绘制符号函数的命令ezplot3。</p>
+<img src="/2020/01/09/matlab/5_5.png" class="">
+<h4 id="三维网格命令"><a class="markdownIt-Anchor" href="#三维网格命令"></a> 三维网格命令</h4>
+<h5 id="mesh"><a class="markdownIt-Anchor" href="#mesh"></a> mesh</h5>
+<p>  该命令生成的是由X、Y和Z指定的网线面，而不是单根曲线。</p>
+<img src="/2020/01/09/matlab/5_6.png" class="">
+<p>  在演示之前，我们先来学一个常用的命令meshgrid，它用来生成二元函数z=f(x,y)中xy平面上的矩形定义域中数据点矩阵X和Y，或者是三元函数u=f(x,y,z)中立方体定义域中的数据点矩阵X、Y和Z。</p>
+<img src="/2020/01/09/matlab/5_7.png" class="">
+<blockquote>
+<p>实例一一绘制网格面</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_8.png" class="">
+<img src="/2020/01/09/matlab/5_9.png" class="">
+<p>  对于一个三维网格图，有时用户不想显示背后的网格，这时可以利用hidden 命令来实现这种要求。它的使用格式也非常简单。</p>
+<img src="/2020/01/09/matlab/5_10.png" class="" title="hidden 命令的调用格式">
+<blockquote>
+<p>实例一一绘制山峰曲面</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_11.png" class="">
+<img src="/2020/01/09/matlab/5_12.png" class="">
+<p>  MATLAB还有两个同类的函数：meshc与meshz。meshc用来画图形的网格图加基本的等高线图，meshz用来画图形的网格图与零平面的网格图。</p>
+<blockquote>
+<p>实例一一绘制函数曲面</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_13.png" class="">
+<img src="/2020/01/09/matlab/5_14.png" class="">
+<h5 id="ezmesh"><a class="markdownIt-Anchor" href="#ezmesh"></a> ezmesh</h5>
+<p>  该命令专门用来绘制符号函数f(x, y) （即f是关于x 、y 的数学函数的字符串表示）的网格图形。</p>
+<img src="/2020/01/09/matlab/5_15.png" class="" title="ezmesh 命令的调用格式">
+<blockquote>
+<p>实例一一绘制符号函数曲面</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_16.png" class="">
+<img src="/2020/01/09/matlab/5_17.png" class="">
+<h4 id="三维曲面命令"><a class="markdownIt-Anchor" href="#三维曲面命令"></a> 三维曲面命令</h4>
+<h5 id="surf"><a class="markdownIt-Anchor" href="#surf"></a> surf</h5>
+<p>  surf命令的调用格式与mesh命令完全一样，这里就不再详细说明了。下面给出几个例子。</p>
+<blockquote>
+<p>实例一一绘制山峰表面</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_18.png" class="">
+<img src="/2020/01/09/matlab/5_19.png" class="">
+<p>  如果想查看曲面背后图形的情况，可以在曲面的相应位置打个洞孔，即将数据设置为NaN,所有的MATLAB作图函数都忽略NaN的数据点，在该点出现的地方留下一个洞孔。</p>
+<blockquote>
+<p>实例一一绘制带洞孔的山峰表面</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_20.png" class="">
+<img src="/2020/01/09/matlab/5_21.png" class="">
+<h5 id="ezsurf"><a class="markdownIt-Anchor" href="#ezsurf"></a> ezsurf</h5>
+<p>  该命令专门用来绘制符号函数f(x,y)（即f是关于x、y的数学函数的字符串表示）的表面图形。</p>
+<img src="/2020/01/09/matlab/5_22.png" class="" title="ezsurf 命令的调用格式">
+<blockquote>
+<p>绘制参数曲面</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_23.png" class="">
+<img src="/2020/01/09/matlab/5_24.png" class="">
+<h4 id="柱面与球面"><a class="markdownIt-Anchor" href="#柱面与球面"></a> 柱面与球面</h4>
+<p>  在MATLAB中，有专门绘制柱面与球面的命令cylinder与sphere，它们的使用格式也非常简单。首先来看cylinder命令。</p>
+<img src="/2020/01/09/matlab/5_25.png" class="">
+<blockquote>
+<p>实例一一绘制柱面</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_26.png" class="">
+<img src="/2020/01/09/matlab/5_27.png" class="">
+<p>**小技巧：**用cylinder可以作棱柱的图像，例如运行cylinder(2,6)将绘出底面为正六边形、半径为2的棱柱。</p>
+<p>  sphere命令用来生成三维直角坐标系中的球面。</p>
+<img src="/2020/01/09/matlab/5_28.png" class="" title="sphere 命令的调用格式">
+<blockquote>
+<p>实例一一绘制球面</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_29.png" class="">
+<img src="/2020/01/09/matlab/5_30.png" class="">
+<h4 id="三维图形等值线"><a class="markdownIt-Anchor" href="#三维图形等值线"></a> 三维图形等值线</h4>
+<p>  在军事、地理等学科中经常会用到等值线。在MATLAB中有许多绘制等值线的命令，我们主要介绍以下几个。</p>
+<h5 id="contour3"><a class="markdownIt-Anchor" href="#contour3"></a> contour3</h5>
+<p>  contour3是三维绘图中最常用的绘制等值线的命令，该命令生成一个定义在矩形格栅上曲面的三维等值线图。</p>
+<img src="/2020/01/09/matlab/5_31.png" class="" title="contour 命令的调用格式">
+<blockquote>
+<p>实例一一三维等值线图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_32.png" class="">
+<img src="/2020/01/09/matlab/5_33.png" class="">
+<h5 id="contour"><a class="markdownIt-Anchor" href="#contour"></a> contour</h5>
+<p>  contour3用于绘制二维图时就等价于contour，后者用来绘制二维等值线，可以看作是一个三维曲面向xy平面上的投影。</p>
+<img src="/2020/01/09/matlab/5_34.png" class="" title="contour">
+<blockquote>
+<p>实例一一绘制二维等值线图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_35.png" class="">
+<img src="/2020/01/09/matlab/5_36.png" class="">
+<h5 id="contourf"><a class="markdownIt-Anchor" href="#contourf"></a> contourf</h5>
+<p>  此命令用来填充二维等值线图，即先画出不同等值线，然后将相邻的等值线之间用同一颜色进行填充，填充用的颜色决定于当前的色图颜色。</p>
+<img src="/2020/01/09/matlab/5_37.png" class="" title="contourf 命令的调用格式">
+<blockquote>
+<p>实例一一绘制二维等值线图及颜色填充</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_38.png" class="">
+<img src="/2020/01/09/matlab/5_39.png" class="">
+<h5 id="contourc"><a class="markdownIt-Anchor" href="#contourc"></a> contourc</h5>
+<p>  该命令计算等值线矩阵C，该矩阵可用于命令contour、contour3 和contourf等。矩阵Z中的数值确定平面上的等值线高度值，等值线的计算结果用由矩阵Z维数决定的间隔的宽度。</p>
+<img src="/2020/01/09/matlab/5_40.png" class="" title="contourc 命令的调用格式">
+<h5 id="clabel"><a class="markdownIt-Anchor" href="#clabel"></a> clabel</h5>
+<p>  clabel命令用来在二维等值线图中添加高度标签。</p>
+<img src="/2020/01/09/matlab/5_41.png" class="">
+<p>对上面的使用格式，需要说明的一点是，若命令中有h，则会对标签进行恰当的旋转，否则标签会竖直放置，且在恰当的位置显示一个“＋” 号。</p>
+<blockquote>
+<p>实例一一绘制等值线</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_42.png" class="">
+<img src="/2020/01/09/matlab/5_43.png" class="">
+<h5 id="ezcontour"><a class="markdownIt-Anchor" href="#ezcontour"></a> ezcontour</h5>
+<p>  该命令专门用来绘制符号函数f(x,y)（即f是关于x、y的数学函数的字符串表示）的等值线图。</p>
+<img src="/2020/01/09/matlab/5_44.png" class="" title="ezcontour 命令的调用格式">
+<blockquote>
+<p>实例一一绘制符号函数等值线图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_45.png" class="">
+<img src="/2020/01/09/matlab/5_46.png" class="">
+<h5 id="ezsurfc"><a class="markdownIt-Anchor" href="#ezsurfc"></a> ezsurfc</h5>
+<p>  该命令用来绘制函数f(x,y)的带等值线的三维表面图，其中函数f是一个以字符串形式给出的二元函数。</p>
+<img src="/2020/01/09/matlab/5_47.png" class="" title="ezsurfc 命令的调用格式">
+<blockquote>
+<p>实例一一绘制带等值线的三维表面图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_48.png" class="">
+<img src="/2020/01/09/matlab/5_49.png" class="">
+<h3 id="三维图像修饰处理"><a class="markdownIt-Anchor" href="#三维图像修饰处理"></a> 三维图像修饰处理</h3>
+<h4 id="视角处理"><a class="markdownIt-Anchor" href="#视角处理"></a> 视角处理</h4>
+<p>  在现实空间中，从不同角度或位置观察某一事物就会有不同的效果，即会有“横看成岭侧成峰”的感觉。三维图形表现的正是一个空间内的图形，因此在不同视角及位置都会有不同的效果，这在工程实际中也是经常遇到的。MATLAB 提供的view 命令能够很好地满足这种需要。<br />
+  view 命令用来控制三维图形的观察点和视角。</p>
+<img src="/2020/01/09/matlab/5_50.png" class="" title="view 命令的调用格式">
+<p>  对于这个命令需要说明的是，方位角az与仰角el为两个旋转角度。做一通过视点和z轴平行的平面，与xy平面有一交线，该交线与y轴的反方向的、按逆时针方向（从z轴的方向观察）计算的夹角，就是观察点的方位角az；若角度为负值，则按顺时针方向计算。在通过视点与z轴的平面上，用一直线连接视点与坐标原点，该直线与xy平面的夹角就是观察点的仰角el；若仰角为负值，则观察点转移到曲面下面。</p>
+<blockquote>
+<p>实例一一绘制网格面视图</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_51.png" class="">
+<img src="/2020/01/09/matlab/5_52.png" class="">
+<h4 id="颜色处理"><a class="markdownIt-Anchor" href="#颜色处理"></a> 颜色处理</h4>
+<h5 id="色图明暗控制命令"><a class="markdownIt-Anchor" href="#色图明暗控制命令"></a> 色图明暗控制命令</h5>
+<p>MATLAB中，控制色图明暗的命令是brighten命令。</p>
+<img src="/2020/01/09/matlab/5_53.png" class="" title="brighten 命令的调用格式">
+<h5 id="色轴刻度"><a class="markdownIt-Anchor" href="#色轴刻度"></a> 色轴刻度</h5>
+<p>  caxis命令控制着对应色图的数据值的映射图。它通过将被变址的颜色数据（CData）与颜色数据映射（CDataMapping）设置为scaled，影响着任何的表面、块、图像：该命令还改变坐标轴图形对象的属性Clim与ClimMode。</p>
+<img src="/2020/01/09/matlab/5_54.png" class="" title="caxis 命令的调用格式">
+<blockquote>
+<p>实例一一映射球面表里颜色</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_55.png" class="">
+<img src="/2020/01/09/matlab/5_56.png" class="">
+<p>  在MATLAB中，还有一个画色轴的命令colorbar，这个命令在图形窗口的工具条中有相应的图标。</p>
+<img src="/2020/01/09/matlab/5_57.png" class="" title="colorbar 命令的调用格式} ##### 颜色渲染设置 &amp;emsp;&amp;emsp;shading命令用来控制曲面与补片等的图形对象的颜色渲染，同时设置当前坐标轴中的所有曲面与补片图形对象的属性EdgeColor与FaceColor。 {% asset_img 5_58.png shading 命令的调用格式">
+<blockquote>
+<p>实例一一渲染图形</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_59.png" class="">
+<img src="/2020/01/09/matlab/5_60.png" class="">
+<h5 id="颜色映像使用"><a class="markdownIt-Anchor" href="#颜色映像使用"></a> 颜色映像使用</h5>
+<p>  语句colormap(M)将矩阵M作为当前图形窗口所用的颜色映像。例如，colormap(cool)装入了一个有64个输入项的cool颜色映像。colormap default装入了默认的颜色映像（hsv）。<br />
+  函数plot、plot3、contour和contour3不使用颜色映像，它们使用列在plot颜色和线形表中的颜色。而大多数其他绘图函数，比如mesh、surf、fill、pcolor和它们的各种变形函数，使用当前的颜色映像。<br />
+  接受颜色参量的绘图函数中的颜色参量通常采用以下3 种形式之一:</p>
+<ol>
+<li>字符串，代表plot颜色或线型表中的一种颜色，比如’r’代表红色。</li>
+<li>3个输入的行向量，它代表一个单独的RGB值，比如[.25 .50 .75]。</li>
+<li>矩阵，如果颜色参量是一个矩阵，其元素做了调整，并把它们用作当前颜色映射的下标。</li>
+</ol>
+<blockquote>
+<p>实例一一颜色映像</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_61.png" class="">
+<img src="/2020/01/09/matlab/5_62.png" class="">
+<h4 id="光照处理"><a class="markdownIt-Anchor" href="#光照处理"></a> 光照处理</h4>
+<p>  在MATLAB中绘制三维图形时，我们不仅可以画出带光照模式的曲面，还能在绘图时指定光线的来源。</p>
+<h5 id="带光照模式的三维曲面"><a class="markdownIt-Anchor" href="#带光照模式的三维曲面"></a> 带光照模式的三维曲面</h5>
+<p>  surfl命令用来画一个带光照模式的三维曲面图，该命令显示一个带阴影的曲面，结合了周围的、散射的和镜面反射的光照模式。想获得较平滑的颜色过渡，则需要使用有线性强度变化的色图（如gray、copper、bone、pink等）。</p>
+<img src="/2020/01/09/matlab/5_63.png" class="" title="surlf 命令的调用格式">
+<p>  对于这个命令的调用格式需要说明的一点是，参数X, Y, Z确定的点定义了参数曲面的“里面”和“外面”，若用户想曲面的“里面”有光照模式，只要使用surfl(X’,Y’,Z’)即可。</p>
+<blockquote>
+<p>实例一一三维图形添加光照</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_64.png" class="">
+<img src="/2020/01/09/matlab/5_65.png" class="">
+<h5 id="光源位置及照明模式"><a class="markdownIt-Anchor" href="#光源位置及照明模式"></a> 光源位置及照明模式</h5>
+<p>  在绘制带光照的三维图像时，可以利用light命令与lightangle命令来确定光源位置，其中light命令使用格式非常简单，即为：<br />
+  light(‘color’,s1,‘style’,s2,‘position’,s3)，其中color、style与position的位置可以互换，s1、s2、s3为相应的可选值。例如，light(’position’,[1 0 0])表示光源从无穷远处沿x轴向原点照射过来。</p>
+<img src="/2020/01/09/matlab/5_66.png" class="" title="lightangle 命令的调用格式">
+<p>  在确定了光源位置后，用户可能还会用到一些照明模式，这一点可以利用lighting命令来实现，它主要用四种使用格式，即有四种照明模式。</p>
+<img src="/2020/01/09/matlab/5_67.png" class="" title="lighting 命令的调用格式">
+<blockquote>
+<p>实例一一色彩变幻</p>
+</blockquote>
+<img src="/2020/01/09/matlab/5_68.png" class="">
+<img src="/2020/01/09/matlab/5_69.png" class="">
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/09/27/%E4%BF%AE%E6%94%B9%E6%96%87%E7%AB%A0%E5%BA%95%E9%83%A8%E6%A0%87%E7%AD%BE%E5%9B%BE%E5%BD%A2/" rel="prev" title="修改文章底部标签图形">
+      <i class="fa fa-chevron-left"></i> 修改文章底部标签图形
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#向量与多项式"><span class="nav-number">1.</span> <span class="nav-text"> 向量与多项式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#向量"><span class="nav-number">1.1.</span> <span class="nav-text"> 向量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#向量的生成"><span class="nav-number">1.1.1.</span> <span class="nav-text"> 向量的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#直接输入法"><span class="nav-number">1.1.1.1.</span> <span class="nav-text"> 直接输入法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#冒号法"><span class="nav-number">1.1.1.2.</span> <span class="nav-text"> 冒号法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#利用函数linspace创建向量"><span class="nav-number">1.1.1.3.</span> <span class="nav-text"> 利用函数linspace创建向量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#利用函数logspace创建对数分割的向量"><span class="nav-number">1.1.1.4.</span> <span class="nav-text"> 利用函数logspace创建对数分割的向量</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向量元素的引用"><span class="nav-number">1.1.2.</span> <span class="nav-text"> 向量元素的引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向量运算"><span class="nav-number">1.1.3.</span> <span class="nav-text"> 向量运算</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#四则运算"><span class="nav-number">1.1.3.1.</span> <span class="nav-text"> 四则运算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#点积运算"><span class="nav-number">1.1.3.2.</span> <span class="nav-text"> 点积运算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#叉积运算"><span class="nav-number">1.1.3.3.</span> <span class="nav-text"> 叉积运算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#混合积运算"><span class="nav-number">1.1.3.4.</span> <span class="nav-text"> 混合积运算</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多项式"><span class="nav-number">1.2.</span> <span class="nav-text"> 多项式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多项式的创建"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 多项式的创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多项式四则运算"><span class="nav-number">1.2.2.</span> <span class="nav-text"> 多项式四则运算</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#乘法"><span class="nav-number">1.2.2.1.</span> <span class="nav-text"> 乘法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#除法"><span class="nav-number">1.2.2.2.</span> <span class="nav-text"> 除法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多项式导数运算"><span class="nav-number">1.2.3.</span> <span class="nav-text"> 多项式导数运算</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵运算"><span class="nav-number">2.</span> <span class="nav-text"> 矩阵运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#矩阵创建"><span class="nav-number">2.1.</span> <span class="nav-text"> 矩阵创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#利用m文件创建"><span class="nav-number">2.1.1.</span> <span class="nav-text"> 利用M文件创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#利用文本创建"><span class="nav-number">2.1.2.</span> <span class="nav-text"> 利用文本创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建特殊矩阵"><span class="nav-number">2.1.3.</span> <span class="nav-text"> 创建特殊矩阵</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#矩阵元素的运算"><span class="nav-number">2.2.</span> <span class="nav-text"> 矩阵元素的运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#矩阵元素的修改"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 矩阵元素的修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#矩阵的变维"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 矩阵的变维</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#矩阵的变向"><span class="nav-number">2.2.3.</span> <span class="nav-text"> 矩阵的变向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#矩阵的抽取"><span class="nav-number">2.2.4.</span> <span class="nav-text"> 矩阵的抽取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#矩阵的数学运算"><span class="nav-number">2.3.</span> <span class="nav-text"> 矩阵的数学运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#加减"><span class="nav-number">2.3.1.</span> <span class="nav-text"> 加减</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#乘法-2"><span class="nav-number">2.3.2.</span> <span class="nav-text"> 乘法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#数乘"><span class="nav-number">2.3.2.1.</span> <span class="nav-text"> 数乘</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#矩阵乘法"><span class="nav-number">2.3.2.2.</span> <span class="nav-text"> 矩阵乘法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#点乘"><span class="nav-number">2.3.2.3.</span> <span class="nav-text"> 点乘</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#除法-2"><span class="nav-number">2.3.3.</span> <span class="nav-text"> 除法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#左除"><span class="nav-number">2.3.3.1.</span> <span class="nav-text"> 左除</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#右除"><span class="nav-number">2.3.3.2.</span> <span class="nav-text"> 右除</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#矩阵运算-2"><span class="nav-number">2.4.</span> <span class="nav-text"> 矩阵运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#幂函数"><span class="nav-number">2.4.1.</span> <span class="nav-text"> 幂函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#矩阵的逆"><span class="nav-number">2.4.2.</span> <span class="nav-text"> 矩阵的逆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#矩阵的条件数"><span class="nav-number">2.4.3.</span> <span class="nav-text"> 矩阵的条件数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#矩阵的范数"><span class="nav-number">2.4.4.</span> <span class="nav-text"> 矩阵的范数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二维绘图"><span class="nav-number">3.</span> <span class="nav-text"> 二维绘图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二维绘图-2"><span class="nav-number">3.1.</span> <span class="nav-text"> 二维绘图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#plot"><span class="nav-number">3.1.1.</span> <span class="nav-text"> plot</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fplot"><span class="nav-number">3.1.2.</span> <span class="nav-text"> fplot</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ezplot"><span class="nav-number">3.1.3.</span> <span class="nav-text"> ezplot</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同坐标系下的绘图命令"><span class="nav-number">3.2.</span> <span class="nav-text"> 不同坐标系下的绘图命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#极坐标系下绘图"><span class="nav-number">3.2.1.</span> <span class="nav-text"> 极坐标系下绘图</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图形标注"><span class="nav-number">4.</span> <span class="nav-text"> 图形标注</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#图形属性设置"><span class="nav-number">4.1.</span> <span class="nav-text"> 图形属性设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#坐标系与坐标轴"><span class="nav-number">4.1.1.</span> <span class="nav-text"> 坐标系与坐标轴</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#坐标系的调整"><span class="nav-number">4.1.1.1.</span> <span class="nav-text"> 坐标系的调整</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#坐标轴的调整"><span class="nav-number">4.1.1.2.</span> <span class="nav-text"> 坐标轴的调整</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图形注释"><span class="nav-number">4.1.2.</span> <span class="nav-text"> 图形注释</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#填充图形"><span class="nav-number">4.1.2.1.</span> <span class="nav-text"> 填充图形</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#注释图形标题及轴名称"><span class="nav-number">4.1.2.2.</span> <span class="nav-text"> 注释图形标题及轴名称</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#图形标注-2"><span class="nav-number">4.1.2.3.</span> <span class="nav-text"> 图形标注</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#text命令"><span class="nav-number">4.1.2.4.</span> <span class="nav-text"> text命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#gtext命令"><span class="nav-number">4.1.2.5.</span> <span class="nav-text"> gtext命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#图例标注"><span class="nav-number">4.1.2.6.</span> <span class="nav-text"> 图例标注</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分隔线控制"><span class="nav-number">4.1.2.7.</span> <span class="nav-text"> 分隔线控制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊图形"><span class="nav-number">4.2.</span> <span class="nav-text"> 特殊图形</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#统计图形"><span class="nav-number">4.2.1.</span> <span class="nav-text"> 统计图形</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#条形图"><span class="nav-number">4.2.1.1.</span> <span class="nav-text"> 条形图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#面积图"><span class="nav-number">4.2.1.2.</span> <span class="nav-text"> 面积图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#饼图"><span class="nav-number">4.2.1.3.</span> <span class="nav-text"> 饼图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#柱状图"><span class="nav-number">4.2.1.4.</span> <span class="nav-text"> 柱状图</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#离散数据图形"><span class="nav-number">4.2.2.</span> <span class="nav-text"> 离散数据图形</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#误差棒图"><span class="nav-number">4.2.2.1.</span> <span class="nav-text"> 误差棒图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#火柴杆图"><span class="nav-number">4.2.2.2.</span> <span class="nav-text"> 火柴杆图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#阶梯图"><span class="nav-number">4.2.2.3.</span> <span class="nav-text"> 阶梯图</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向量图形"><span class="nav-number">4.2.3.</span> <span class="nav-text"> 向量图形</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#罗盘图"><span class="nav-number">4.2.3.1.</span> <span class="nav-text"> 罗盘图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#羽毛图"><span class="nav-number">4.2.3.2.</span> <span class="nav-text"> 羽毛图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头图"><span class="nav-number">4.2.3.3.</span> <span class="nav-text"> 箭头图</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三维绘图"><span class="nav-number">5.</span> <span class="nav-text"> 三维绘图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三维绘图-2"><span class="nav-number">5.1.</span> <span class="nav-text"> 三维绘图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#三维曲线绘图命令"><span class="nav-number">5.1.1.</span> <span class="nav-text"> 三维曲线绘图命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#plot3"><span class="nav-number">5.1.1.1.</span> <span class="nav-text"> plot3</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ezplot3"><span class="nav-number">5.1.1.2.</span> <span class="nav-text"> ezplot3</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三维网格命令"><span class="nav-number">5.1.2.</span> <span class="nav-text"> 三维网格命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#mesh"><span class="nav-number">5.1.2.1.</span> <span class="nav-text"> mesh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ezmesh"><span class="nav-number">5.1.2.2.</span> <span class="nav-text"> ezmesh</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三维曲面命令"><span class="nav-number">5.1.3.</span> <span class="nav-text"> 三维曲面命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#surf"><span class="nav-number">5.1.3.1.</span> <span class="nav-text"> surf</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ezsurf"><span class="nav-number">5.1.3.2.</span> <span class="nav-text"> ezsurf</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#柱面与球面"><span class="nav-number">5.1.4.</span> <span class="nav-text"> 柱面与球面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三维图形等值线"><span class="nav-number">5.1.5.</span> <span class="nav-text"> 三维图形等值线</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#contour3"><span class="nav-number">5.1.5.1.</span> <span class="nav-text"> contour3</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#contour"><span class="nav-number">5.1.5.2.</span> <span class="nav-text"> contour</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#contourf"><span class="nav-number">5.1.5.3.</span> <span class="nav-text"> contourf</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#contourc"><span class="nav-number">5.1.5.4.</span> <span class="nav-text"> contourc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#clabel"><span class="nav-number">5.1.5.5.</span> <span class="nav-text"> clabel</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ezcontour"><span class="nav-number">5.1.5.6.</span> <span class="nav-text"> ezcontour</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ezsurfc"><span class="nav-number">5.1.5.7.</span> <span class="nav-text"> ezsurfc</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三维图像修饰处理"><span class="nav-number">5.2.</span> <span class="nav-text"> 三维图像修饰处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#视角处理"><span class="nav-number">5.2.1.</span> <span class="nav-text"> 视角处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#颜色处理"><span class="nav-number">5.2.2.</span> <span class="nav-text"> 颜色处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#色图明暗控制命令"><span class="nav-number">5.2.2.1.</span> <span class="nav-text"> 色图明暗控制命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#色轴刻度"><span class="nav-number">5.2.2.2.</span> <span class="nav-text"> 色轴刻度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#颜色映像使用"><span class="nav-number">5.2.2.3.</span> <span class="nav-text"> 颜色映像使用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#光照处理"><span class="nav-number">5.2.3.</span> <span class="nav-text"> 光照处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#带光照模式的三维曲面"><span class="nav-number">5.2.3.1.</span> <span class="nav-text"> 带光照模式的三维曲面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#光源位置及照明模式"><span class="nav-number">5.2.3.2.</span> <span class="nav-text"> 光源位置及照明模式</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Miroier"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Miroier</p>
+  <div class="site-description" itemprop="description">keep calm and carry on</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Miroier</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  
+
+</body>
+</html>
