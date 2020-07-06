@@ -228,6 +228,15 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">pow</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( n == <span class="number">0</span> )</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>( n == <span class="number">1</span> )</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    <span class="keyword">if</span>( isEven(n) )</span><br><span class="line">        <span class="keyword">return</span> pow( x*x, n/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> pow( x*x, n/<span class="number">2</span>)*x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>  Java提供一个BigInteger类，这个类可以用来处理任意大的整数，可以将上面的代码改写成使用Bigteger而不用long。</p>
 
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>
     </div>
 
     

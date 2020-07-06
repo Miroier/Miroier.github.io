@@ -226,6 +226,15 @@
 <p>在<code>post.swig</code>文件中搜索<code>tag_indicate</code>找到<code>set tag_indicate = '#'</code>,将其改成<code>set tag_indicate = '&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;'</code>。</p>
 <p>更好的方法：可以直接在主题目录下的<code>_config.yml</code>中搜索<code>tag_icon</code>将其值改为true</p>
 
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>
     </div>
 
     

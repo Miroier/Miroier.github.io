@@ -227,6 +227,15 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> N)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ThisSum, MaxSum;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    ThisSum = MaxSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        ThisSum += A[i];        <span class="comment">//向右累加</span></span><br><span class="line">        <span class="keyword">if</span>(ThisSum &gt; MaxSum)</span><br><span class="line">            MaxSum = ThisSum;   <span class="comment">//发现更大和则更新当前结果</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(ThisSum &lt; <span class="number">0</span>)    <span class="comment">//如果当前子列和为负</span></span><br><span class="line">            ThisSum = <span class="number">0</span>;        <span class="comment">//则不可能使后面的部分和增大，抛弃之</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> MaxSum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>第二种方法可能不是很好理解，有必要的话可以根据上面的例子手动推演一下。</p>
 
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>
     </div>
 
     

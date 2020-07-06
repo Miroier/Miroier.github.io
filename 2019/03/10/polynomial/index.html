@@ -233,6 +233,15 @@
 <p><s>什么都不想说，因为写了六个小时，太累了。</s></p>
 <p>好吧，时隔一个星期，我又回来补上了一部分注释。</p>
 
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>
     </div>
 
     
