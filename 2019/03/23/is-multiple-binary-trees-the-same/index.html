@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="给定一个插入序列就可以唯一确定一棵二叉搜索树。然而，一棵给定的二叉搜索树却可以由多种不同的插入序列得到。例如分别按照序列{2,1,3}\lbrace2, 1, 3\rbrace{2,1,3}和{2,3,1}\lbrace2, 3, 1\rbrace{2,3,1}插入初始为空的二叉搜索树，都得到一样的结果。于是对于输入的各种插入序列，你需要判断它们是否能生成一样的二叉搜索树。">
+  <meta name="description" content="给定一个插入序列就可以唯一确定一棵二叉搜索树。然而，一棵给定的二叉搜索树却可以由多种不同的插入序列得到。例如分别按照序列\(\lbrace2, 1, 3\rbrace\)和\(\lbrace2, 3, 1\rbrace\)插入初始为空的二叉搜索树，都得到一样的结果。于是对于输入的各种插入序列，你需要判断它们是否能生成一样的二叉搜索树。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="判定是否同一棵二叉搜索树">
 <meta property="og:url" content="http://yoursite.com/2019/03/23/is-multiple-binary-trees-the-same/index.html">
 <meta property="og:site_name" content="Seclusion">
-<meta property="og:description" content="给定一个插入序列就可以唯一确定一棵二叉搜索树。然而，一棵给定的二叉搜索树却可以由多种不同的插入序列得到。例如分别按照序列{2,1,3}\lbrace2, 1, 3\rbrace{2,1,3}和{2,3,1}\lbrace2, 3, 1\rbrace{2,3,1}插入初始为空的二叉搜索树，都得到一样的结果。于是对于输入的各种插入序列，你需要判断它们是否能生成一样的二叉搜索树。">
+<meta property="og:description" content="给定一个插入序列就可以唯一确定一棵二叉搜索树。然而，一棵给定的二叉搜索树却可以由多种不同的插入序列得到。例如分别按照序列\(\lbrace2, 1, 3\rbrace\)和\(\lbrace2, 3, 1\rbrace\)插入初始为空的二叉搜索树，都得到一样的结果。于是对于输入的各种插入序列，你需要判断它们是否能生成一样的二叉搜索树。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-03-23T04:57:23.000Z">
 <meta property="article:modified_time" content="2020-05-21T09:44:14.958Z">
@@ -209,6 +209,13 @@
 
               <time title="创建时间：2019-03-23 12:57:23" itemprop="dateCreated datePublished" datetime="2019-03-23T12:57:23+08:00">2019-03-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-21 17:44:14" itemprop="dateModified" datetime="2020-05-21T17:44:14+08:00">2020-05-21</time>
+              </span>
 
           
             <span id="/2019/03/23/is-multiple-binary-trees-the-same/" class="post-meta-item leancloud_visitors" data-flag-title="判定是否同一棵二叉搜索树" title="阅读次数">
@@ -242,21 +249,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>给定一个插入序列就可以唯一确定一棵二叉搜索树。然而，一棵给定的二叉搜索树却可以由多种不同的插入序列得到。例如分别按照序列<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">{</mo><mn>2</mn><mo separator="true">,</mo><mn>1</mn><mo separator="true">,</mo><mn>3</mn><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\lbrace2, 1, 3\rbrace</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mclose">}</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo stretchy="false">{</mo><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\lbrace2, 3, 1\rbrace</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mclose">}</span></span></span></span>插入初始为空的二叉搜索树，都得到一样的结果。于是对于输入的各种插入序列，你需要判断它们是否能生成一样的二叉搜索树。</p>
-<a id="more"></a>
-<h4 id="输入格式"><a class="markdownIt-Anchor" href="#输入格式"></a> 输入格式</h4>
+        <p>给定一个插入序列就可以唯一确定一棵二叉搜索树。然而，一棵给定的二叉搜索树却可以由多种不同的插入序列得到。例如分别按照序列<span class="math inline">\(\lbrace2, 1, 3\rbrace\)</span>和<span class="math inline">\(\lbrace2, 3, 1\rbrace\)</span>插入初始为空的二叉搜索树，都得到一样的结果。于是对于输入的各种插入序列，你需要判断它们是否能生成一样的二叉搜索树。 <a id="more"></a></p>
+<h4 id="输入格式">输入格式</h4>
 <p>输入包含若干组测试数据。每组数据的第1行给出两个正整数N (≤10)和L，分别是每个序列插入元素的个数和需要检查的序列个数。第2行给出N个以空格分隔的正整数，作为初始插入序列。最后L行，每行给出N个插入的元素，属于L个需要检查的序列。</p>
 <p>简单起见，我们保证每个插入序列都是1到N的一个排列。当读到N为0时，标志输入结束，这组数据不要处理。</p>
-<h4 id="输出格式"><a class="markdownIt-Anchor" href="#输出格式"></a> 输出格式</h4>
+<h4 id="输出格式">输出格式</h4>
 <p>对每一组需要检查的序列，如果其生成的二叉搜索树跟对应的初始序列生成的一样，输出“Yes”，否则输出“No”。</p>
-<h4 id="输入样例"><a class="markdownIt-Anchor" href="#输入样例"></a> 输入样例</h4>
+<h4 id="输入样例">输入样例</h4>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">4 2</span><br><span class="line">3 1 4 2</span><br><span class="line">3 4 1 2</span><br><span class="line">3 2 4 1</span><br><span class="line">2 1</span><br><span class="line">2 1</span><br><span class="line">1 2</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
-<h4 id="输出样例"><a class="markdownIt-Anchor" href="#输出样例"></a> 输出样例</h4>
+<h4 id="输出样例">输出样例</h4>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Yes</span><br><span class="line">No</span><br><span class="line">No</span><br></pre></td></tr></table></figure>
-<h4 id="代码"><a class="markdownIt-Anchor" href="#代码"></a> 代码</h4>
+<h4 id="代码">代码</h4>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">TreeNode</span> * <span class="title">Tree</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">TreeNode</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> v;</span><br><span class="line">    Tree Left, Right;</span><br><span class="line">    <span class="keyword">int</span> flag;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">Tree <span class="title">MakeTree</span><span class="params">(<span class="keyword">int</span> N)</span></span>;</span><br><span class="line"><span class="function">Tree <span class="title">insert</span><span class="params">(Tree T, <span class="keyword">int</span> v)</span></span>;</span><br><span class="line"><span class="function">Tree <span class="title">NewNode</span><span class="params">(<span class="keyword">int</span> V)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">check</span><span class="params">(Tree T, <span class="keyword">int</span> V)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Judge</span><span class="params">(Tree T, <span class="keyword">int</span> N)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ResetT</span><span class="params">(Tree T)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FreeTree</span><span class="params">(Tree T)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> N, L, i;</span><br><span class="line">    Tree T;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;N);</span><br><span class="line">    <span class="keyword">while</span> (N)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;L);</span><br><span class="line">        T = MakeTree(N);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; L; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (Judge(T, N))</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"No\n"</span>);</span><br><span class="line">            ResetT(T);</span><br><span class="line">        &#125;</span><br><span class="line">        FreeTree(T);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;N);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">Tree <span class="title">MakeTree</span><span class="params">(<span class="keyword">int</span> N)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Tree T;</span><br><span class="line">    <span class="keyword">int</span> i, V;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;V);</span><br><span class="line">    T = NewNode(V);</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;V);</span><br><span class="line">        T = insert(T, V);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">Tree <span class="title">insert</span><span class="params">(Tree T, <span class="keyword">int</span> V)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!T)</span><br><span class="line">        T = NewNode(V);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (V &gt; T-&gt;v)</span><br><span class="line">            T-&gt;Right = insert(T-&gt;Right, V);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            T-&gt;Left = insert(T-&gt;Left, V);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">Tree <span class="title">NewNode</span><span class="params">(<span class="keyword">int</span> V)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Tree T = (Tree)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct TreeNode));</span><br><span class="line">    T-&gt;v = V;</span><br><span class="line">    T-&gt;Left = T-&gt;Right = <span class="literal">NULL</span>;</span><br><span class="line">    T-&gt;flag = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">check</span><span class="params">(Tree T, <span class="keyword">int</span> V)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (T-&gt;flag)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (V &lt; T-&gt;v)</span><br><span class="line">            <span class="keyword">return</span> check(T-&gt;Left, V);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (V &gt; T-&gt;v)</span><br><span class="line">            <span class="keyword">return</span> check(T-&gt;Right, V);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (V == T-&gt;v)</span><br><span class="line">        &#123;</span><br><span class="line">            T-&gt;flag = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Judge</span><span class="params">(Tree T, <span class="keyword">int</span> N)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, V, flag = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">/* flag: 0代表目前还一致，1代表已经不一致*/</span></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;V);</span><br><span class="line">    <span class="keyword">if</span> (V != T-&gt;v)</span><br><span class="line">        flag = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        T-&gt;flag = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;V);</span><br><span class="line">        <span class="keyword">if</span> ((!flag) &amp;&amp; (!check(T, V)))<span class="comment">/*这么做是为了把所有的输入都读取完，以免对下一组数据造成影响*/</span></span><br><span class="line">            flag = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (flag)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ResetT</span><span class="params">(Tree T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (T-&gt;Left)</span><br><span class="line">        ResetT(T-&gt;Left);</span><br><span class="line">    <span class="keyword">if</span> (T-&gt;Right)</span><br><span class="line">        ResetT(T-&gt;Right);</span><br><span class="line">    T-&gt;flag = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FreeTree</span><span class="params">(Tree T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (T-&gt;Left)</span><br><span class="line">        FreeTree(T-&gt;Left);</span><br><span class="line">    <span class="keyword">if</span> (T-&gt;Right)</span><br><span class="line">        FreeTree(T-&gt;Right);</span><br><span class="line">    <span class="built_in">free</span>(T);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="测试点信息"><a class="markdownIt-Anchor" href="#测试点信息"></a> 测试点信息</h4>
+<h4 id="测试点信息">测试点信息</h4>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">测试点   提示</span><br><span class="line">0        sample 换顺序。有Yes，有No：根不同，子树根不同。树有单边、有双子树</span><br><span class="line">1        最大N，多组合</span><br><span class="line">2        N&#x3D;1，只有1个节点</span><br><span class="line">3        卡只判断数字相对先后位置的错误算法</span><br></pre></td></tr></table></figure>
+
 <div id="gitalk-container"></div>
 <script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 
@@ -345,7 +352,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式"><span class="nav-number">1.</span> <span class="nav-text"> 输入格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式"><span class="nav-number">2.</span> <span class="nav-text"> 输出格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例"><span class="nav-number">3.</span> <span class="nav-text"> 输入样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例"><span class="nav-number">4.</span> <span class="nav-text"> 输出样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text"> 代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试点信息"><span class="nav-number">6.</span> <span class="nav-text"> 测试点信息</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式"><span class="nav-number">1.</span> <span class="nav-text">输入格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式"><span class="nav-number">2.</span> <span class="nav-text">输出格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例"><span class="nav-number">3.</span> <span class="nav-text">输入样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例"><span class="nav-number">4.</span> <span class="nav-text">输出样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试点信息"><span class="nav-number">6.</span> <span class="nav-text">测试点信息</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -404,7 +411,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">39k</span>
+    <span title="站点总字数">38k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
@@ -555,8 +562,58 @@
 
   
       
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
 
   
 
