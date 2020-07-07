@@ -709,6 +709,9 @@ rose命令：它用来绘制极坐标系下的柱状图。</p>
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>数学建模</tag>
+      </tags>
   </entry>
   <entry>
     <title>一元多项式的乘法与加法运算</title>
@@ -1654,7 +1657,7 @@ C_{22}=P_5+P_1-P_3-P_7\\
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
       <tags>
-        <tag>-数学建模</tag>
+        <tag>数学建模</tag>
       </tags>
   </entry>
 </search>
