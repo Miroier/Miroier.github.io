@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2019/01/03/hello-world/</url>
-    <content><![CDATA[<p>大家好，这里是Miroier。 <a id="more"></a> 第一次拥有自己的博客真的很开心。</p>
-<p>以后应该会用这个博客来记录我学习中练习的代码和写的习题以及其它有趣的东西(咕咕咕~)。</p>
-
-<div id="gitalk-container"></div>
-<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-		<script>
-		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
-	    gitalkConfig.id = md5(location.pathname);
-		var gitalk = new Gitalk(gitalkConfig);
-	    gitalk.render("gitalk-container");
-	    </script>]]></content>
-  </entry>
-  <entry>
     <title>插入排序</title>
     <url>/2019/01/06/insertion-sort/</url>
     <content><![CDATA[<p>插入排序的平均时间复杂度是<span class="math inline">\(O(n^2)\)</span>,对于少量元素的排序，是个有效的算法</p>
@@ -69,9 +53,54 @@
 	    </script>]]></content>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2019/01/03/hello-world/</url>
+    <content><![CDATA[<p>大家好，这里是Miroier。 <a id="more"></a> 第一次拥有自己的博客真的很开心。</p>
+<p>以后应该会用这个博客来记录我学习中练习的代码和写的习题以及其它有趣的东西(咕咕咕~)。</p>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>]]></content>
+  </entry>
+  <entry>
+    <title>一元多项式的乘法与加法运算</title>
+    <url>/2019/03/10/polynomial/</url>
+    <content><![CDATA[<p>设计函数分别求两个一元多项式的乘积与和。 <a id="more"></a></p>
+<h4 id="输入格式">输入格式</h4>
+<p>输入分2行，每行分别先给出多项式非零项的个数，再以指数递降方式输入一个多项式非零项系数和指数（绝对值均为不超过1000的整数）。数字间以空格分隔。</p>
+<h4 id="输出格式">输出格式</h4>
+<p>输出分2行，分别以指数递降方式输出乘积多项式以及和多项式非零项的系数和指数。数字间以空格分隔，但结尾不能有多余空格。零多项式应输出“0 0”。</p>
+<h4 id="输入样例">输入样例</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">4 3 4 -5 2  6 1  -2 0</span><br><span class="line">3 5 20  -7 4  3 1</span><br></pre></td></tr></table></figure>
+<h4 id="输出样例">输出样例</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">15 24 -25 22 30 21 -10 20 -21 8 35 6 -33 5 14 4 -15 3 18 2 -6 1</span><br><span class="line">5 20 -4 4 -5 2 9 1 -2 0</span><br></pre></td></tr></table></figure>
+<h4 id="代码">代码</h4>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">NUM</span> * <span class="title">List</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">NUM</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> coef;<span class="comment">//系数</span></span><br><span class="line">    <span class="keyword">int</span> expo;<span class="comment">//指数</span></span><br><span class="line">    List next;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addNode</span><span class="params">(<span class="keyword">int</span> coef, <span class="keyword">int</span> expo, List *rear)</span></span>;</span><br><span class="line"><span class="function">List <span class="title">add</span><span class="params">(List quem, List quen)</span></span>;</span><br><span class="line"><span class="function">List <span class="title">mul</span><span class="params">(List quem, List quen)</span></span>;</span><br><span class="line"><span class="function">List <span class="title">insertSortandMerge</span><span class="params">(List front)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">(List res)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m, n,coef,expo;</span><br><span class="line">    List quem, quen, resadd, resmul;</span><br><span class="line">    List rearm = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM)), rearn = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">    rearm-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    rearn-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    quem = rearm;</span><br><span class="line">    quen = rearn;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;m);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;coef, &amp;expo);</span><br><span class="line">        addNode(coef, expo, &amp;rearm);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;coef, &amp;expo);</span><br><span class="line">        addNode(coef, expo, &amp;rearn);</span><br><span class="line">    &#125;</span><br><span class="line">    resadd = add(quem-&gt;next, quen-&gt;next);</span><br><span class="line">    resmul = mul(quem-&gt;next, quen-&gt;next);</span><br><span class="line">    Print(resmul);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    Print(resadd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addNode</span><span class="params">(<span class="keyword">int</span> coef, <span class="keyword">int</span> expo, List *rear)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//由于在本函数中需要改变当前结果表达式尾项指针的值</span></span><br><span class="line">    <span class="comment">//所以函数传递进来的是尾项结点指针的地址，*rear指向尾项</span></span><br><span class="line">    List P = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));<span class="comment">//申请新节点并赋值</span></span><br><span class="line">    P-&gt;coef = coef;</span><br><span class="line">    P-&gt;expo = expo;</span><br><span class="line">    P-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="comment">//将P指向的新节点插入到当前结果表达式尾项的后面</span></span><br><span class="line">    (*rear)-&gt;next = P;</span><br><span class="line">    *rear = (*rear)-&gt;next;<span class="comment">//修改rear值</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function">List <span class="title">add</span><span class="params">(List quem, List quen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    List front, rear, temp;<span class="comment">//为方便表头插入，先产生一个临时空结点作为结果多项式链表头</span></span><br><span class="line">    rear = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">    front = rear;<span class="comment">//由front记录结果多项式链表头结点</span></span><br><span class="line">    <span class="keyword">int</span> sum;</span><br><span class="line">    <span class="keyword">while</span> (quem&amp;&amp;quen)<span class="comment">//当两个多项式都有非零项待处理时</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (quem-&gt;expo == quen-&gt;expo)<span class="comment">//两数据项指数相等</span></span><br><span class="line">        &#123;</span><br><span class="line">            sum = quem-&gt;coef + quen-&gt;coef;</span><br><span class="line">            <span class="keyword">if</span> (sum)</span><br><span class="line">                addNode(sum, quem-&gt;expo, &amp;rear);</span><br><span class="line">            quem = quem-&gt;next;</span><br><span class="line">            quen = quen-&gt;next;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (quem-&gt;expo &lt; quen-&gt;expo)<span class="comment">//quen中的数据项指数较大</span></span><br><span class="line">        &#123;</span><br><span class="line">            addNode(quen-&gt;coef, quen-&gt;expo, &amp;rear);</span><br><span class="line">            quen = quen-&gt;next;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (quem-&gt;expo &gt; quen-&gt;expo)<span class="comment">//quem中的数据项指数较大</span></span><br><span class="line">        &#123;</span><br><span class="line">            addNode(quem-&gt;coef, quem-&gt;expo, &amp;rear);</span><br><span class="line">            quem = quem-&gt;next;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将未处理完的另一个多项式的所有结点依次复制到结果多项式中去</span></span><br><span class="line">    <span class="keyword">while</span> (quem)</span><br><span class="line">    &#123;</span><br><span class="line">        addNode(quem-&gt;coef, quem-&gt;expo, &amp;rear);</span><br><span class="line">        quem = quem-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (quen)</span><br><span class="line">    &#123;</span><br><span class="line">        addNode(quen-&gt;coef, quen-&gt;expo, &amp;rear);</span><br><span class="line">        quen = quen-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    rear-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    temp = front;</span><br><span class="line">    front = front-&gt;next;<span class="comment">//令front指向结果多项式第一个非零项</span></span><br><span class="line">    <span class="built_in">free</span>(temp);<span class="comment">//释放临时空表头结点</span></span><br><span class="line">    <span class="keyword">return</span> front;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">List <span class="title">mul</span><span class="params">(List quem, List quen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    List front, rear, temp, Fquem;<span class="comment">//Fquem保存quem的位置</span></span><br><span class="line">    <span class="keyword">int</span> sum, mul;</span><br><span class="line">    rear = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">    front = rear;</span><br><span class="line">    Fquem = quem;</span><br><span class="line">    <span class="keyword">while</span> (quen)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (quem)</span><br><span class="line">        &#123;</span><br><span class="line">            sum = (quem-&gt;coef) * (quen-&gt;coef);</span><br><span class="line">            mul = (quem-&gt;expo) + (quen-&gt;expo);</span><br><span class="line">            addNode(sum, mul, &amp;rear);</span><br><span class="line">            quem = quem-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        quem = Fquem;<span class="comment">//重置quem</span></span><br><span class="line">        quen = quen-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    rear-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    temp = front;</span><br><span class="line">    front = front-&gt;next;</span><br><span class="line">    <span class="built_in">free</span>(temp);</span><br><span class="line">    front = insertSortandMerge(front);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> front;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">List <span class="title">insertSortandMerge</span><span class="params">(List front)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//处理多项式乘法的结果</span></span><br><span class="line">    <span class="comment">/*按指数从大到小进行插入排序，第二个循环中顺便将要插入的项与之前排好序的“队列”中指数相同的项进行合并*/</span></span><br><span class="line">    List head, temp, front_to_free = front;</span><br><span class="line">    <span class="keyword">int</span> sum;</span><br><span class="line">    head = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">    head-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> (front == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        head-&gt;coef = front-&gt;coef;</span><br><span class="line">        head-&gt;expo = front-&gt;expo;</span><br><span class="line">        front = front-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (front)</span><br><span class="line">    &#123;</span><br><span class="line">        temp = head;</span><br><span class="line">        <span class="keyword">while</span> (temp-&gt;next)</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (front-&gt;expo == temp-&gt;next-&gt;expo)</span><br><span class="line">            &#123;</span><br><span class="line">                sum = temp-&gt;next-&gt;coef + front-&gt;coef;</span><br><span class="line">                <span class="keyword">if</span> (sum)</span><br><span class="line">                &#123;</span><br><span class="line">                    temp-&gt;next-&gt;coef = sum;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    temp-&gt;next = temp-&gt;next-&gt;next;</span><br><span class="line">                &#125;</span><br><span class="line">                front = front-&gt;next;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (front-&gt;expo &gt; head-&gt;expo)</span><br><span class="line">            &#123;</span><br><span class="line">                List t = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">                t-&gt;coef = front-&gt;coef;</span><br><span class="line">                t-&gt;expo = front-&gt;expo;</span><br><span class="line">                t-&gt;next = head;</span><br><span class="line">                head = t;</span><br><span class="line">                front = front-&gt;next;</span><br><span class="line">                <span class="built_in">free</span>(t);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (front-&gt;expo &lt; temp-&gt;expo &amp;&amp; front-&gt;expo&gt;temp-&gt;next-&gt;expo)</span><br><span class="line">            &#123;</span><br><span class="line">                List t = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">                t-&gt;coef = front-&gt;coef;</span><br><span class="line">                t-&gt;expo = front-&gt;expo;</span><br><span class="line">                t-&gt;next = temp-&gt;next;</span><br><span class="line">                temp-&gt;next = t;</span><br><span class="line">                front = front-&gt;next;</span><br><span class="line">                <span class="built_in">free</span>(t);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            temp = temp-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (temp-&gt;next == <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            addNode(front-&gt;coef, front-&gt;expo, &amp;temp);</span><br><span class="line">            front = front-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(front_to_free);</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">(List res)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//输出操作，首先特判一下</span></span><br><span class="line">    <span class="keyword">if</span> (res == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"0 0"</span>);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">while</span> (res)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d %d"</span>, res-&gt;coef, res-&gt;expo);</span><br><span class="line">        <span class="keyword">if</span> (res-&gt;next)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">        res = res-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="测试点信息">测试点信息</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">测试点    提示</span><br><span class="line">0        sample换个数字</span><br><span class="line">1        同类项合并时有抵消</span><br><span class="line">2        系数和指数取上限，结果有零多项式</span><br><span class="line">3        输入有零多项式和常数多项式</span><br></pre></td></tr></table></figure>
+<p><del>什么都不想说，因为写了六个小时，太累了。</del></p>
+<p>好吧，时隔一个星期，我又回来补上了一部分注释。</p>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>]]></content>
+  </entry>
+  <entry>
     <title>最大子列和</title>
     <url>/2019/03/07/maxsubseqsum/</url>
-    <content><![CDATA[<p>最大子列和问题，即给定N个整数的序列<span class="math inline">\(\{A_1,A_2,\ldots,A_N \}\)</span>，求函数<span class="math inline">\(f(i,j)=max\lbrace 0,\sum_{i=0}^n{A_k}\rbrace\)</span>的最大值。 例如<span class="math inline">\(\lbrace-2,11,-4,13,-5,-2\rbrace\)</span>的最大子列和为20，子列为<span class="math inline">\(\lbrace11,-4,13\rbrace\)</span>. <span class="math inline">\(\lbrace-10, 1, 2, 3, 4, -5, -23, 3, 7, -21\rbrace\)</span>的最大子列和为10，子列为<span class="math inline">\(\lbrace1，2，3，4\rbrace\)</span>。 <a id="more"></a> 本文将给出实现这种算法的<span class="math inline">\(\Theta(N^2)\)</span>和<span class="math inline">\(\Theta(N)\)</span>算法</p>
+    <content><![CDATA[<p>最大子列和问题，即给定N个整数的序列<span class="math inline">\(\{A_1,A_2,\ldots,A_N \}\)</span>，求函数<span class="math inline">\(f(i,j)=max\lbrace 0,\sum\limits_{i=0}^n{A_k}\rbrace\)</span>的最大值。 例如<span class="math inline">\(\lbrace-2,11,-4,13,-5,-2\rbrace\)</span>的最大子列和为20，子列为<span class="math inline">\(\lbrace11,-4,13\rbrace\)</span>. <span class="math inline">\(\lbrace-10, 1, 2, 3, 4, -5, -23, 3, 7, -21\rbrace\)</span>的最大子列和为10，子列为<span class="math inline">\(\lbrace1，2，3，4\rbrace\)</span>。 <a id="more"></a> 本文将给出实现这种算法的<span class="math inline">\(\Theta(N^2)\)</span>和<span class="math inline">\(\Theta(N)\)</span>算法</p>
 <h2 id="thetan2"><span class="math inline">\(\Theta(N^2)\)</span></h2>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> N)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ThisSum,MaxSum=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> i,j;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;N;i++)    <span class="comment">//i是子列左端位置</span></span><br><span class="line">    &#123;</span><br><span class="line">        ThisSum=<span class="number">0</span>;      <span class="comment">//ThisSum是从A[i]到A[j]的子列和</span></span><br><span class="line">        <span class="keyword">for</span>(j = i; j &lt; N; j++)<span class="comment">//j是子列右端位置</span></span><br><span class="line">        &#123;</span><br><span class="line">            ThisSum += A[j];  <span class="comment">//对于相同的i，不同的j，只要在j-1次循环的基础上累加1项即可</span></span><br><span class="line">            <span class="keyword">if</span>(ThisSum &gt; MaxSum) <span class="comment">//如果刚得到的这个子列和更大</span></span><br><span class="line">                MaxSum = ThisSum; <span class="comment">//则更新结果</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> MaxSum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="thetan"><span class="math inline">\(\Theta(N)\)</span></h2>
@@ -593,83 +622,6 @@ rose命令：它用来绘制极坐标系下的柱状图。</p>
       </tags>
   </entry>
   <entry>
-    <title>随机选择算法</title>
-    <url>/2019/08/25/randSelect/</url>
-    <content><![CDATA[<p>  有这样一个问题：如何从一个无序的数组里求出第<span class="math inline">\(K\)</span>大的数（为了简化讨论，假设数组中的数各不相同），例如，对数组<span class="math inline">\(\{ 5, 12, 7, 2, 9, 3\}\)</span>来说，第三大的数是5，第五大的数是9。</p>
-<a id="more"></a>
-<p>  最直接的想法就是对数组排一下序，然后直接取出第<span class="math inline">\(K\)</span>大元素即可。但是这样做法需要<span class="math inline">\(O(nlogn)\)</span>的时间复杂度，虽然看起来很好，但还有更优化的算法。下面介绍随机选择算法，它对任何输入都可以达到<span class="math inline">\(O(n)\)</span>的期望时间复杂度。</p>
-<p>  随机选择算法的原理类似于随机快速排序算法。可以证明虽然随机选择算法的最坏时间复杂度是<span class="math inline">\(O(n^2)\)</span>，但是其对任意输入的期望时间复杂度却是<span class="math inline">\(O(n)\)</span>，这意味着不存在一组特定的数据能使这个算法出现最坏情况，是个相当实用和出色的算法。</p>
-<p>下面以一道OJ题展示一下该算法的核心代码</p>
-<p><strong>题目</strong><br />
-  给定一个长度为<span class="math inline">\(n(1\leq n\leq 1,000,000)\)</span>的无序正整数序列，以及另一个数<span class="math inline">\(k(1\leq k\leq 1,000,000)\)</span>（关于第<span class="math inline">\(k\)</span>大的数：例如序列<span class="math inline">\(\{ 1, 2, 3, 4, 5, 6\}\)</span>）中第三大的数是4。）</p>
-<p><strong>输入</strong> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一行两个正整数n, m。</span><br><span class="line">第二行为n个正整数。</span><br></pre></td></tr></table></figure></p>
-<p><strong>输出</strong> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第m大的数。</span><br></pre></td></tr></table></figure></p>
-<p><strong>样例输入</strong> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">6 3</span><br><span class="line">1 2 3 4 5 6</span><br></pre></td></tr></table></figure></p>
-<p><strong>样例输出</strong> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">4</span><br></pre></td></tr></table></figure></p>
-<p><strong>代码</strong> <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"algorithm"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cmath"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cstdio"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cstdlib"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ctime"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000010</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], n;</span><br><span class="line"><span class="comment">//随机选取主元，对区间[left, right]进行划分</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">randPartition</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//生成[left, right]内的随机数p</span></span><br><span class="line">    <span class="keyword">int</span> p = round(<span class="number">1.0</span> * rand() / RAND_MAX * (right - left) + left);</span><br><span class="line">    <span class="comment">//交换A[p]与A[left]</span></span><br><span class="line">    swap(A[p], A[left]);</span><br><span class="line">    <span class="comment">//以下为不随机选择基准时的划分过程，不需要改变</span></span><br><span class="line">    <span class="comment">//将A[left]存放至临时变量temp</span></span><br><span class="line">    <span class="keyword">int</span> temp = A[left];</span><br><span class="line">    <span class="comment">//只要left与right不相遇</span></span><br><span class="line">    <span class="keyword">while</span> (left &lt; right)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; A[right] &gt; temp)</span><br><span class="line">            right--;        <span class="comment">//反复左移right</span></span><br><span class="line">        A[left] = A[right]; <span class="comment">//将A[right]挪到A[left]</span></span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; A[left] &lt;= temp)</span><br><span class="line">            left++;         <span class="comment">//反复右移left</span></span><br><span class="line">        A[right] = A[left]; <span class="comment">//将A[left]挪到A[right]</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//把temp放到left和right相遇的地方</span></span><br><span class="line">    A[left] = temp;</span><br><span class="line">    <span class="comment">//返回相遇的下标</span></span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//随机选择算法，从A[left, right]中找到第K大的数，进行划分</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">randSelect</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> K)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (left == right) <span class="comment">//边界</span></span><br><span class="line">        <span class="keyword">return</span> A[left];</span><br><span class="line">    <span class="comment">//划分后主元的位置为p</span></span><br><span class="line">    <span class="keyword">int</span> p = randPartition(A, left, right);</span><br><span class="line">    <span class="comment">//A[p]是A[left, right]中的第M大</span></span><br><span class="line">    <span class="keyword">int</span> M = p - left + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//找到第K大的数</span></span><br><span class="line">    <span class="keyword">if</span> (K == M) <span class="comment">//找到第K大的数</span></span><br><span class="line">        <span class="keyword">return</span> A[p];</span><br><span class="line">    <span class="keyword">if</span> (K &lt; M) <span class="comment">//第K大数在主元左侧</span></span><br><span class="line">        <span class="keyword">return</span> randSelect(A, left, p - <span class="number">1</span>, K);</span><br><span class="line">    <span class="keyword">else</span> <span class="comment">//第K大数在主元右侧</span></span><br><span class="line">        <span class="keyword">return</span> randSelect(A, p + <span class="number">1</span>, right, K - M);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m, n;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>, &amp;n, &amp;m) != EOF)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;A[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果直接填m-1的话找的是第K小的数字</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, randSelect(A, <span class="number">0</span>, n - <span class="number">1</span>, n - m + <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-<div id="gitalk-container"></div>
-<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-		<script>
-		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
-	    gitalkConfig.id = md5(location.pathname);
-		var gitalk = new Gitalk(gitalkConfig);
-	    gitalk.render("gitalk-container");
-	    </script>]]></content>
-  </entry>
-  <entry>
-    <title>一元多项式的乘法与加法运算</title>
-    <url>/2019/03/10/polynomial/</url>
-    <content><![CDATA[<p>设计函数分别求两个一元多项式的乘积与和。 <a id="more"></a></p>
-<h4 id="输入格式">输入格式</h4>
-<p>输入分2行，每行分别先给出多项式非零项的个数，再以指数递降方式输入一个多项式非零项系数和指数（绝对值均为不超过1000的整数）。数字间以空格分隔。</p>
-<h4 id="输出格式">输出格式</h4>
-<p>输出分2行，分别以指数递降方式输出乘积多项式以及和多项式非零项的系数和指数。数字间以空格分隔，但结尾不能有多余空格。零多项式应输出“0 0”。</p>
-<h4 id="输入样例">输入样例</h4>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">4 3 4 -5 2  6 1  -2 0</span><br><span class="line">3 5 20  -7 4  3 1</span><br></pre></td></tr></table></figure>
-<h4 id="输出样例">输出样例</h4>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">15 24 -25 22 30 21 -10 20 -21 8 35 6 -33 5 14 4 -15 3 18 2 -6 1</span><br><span class="line">5 20 -4 4 -5 2 9 1 -2 0</span><br></pre></td></tr></table></figure>
-<h4 id="代码">代码</h4>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">NUM</span> * <span class="title">List</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">NUM</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> coef;<span class="comment">//系数</span></span><br><span class="line">    <span class="keyword">int</span> expo;<span class="comment">//指数</span></span><br><span class="line">    List next;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addNode</span><span class="params">(<span class="keyword">int</span> coef, <span class="keyword">int</span> expo, List *rear)</span></span>;</span><br><span class="line"><span class="function">List <span class="title">add</span><span class="params">(List quem, List quen)</span></span>;</span><br><span class="line"><span class="function">List <span class="title">mul</span><span class="params">(List quem, List quen)</span></span>;</span><br><span class="line"><span class="function">List <span class="title">insertSortandMerge</span><span class="params">(List front)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">(List res)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m, n,coef,expo;</span><br><span class="line">    List quem, quen, resadd, resmul;</span><br><span class="line">    List rearm = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM)), rearn = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">    rearm-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    rearn-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    quem = rearm;</span><br><span class="line">    quen = rearn;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;m);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;coef, &amp;expo);</span><br><span class="line">        addNode(coef, expo, &amp;rearm);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;coef, &amp;expo);</span><br><span class="line">        addNode(coef, expo, &amp;rearn);</span><br><span class="line">    &#125;</span><br><span class="line">    resadd = add(quem-&gt;next, quen-&gt;next);</span><br><span class="line">    resmul = mul(quem-&gt;next, quen-&gt;next);</span><br><span class="line">    Print(resmul);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    Print(resadd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addNode</span><span class="params">(<span class="keyword">int</span> coef, <span class="keyword">int</span> expo, List *rear)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//由于在本函数中需要改变当前结果表达式尾项指针的值</span></span><br><span class="line">    <span class="comment">//所以函数传递进来的是尾项结点指针的地址，*rear指向尾项</span></span><br><span class="line">    List P = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));<span class="comment">//申请新节点并赋值</span></span><br><span class="line">    P-&gt;coef = coef;</span><br><span class="line">    P-&gt;expo = expo;</span><br><span class="line">    P-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="comment">//将P指向的新节点插入到当前结果表达式尾项的后面</span></span><br><span class="line">    (*rear)-&gt;next = P;</span><br><span class="line">    *rear = (*rear)-&gt;next;<span class="comment">//修改rear值</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function">List <span class="title">add</span><span class="params">(List quem, List quen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    List front, rear, temp;<span class="comment">//为方便表头插入，先产生一个临时空结点作为结果多项式链表头</span></span><br><span class="line">    rear = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">    front = rear;<span class="comment">//由front记录结果多项式链表头结点</span></span><br><span class="line">    <span class="keyword">int</span> sum;</span><br><span class="line">    <span class="keyword">while</span> (quem&amp;&amp;quen)<span class="comment">//当两个多项式都有非零项待处理时</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (quem-&gt;expo == quen-&gt;expo)<span class="comment">//两数据项指数相等</span></span><br><span class="line">        &#123;</span><br><span class="line">            sum = quem-&gt;coef + quen-&gt;coef;</span><br><span class="line">            <span class="keyword">if</span> (sum)</span><br><span class="line">                addNode(sum, quem-&gt;expo, &amp;rear);</span><br><span class="line">            quem = quem-&gt;next;</span><br><span class="line">            quen = quen-&gt;next;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (quem-&gt;expo &lt; quen-&gt;expo)<span class="comment">//quen中的数据项指数较大</span></span><br><span class="line">        &#123;</span><br><span class="line">            addNode(quen-&gt;coef, quen-&gt;expo, &amp;rear);</span><br><span class="line">            quen = quen-&gt;next;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (quem-&gt;expo &gt; quen-&gt;expo)<span class="comment">//quem中的数据项指数较大</span></span><br><span class="line">        &#123;</span><br><span class="line">            addNode(quem-&gt;coef, quem-&gt;expo, &amp;rear);</span><br><span class="line">            quem = quem-&gt;next;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将未处理完的另一个多项式的所有结点依次复制到结果多项式中去</span></span><br><span class="line">    <span class="keyword">while</span> (quem)</span><br><span class="line">    &#123;</span><br><span class="line">        addNode(quem-&gt;coef, quem-&gt;expo, &amp;rear);</span><br><span class="line">        quem = quem-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (quen)</span><br><span class="line">    &#123;</span><br><span class="line">        addNode(quen-&gt;coef, quen-&gt;expo, &amp;rear);</span><br><span class="line">        quen = quen-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    rear-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    temp = front;</span><br><span class="line">    front = front-&gt;next;<span class="comment">//令front指向结果多项式第一个非零项</span></span><br><span class="line">    <span class="built_in">free</span>(temp);<span class="comment">//释放临时空表头结点</span></span><br><span class="line">    <span class="keyword">return</span> front;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">List <span class="title">mul</span><span class="params">(List quem, List quen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    List front, rear, temp, Fquem;<span class="comment">//Fquem保存quem的位置</span></span><br><span class="line">    <span class="keyword">int</span> sum, mul;</span><br><span class="line">    rear = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">    front = rear;</span><br><span class="line">    Fquem = quem;</span><br><span class="line">    <span class="keyword">while</span> (quen)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (quem)</span><br><span class="line">        &#123;</span><br><span class="line">            sum = (quem-&gt;coef) * (quen-&gt;coef);</span><br><span class="line">            mul = (quem-&gt;expo) + (quen-&gt;expo);</span><br><span class="line">            addNode(sum, mul, &amp;rear);</span><br><span class="line">            quem = quem-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        quem = Fquem;<span class="comment">//重置quem</span></span><br><span class="line">        quen = quen-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    rear-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    temp = front;</span><br><span class="line">    front = front-&gt;next;</span><br><span class="line">    <span class="built_in">free</span>(temp);</span><br><span class="line">    front = insertSortandMerge(front);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> front;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">List <span class="title">insertSortandMerge</span><span class="params">(List front)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//处理多项式乘法的结果</span></span><br><span class="line">    <span class="comment">/*按指数从大到小进行插入排序，第二个循环中顺便将要插入的项与之前排好序的“队列”中指数相同的项进行合并*/</span></span><br><span class="line">    List head, temp, front_to_free = front;</span><br><span class="line">    <span class="keyword">int</span> sum;</span><br><span class="line">    head = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">    head-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> (front == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        head-&gt;coef = front-&gt;coef;</span><br><span class="line">        head-&gt;expo = front-&gt;expo;</span><br><span class="line">        front = front-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (front)</span><br><span class="line">    &#123;</span><br><span class="line">        temp = head;</span><br><span class="line">        <span class="keyword">while</span> (temp-&gt;next)</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (front-&gt;expo == temp-&gt;next-&gt;expo)</span><br><span class="line">            &#123;</span><br><span class="line">                sum = temp-&gt;next-&gt;coef + front-&gt;coef;</span><br><span class="line">                <span class="keyword">if</span> (sum)</span><br><span class="line">                &#123;</span><br><span class="line">                    temp-&gt;next-&gt;coef = sum;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    temp-&gt;next = temp-&gt;next-&gt;next;</span><br><span class="line">                &#125;</span><br><span class="line">                front = front-&gt;next;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (front-&gt;expo &gt; head-&gt;expo)</span><br><span class="line">            &#123;</span><br><span class="line">                List t = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">                t-&gt;coef = front-&gt;coef;</span><br><span class="line">                t-&gt;expo = front-&gt;expo;</span><br><span class="line">                t-&gt;next = head;</span><br><span class="line">                head = t;</span><br><span class="line">                front = front-&gt;next;</span><br><span class="line">                <span class="built_in">free</span>(t);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (front-&gt;expo &lt; temp-&gt;expo &amp;&amp; front-&gt;expo&gt;temp-&gt;next-&gt;expo)</span><br><span class="line">            &#123;</span><br><span class="line">                List t = (List)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct NUM));</span><br><span class="line">                t-&gt;coef = front-&gt;coef;</span><br><span class="line">                t-&gt;expo = front-&gt;expo;</span><br><span class="line">                t-&gt;next = temp-&gt;next;</span><br><span class="line">                temp-&gt;next = t;</span><br><span class="line">                front = front-&gt;next;</span><br><span class="line">                <span class="built_in">free</span>(t);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            temp = temp-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (temp-&gt;next == <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            addNode(front-&gt;coef, front-&gt;expo, &amp;temp);</span><br><span class="line">            front = front-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(front_to_free);</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">(List res)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//输出操作，首先特判一下</span></span><br><span class="line">    <span class="keyword">if</span> (res == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"0 0"</span>);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">while</span> (res)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d %d"</span>, res-&gt;coef, res-&gt;expo);</span><br><span class="line">        <span class="keyword">if</span> (res-&gt;next)</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">        res = res-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="测试点信息">测试点信息</h4>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">测试点    提示</span><br><span class="line">0        sample换个数字</span><br><span class="line">1        同类项合并时有抵消</span><br><span class="line">2        系数和指数取上限，结果有零多项式</span><br><span class="line">3        输入有零多项式和常数多项式</span><br></pre></td></tr></table></figure>
-<p><del>什么都不想说，因为写了六个小时，太累了。</del></p>
-<p>好吧，时隔一个星期，我又回来补上了一部分注释。</p>
-
-<div id="gitalk-container"></div>
-<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-		<script>
-		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
-	    gitalkConfig.id = md5(location.pathname);
-		var gitalk = new Gitalk(gitalkConfig);
-	    gitalk.render("gitalk-container");
-	    </script>]]></content>
-  </entry>
-  <entry>
-    <title>选择排序</title>
-    <url>/2019/01/13/selection-sort/</url>
-    <content><![CDATA[<p>选择排序是一种很容易理解和实现的简单排序算法。<br />
-<a id="more"></a><br />
-首先，找到数组中最小的那个元素，其次，将它和数组的第一个元素交换位置（如果第一个元素就是最小元素那么它就和自己交换）。再次，在剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。如此往复，直到将整个数组排序。因为它在不断地选择剩余元素之中的最小者，所以这种方法叫选择排序。</p>
-<p>它有两个很鲜明的特点：<br />
-　　运行时间与输入无关。为了找出最小的元素而扫描一遍数组并不能为下一遍扫描提供什么信息。这种性质在某些情况下是缺点，因为使用选择排序的人可能会惊讶的发现，一个已经有序的数组或是主键全部相等的数组和一个元素随机排列的数组所用的排序时间竟然一样长！我们将会看到，其它算法会更善于利用输入的初始状态。<br />
-　　数据移动是最少的。每次交换都会改变两个数组元素的值，因此选择排序用了Ｎ次交换——交换次数和数组大小是线性关系。其它的任何算法都不具备这个特征（大部分的增长数量级都是线性对数或平方级别）</p>
-<p>简单的实现</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *A;</span><br><span class="line">    <span class="keyword">int</span> length, i, j, t, <span class="built_in">min</span>, key;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//输入要排序的数字个数</span></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;length);</span><br><span class="line">    A = (<span class="keyword">int</span>*)<span class="built_in">malloc</span>(length * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="comment">//输入数字</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length; i++)</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;A[i]);</span><br><span class="line">    <span class="comment">//排序</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length - <span class="number">1</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">min</span> = A[i];</span><br><span class="line">        key = i;</span><br><span class="line">        <span class="keyword">for</span> (j = i + <span class="number">1</span>; j &lt; length; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[j] &lt; <span class="built_in">min</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">min</span> = A[j];</span><br><span class="line">                key = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        t = A[i];</span><br><span class="line">        A[i] = <span class="built_in">min</span>;</span><br><span class="line">        A[key] = t;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d "</span>, A[i]);</span><br><span class="line">    <span class="built_in">free</span>(A);<span class="comment">//别忘了释放malloc来的空间</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<div id="gitalk-container"></div>
-<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-		<script>
-		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
-	    gitalkConfig.id = md5(location.pathname);
-		var gitalk = new Gitalk(gitalkConfig);
-	    gitalk.render("gitalk-container");
-	    </script>]]></content>
-  </entry>
-  <entry>
     <title>Root Of AVL Tree</title>
     <url>/2019/03/23/root-of-AVL-tree/</url>
     <content><![CDATA[<p>An AVL tree is a self-balancing binary search tree. In an AVL tree, the heights of the two child subtrees of any node differ by at most one; if at any time they differ by more than one, rebalancing is done to restore this property. <a id="more"></a> Now given a sequence of insertions, you are supposed to tell the root of the resulting AVL tree.</p>
@@ -689,112 +641,6 @@ rose命令：它用来绘制极坐标系下的柱状图。</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">AVLNode</span> * <span class="title">Position</span>;</span></span><br><span class="line"><span class="keyword">typedef</span> Position AVLTree;   <span class="comment">//AVL树类型</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> ElementType;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">AVLNode</span> &#123;</span></span><br><span class="line">    ElementType Data;   <span class="comment">//结点数据</span></span><br><span class="line">    AVLTree Left;   <span class="comment">//指向左子树</span></span><br><span class="line">    AVLTree Right;  <span class="comment">//指向右子树</span></span><br><span class="line">    <span class="keyword">int</span> Height; <span class="comment">//树高</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Max</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</span><br><span class="line"><span class="function">AVLTree <span class="title">Insert</span><span class="params">(AVLTree T, ElementType X)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">GetHeight</span><span class="params">(AVLTree T)</span></span>;</span><br><span class="line"><span class="function">AVLTree <span class="title">SingleLeftRotation</span><span class="params">(AVLTree A)</span></span>;</span><br><span class="line"><span class="function">AVLTree <span class="title">SingleRightRotation</span><span class="params">(AVLTree A)</span></span>;</span><br><span class="line"><span class="function">AVLTree <span class="title">DoubleLeftRightRotation</span><span class="params">(AVLTree A)</span></span>;</span><br><span class="line"><span class="function">AVLTree <span class="title">DoubleRightLeftRotation</span><span class="params">(AVLTree A)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> N, num;</span><br><span class="line">    AVLTree T = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;N);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;num);</span><br><span class="line">        T = Insert(T, num);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, T-&gt;Data);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Max</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">AVLTree <span class="title">Insert</span><span class="params">(AVLTree T, ElementType X)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//将X插入AVL树中，并且返回调整后的AVL树</span></span><br><span class="line">    <span class="keyword">if</span> (!T)<span class="comment">//若插入空树，则新建包含一个结点的树</span></span><br><span class="line">    &#123;</span><br><span class="line">        T = (AVLTree)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct AVLNode));</span><br><span class="line">        T-&gt;Data = X;</span><br><span class="line">        T-&gt;Height = <span class="number">1</span>;</span><br><span class="line">        T-&gt;Left = T-&gt;Right = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (X &lt; T-&gt;Data)</span><br><span class="line">    &#123;<span class="comment">//插入左子树</span></span><br><span class="line">        T-&gt;Left = Insert(T-&gt;Left, X);</span><br><span class="line">        <span class="comment">//如果需要左旋</span></span><br><span class="line">        <span class="keyword">if</span> (GetHeight(T-&gt;Left) - GetHeight(T-&gt;Right) == <span class="number">2</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (X &lt; T-&gt;Left-&gt;Data)</span><br><span class="line">                T = SingleLeftRotation(T);  <span class="comment">//左单旋</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                T = DoubleLeftRightRotation(T); <span class="comment">//左-右双旋</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (X &gt; T-&gt;Data)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//插入右子树</span></span><br><span class="line">        T-&gt;Right = Insert(T-&gt;Right, X);</span><br><span class="line">        <span class="comment">//如果需要右旋</span></span><br><span class="line">        <span class="keyword">if</span> (GetHeight(T-&gt;Right) - GetHeight(T-&gt;Left) == <span class="number">2</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (X &gt; T-&gt;Right-&gt;Data)</span><br><span class="line">                T = SingleRightRotation(T); <span class="comment">//右单旋</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                T = DoubleRightLeftRotation(T); <span class="comment">//右-左双旋</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//else X==T-&gt;Data,无需插入</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//别忘了更新树高</span></span><br><span class="line">    T-&gt;Height = Max(GetHeight(T-&gt;Left), GetHeight(T-&gt;Right)) + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> T;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">GetHeight</span><span class="params">(AVLTree T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (T)</span><br><span class="line">        <span class="keyword">return</span> T-&gt;Height;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">AVLTree <span class="title">SingleLeftRotation</span><span class="params">(AVLTree A)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//注意：A必须有一个左子结点B</span></span><br><span class="line">    <span class="comment">//将A与B做左单旋，更新A与B的高度，返回新的根节点B</span></span><br><span class="line">    AVLTree B = A-&gt;Left;</span><br><span class="line">    A-&gt;Left = B-&gt;Right;</span><br><span class="line">    B-&gt;Right = A;</span><br><span class="line">    A-&gt;Height = Max(GetHeight(A-&gt;Left), GetHeight(A-&gt;Right)) + <span class="number">1</span>;</span><br><span class="line">    B-&gt;Height = Max(GetHeight(B-&gt;Left), A-&gt;Height) + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> B;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">AVLTree <span class="title">SingleRightRotation</span><span class="params">(AVLTree A)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//注意：A必须有一个右子结点B</span></span><br><span class="line">    <span class="comment">//将A与B做右单旋，更新A与B的高度，返回新的根节点B</span></span><br><span class="line">    AVLTree B = A-&gt;Right;</span><br><span class="line">    A-&gt;Right = B-&gt;Left;</span><br><span class="line">    B-&gt;Left = A;</span><br><span class="line">    A-&gt;Height = Max(GetHeight(A-&gt;Left), GetHeight(A-&gt;Right)) + <span class="number">1</span>;</span><br><span class="line">    B-&gt;Height = Max(GetHeight(B-&gt;Right), A-&gt;Height) + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> B;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">AVLTree <span class="title">DoubleLeftRightRotation</span><span class="params">(AVLTree A)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//注意：A必须有一个左子结点B，且B必须有一个右子节点C</span></span><br><span class="line">    <span class="comment">//将A、B与C做两次单旋，返回新的根节点C</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//B与C做右单旋，返回C</span></span><br><span class="line">    A-&gt;Left = SingleRightRotation(A-&gt;Left);</span><br><span class="line">    <span class="comment">//A与C做左单旋，返回C</span></span><br><span class="line">    <span class="keyword">return</span> SingleLeftRotation(A);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">AVLTree <span class="title">DoubleRightLeftRotation</span><span class="params">(AVLTree A)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//注意：A必须有一个右子结点B，且B必须有一个左子节点C</span></span><br><span class="line">    <span class="comment">//将A、B与C做两次单旋，返回新的根节点C</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//B与C做左单旋，返回C</span></span><br><span class="line">    A-&gt;Right = SingleLeftRotation(A-&gt;Right);</span><br><span class="line">    <span class="comment">//A与C做右单旋，返回C</span></span><br><span class="line">    <span class="keyword">return</span> SingleRightRotation(A);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="测试点">测试点</h4>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">测试点      提示</span><br><span class="line">0           fig 1 - LL</span><br><span class="line">1           fig 2 - RR</span><br><span class="line">2           fig 3 - RL</span><br><span class="line">3           fig 4 - LR</span><br><span class="line">4           深度LL旋转</span><br><span class="line">5           最大N，深度RL旋转</span><br><span class="line">6           最小N</span><br></pre></td></tr></table></figure>
-
-<div id="gitalk-container"></div>
-<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-		<script>
-		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
-	    gitalkConfig.id = md5(location.pathname);
-		var gitalk = new Gitalk(gitalkConfig);
-	    gitalk.render("gitalk-container");
-	    </script>]]></content>
-  </entry>
-  <entry>
-    <title>矩阵乘法的Strassen算法</title>
-    <url>/2019/02/02/strassen/</url>
-    <content><![CDATA[<p>  最简单的矩阵乘法可以通过三重循环来实现，其时间复杂度为<span class="math inline">\(\Theta(n^{3})\)</span>，Strassen算法通过巧妙的增加加法来减少乘法实现了<span class="math inline">\(O(n^{2.81})\)</span>的时间复杂度</p>
-<a id="more"></a>
-<p>Strassen算法的四个步骤：</p>
-<ol type="1">
-<li>将输入矩阵A、B与输出矩阵C分解为<span class="math inline">\(n/2\times n/2\)</span>的子矩阵，采用下标计算方法，此步骤花费<span class="math inline">\(\Theta\)</span>(1)时间。<br />
-</li>
-<li>创建10个<span class="math inline">\(n/2\times n/2\)</span>的矩阵，每个矩阵保存步骤1中创建的两个子矩阵的和或差，花费<span class="math inline">\(\Theta(n^2)\)</span>。<br />
-</li>
-<li>用步骤1中创建的子矩阵和步骤2中创建的10个矩阵，递归的计算7个<span class="math inline">\(P_i\)</span>矩阵积。<br />
-</li>
-<li>通过<span class="math inline">\(P_i\)</span>矩阵的不同组合进行加减运算，计算出C的子矩阵，花费时间<span class="math inline">\(\Theta(n^2)\)</span>。</li>
-</ol>
-<p>  为了方便计算矩阵积C=A<span class="math inline">\(\cdot\)</span>B，假定三个矩阵均为<span class="math inline">\(n\times n\)</span>矩阵，其中n为2的幂。做出这个假设是因为在每个分解步骤中，<span class="math inline">\(n\times n\)</span>矩阵都被划分为4个<span class="math inline">\(n/2\times n/2\)</span>的子矩阵，如果假定<span class="math inline">\(n\)</span>是2的幂，则只要<span class="math inline">\(n\geq 2\)</span>即可保证子矩阵规模<span class="math inline">\(n/2\)</span>为整数。</p>
-<p>假定将A、B和C均分解为4个<span class="math inline">\(n/2\times n/2\)</span>的子矩阵：</p>
-<p><span class="math display">\[A=
- \left[
- \begin{matrix}
-   A_{11} &amp; A_{12} \\
-   A_{21} &amp; A_{22} \\
-  \end{matrix}
-  \right]
-，B=
- \left[
- \begin{matrix}
-   B_{11} &amp; B_{12} \\
-   B_{21} &amp; B_{22} \\
-  \end{matrix}
-  \right]
-，C=
- \left[
- \begin{matrix}
-   C_{11} &amp; C_{12} \\
-   C_{21} &amp; C_{22} \\
-  \end{matrix}
-  \right]
-\]</span> 根据矩阵乘法的定义，可以得到如下4个公式： <span class="math display">\[
-C_{11}=A_{11}\cdot B_{11}+A_{12}\cdot B_{21} \\
-C_{12}=A_{11}\cdot B_{12}+A_{12}\cdot B_{22} \\
-C_{21}=A_{21}\cdot B_{11}+A_{22}\cdot B_{21} \\　\tag{1}
-C_{22}=A_{21}\cdot B_{12}+A_{22}\cdot B_{22} \\
-\]</span></p>
-<p>步骤2中，创建如下10个矩阵： <span class="math display">\[
-S_1=B_{12}-B_{22}\\
-S_2=A_{11}-A_{12}\\
-S_3=A_{21}+A_{22}\\
-S_4=B_{21}-B_{21}\\
-S_5=A_{11}+A_{22}\\
-S_6=B_{11}+B_{22}\\
-S_7=A_{12}-A_{22}\\
-S_8=B_{21}+B_{22}\\
-S_9=A_{11}-A_{21}\\
-S_{10}=B_{11}+B_{12}\\
-\]</span> 由于必须进行10次<span class="math inline">\(n/2\times n/2\)</span>矩阵的加减法，因此，该步骤花费<span class="math inline">\(\Theta(n^2)\)</span>时间。 步骤3中，递归的计算7次<span class="math inline">\(n/2\times n/2\)</span>矩阵的乘法，如下所示： <span class="math display">\[
-P_1=A_{11}\cdot S_1\\
-P_2=S_2\cdot B_{22}\\
-P_3=S_3\cdot B_{11}\\
-P_4=A_{22}\cdot S_4\\
-P_5=S_5\cdot S_6\\
-P_6=S_7\cdot S_8\\
-P_7=S_9\cdot S_{10}\\
-\]</span> 步骤4中， <span class="math display">\[
-C_{11}=P_5+P_4-P_2+P_6\\
-C_{12}=P_1+P_2\\
-C_{21}=P_3+P_4\\　\tag{2}
-C_{22}=P_5+P_1-P_3-P_7\\
-\]</span> 共进行了8次<span class="math inline">\(n/2\times n/2\)</span>矩阵的加减法，因此花费<span class="math inline">\(\Theta(n^2)\)</span>时间。 代值计算后可以发现(2)式结果与(1)式是相同的。</p>
-<p>描述Strassen算法运行时间T(n)的递归式： <span class="math display">\[T(n)=\begin{cases}
-\Theta(1)&amp;n=1\\
-7T(n/2)+\Theta(n^2)&amp;n&gt;1\\
-\end{cases}\]</span></p>
-<p>  用主方法来求解这个递归式，可知解为T(n)=<span class="math inline">\(\Theta(n^{lg7})\)</span>，由于<span class="math inline">\(lg7\)</span>介于2.80和2.81之间，所以时间复杂度为<span class="math inline">\(O(n^{2.81})\)</span>。</p>
-<p>天知道Strassen是怎么想到这个方法的QAQ</p>
-
-<div id="gitalk-container"></div>
-<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-		<script>
-		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
-	    gitalkConfig.id = md5(location.pathname);
-		var gitalk = new Gitalk(gitalkConfig);
-	    gitalk.render("gitalk-container");
-	    </script>]]></content>
-  </entry>
-  <entry>
-    <title>修改文章底部标签图形</title>
-    <url>/2019/09/27/%E4%BF%AE%E6%94%B9%E6%96%87%E7%AB%A0%E5%BA%95%E9%83%A8%E6%A0%87%E7%AD%BE%E5%9B%BE%E5%BD%A2/</url>
-    <content><![CDATA[<p>可能有人会觉得自带的<code>#</code>标签比较丑，那么可以考虑更改<code>themes\next\layout\_macro\post.swig</code>来更换一个图标</p>
-<a id="more"></a>
-<img src="/2019/09/27/%E4%BF%AE%E6%94%B9%E6%96%87%E7%AB%A0%E5%BA%95%E9%83%A8%E6%A0%87%E7%AD%BE%E5%9B%BE%E5%BD%A2/tags_before.png" class="" title="更改前">
-<img src="/2019/09/27/%E4%BF%AE%E6%94%B9%E6%96%87%E7%AB%A0%E5%BA%95%E9%83%A8%E6%A0%87%E7%AD%BE%E5%9B%BE%E5%BD%A2/tags_after.png" class="" title="更改后">
-<p>在<code>post.swig</code>文件中搜索<code>tag_indicate</code>找到<code>set tag_indicate = '#'</code>,将其改成<code>set tag_indicate = '&lt;i class="fa fa-tag"&gt;&lt;/i&gt;'</code>。</p>
-<p>更好的方法：可以直接在主题目录下的<code>_config.yml</code>中搜索<code>tag_icon</code>将其值改为true</p>
 
 <div id="gitalk-container"></div>
 <script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
@@ -892,6 +738,152 @@ C_{22}=P_5+P_1-P_3-P_7\\
 	    </script>]]></content>
   </entry>
   <entry>
+    <title>随机选择算法</title>
+    <url>/2019/08/25/randSelect/</url>
+    <content><![CDATA[<p>  有这样一个问题：如何从一个无序的数组里求出第<span class="math inline">\(K\)</span>大的数（为了简化讨论，假设数组中的数各不相同），例如，对数组<span class="math inline">\(\{ 5, 12, 7, 2, 9, 3\}\)</span>来说，第三大的数是5，第五大的数是9。</p>
+<a id="more"></a>
+<p>  最直接的想法就是对数组排一下序，然后直接取出第<span class="math inline">\(K\)</span>大元素即可。但是这样做法需要<span class="math inline">\(O(nlogn)\)</span>的时间复杂度，虽然看起来很好，但还有更优化的算法。下面介绍随机选择算法，它对任何输入都可以达到<span class="math inline">\(O(n)\)</span>的期望时间复杂度。</p>
+<p>  随机选择算法的原理类似于随机快速排序算法。可以证明虽然随机选择算法的最坏时间复杂度是<span class="math inline">\(O(n^2)\)</span>，但是其对任意输入的期望时间复杂度却是<span class="math inline">\(O(n)\)</span>，这意味着不存在一组特定的数据能使这个算法出现最坏情况，是个相当实用和出色的算法。</p>
+<p>下面以一道OJ题展示一下该算法的核心代码</p>
+<p><strong>题目</strong><br />
+  给定一个长度为<span class="math inline">\(n(1\leq n\leq 1,000,000)\)</span>的无序正整数序列，以及另一个数<span class="math inline">\(k(1\leq k\leq 1,000,000)\)</span>（关于第<span class="math inline">\(k\)</span>大的数：例如序列<span class="math inline">\(\{ 1, 2, 3, 4, 5, 6\}\)</span>）中第三大的数是4。）</p>
+<p><strong>输入</strong> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第一行两个正整数n, m。</span><br><span class="line">第二行为n个正整数。</span><br></pre></td></tr></table></figure></p>
+<p><strong>输出</strong> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">第m大的数。</span><br></pre></td></tr></table></figure></p>
+<p><strong>样例输入</strong> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">6 3</span><br><span class="line">1 2 3 4 5 6</span><br></pre></td></tr></table></figure></p>
+<p><strong>样例输出</strong> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">4</span><br></pre></td></tr></table></figure></p>
+<p><strong>代码</strong> <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"algorithm"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cmath"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cstdio"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cstdlib"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ctime"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxn = <span class="number">1000010</span>;</span><br><span class="line"><span class="keyword">int</span> A[maxn], n;</span><br><span class="line"><span class="comment">//随机选取主元，对区间[left, right]进行划分</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">randPartition</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//生成[left, right]内的随机数p</span></span><br><span class="line">    <span class="keyword">int</span> p = round(<span class="number">1.0</span> * rand() / RAND_MAX * (right - left) + left);</span><br><span class="line">    <span class="comment">//交换A[p]与A[left]</span></span><br><span class="line">    swap(A[p], A[left]);</span><br><span class="line">    <span class="comment">//以下为不随机选择基准时的划分过程，不需要改变</span></span><br><span class="line">    <span class="comment">//将A[left]存放至临时变量temp</span></span><br><span class="line">    <span class="keyword">int</span> temp = A[left];</span><br><span class="line">    <span class="comment">//只要left与right不相遇</span></span><br><span class="line">    <span class="keyword">while</span> (left &lt; right)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; A[right] &gt; temp)</span><br><span class="line">            right--;        <span class="comment">//反复左移right</span></span><br><span class="line">        A[left] = A[right]; <span class="comment">//将A[right]挪到A[left]</span></span><br><span class="line">        <span class="keyword">while</span> (left &lt; right &amp;&amp; A[left] &lt;= temp)</span><br><span class="line">            left++;         <span class="comment">//反复右移left</span></span><br><span class="line">        A[right] = A[left]; <span class="comment">//将A[left]挪到A[right]</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//把temp放到left和right相遇的地方</span></span><br><span class="line">    A[left] = temp;</span><br><span class="line">    <span class="comment">//返回相遇的下标</span></span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//随机选择算法，从A[left, right]中找到第K大的数，进行划分</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">randSelect</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> K)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (left == right) <span class="comment">//边界</span></span><br><span class="line">        <span class="keyword">return</span> A[left];</span><br><span class="line">    <span class="comment">//划分后主元的位置为p</span></span><br><span class="line">    <span class="keyword">int</span> p = randPartition(A, left, right);</span><br><span class="line">    <span class="comment">//A[p]是A[left, right]中的第M大</span></span><br><span class="line">    <span class="keyword">int</span> M = p - left + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//找到第K大的数</span></span><br><span class="line">    <span class="keyword">if</span> (K == M) <span class="comment">//找到第K大的数</span></span><br><span class="line">        <span class="keyword">return</span> A[p];</span><br><span class="line">    <span class="keyword">if</span> (K &lt; M) <span class="comment">//第K大数在主元左侧</span></span><br><span class="line">        <span class="keyword">return</span> randSelect(A, left, p - <span class="number">1</span>, K);</span><br><span class="line">    <span class="keyword">else</span> <span class="comment">//第K大数在主元右侧</span></span><br><span class="line">        <span class="keyword">return</span> randSelect(A, p + <span class="number">1</span>, right, K - M);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m, n;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>, &amp;n, &amp;m) != EOF)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;A[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果直接填m-1的话找的是第K小的数字</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, randSelect(A, <span class="number">0</span>, n - <span class="number">1</span>, n - m + <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>]]></content>
+  </entry>
+  <entry>
+    <title>选择排序</title>
+    <url>/2019/01/13/selection-sort/</url>
+    <content><![CDATA[<p>选择排序是一种很容易理解和实现的简单排序算法。<br />
+<a id="more"></a><br />
+首先，找到数组中最小的那个元素，其次，将它和数组的第一个元素交换位置（如果第一个元素就是最小元素那么它就和自己交换）。再次，在剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。如此往复，直到将整个数组排序。因为它在不断地选择剩余元素之中的最小者，所以这种方法叫选择排序。</p>
+<p>它有两个很鲜明的特点：<br />
+　　运行时间与输入无关。为了找出最小的元素而扫描一遍数组并不能为下一遍扫描提供什么信息。这种性质在某些情况下是缺点，因为使用选择排序的人可能会惊讶的发现，一个已经有序的数组或是主键全部相等的数组和一个元素随机排列的数组所用的排序时间竟然一样长！我们将会看到，其它算法会更善于利用输入的初始状态。<br />
+　　数据移动是最少的。每次交换都会改变两个数组元素的值，因此选择排序用了Ｎ次交换——交换次数和数组大小是线性关系。其它的任何算法都不具备这个特征（大部分的增长数量级都是线性对数或平方级别）</p>
+<p>简单的实现</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *A;</span><br><span class="line">    <span class="keyword">int</span> length, i, j, t, <span class="built_in">min</span>, key;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//输入要排序的数字个数</span></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;length);</span><br><span class="line">    A = (<span class="keyword">int</span>*)<span class="built_in">malloc</span>(length * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="comment">//输入数字</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length; i++)</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;A[i]);</span><br><span class="line">    <span class="comment">//排序</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length - <span class="number">1</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">min</span> = A[i];</span><br><span class="line">        key = i;</span><br><span class="line">        <span class="keyword">for</span> (j = i + <span class="number">1</span>; j &lt; length; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[j] &lt; <span class="built_in">min</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">min</span> = A[j];</span><br><span class="line">                key = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        t = A[i];</span><br><span class="line">        A[i] = <span class="built_in">min</span>;</span><br><span class="line">        A[key] = t;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d "</span>, A[i]);</span><br><span class="line">    <span class="built_in">free</span>(A);<span class="comment">//别忘了释放malloc来的空间</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>]]></content>
+  </entry>
+  <entry>
+    <title>矩阵乘法的Strassen算法</title>
+    <url>/2019/02/02/strassen/</url>
+    <content><![CDATA[<p>  最简单的矩阵乘法可以通过三重循环来实现，其时间复杂度为<span class="math inline">\(\Theta(n^{3})\)</span>，Strassen算法通过巧妙的增加加法来减少乘法实现了<span class="math inline">\(O(n^{2.81})\)</span>的时间复杂度</p>
+<a id="more"></a>
+<p>Strassen算法的四个步骤：</p>
+<ol type="1">
+<li>将输入矩阵A、B与输出矩阵C分解为<span class="math inline">\(n/2\times n/2\)</span>的子矩阵，采用下标计算方法，此步骤花费<span class="math inline">\(\Theta\)</span>(1)时间。<br />
+</li>
+<li>创建10个<span class="math inline">\(n/2\times n/2\)</span>的矩阵，每个矩阵保存步骤1中创建的两个子矩阵的和或差，花费<span class="math inline">\(\Theta(n^2)\)</span>。<br />
+</li>
+<li>用步骤1中创建的子矩阵和步骤2中创建的10个矩阵，递归的计算7个<span class="math inline">\(P_i\)</span>矩阵积。<br />
+</li>
+<li>通过<span class="math inline">\(P_i\)</span>矩阵的不同组合进行加减运算，计算出C的子矩阵，花费时间<span class="math inline">\(\Theta(n^2)\)</span>。</li>
+</ol>
+<p>  为了方便计算矩阵积C=A<span class="math inline">\(\cdot\)</span>B，假定三个矩阵均为<span class="math inline">\(n\times n\)</span>矩阵，其中n为2的幂。做出这个假设是因为在每个分解步骤中，<span class="math inline">\(n\times n\)</span>矩阵都被划分为4个<span class="math inline">\(n/2\times n/2\)</span>的子矩阵，如果假定<span class="math inline">\(n\)</span>是2的幂，则只要<span class="math inline">\(n\geq 2\)</span>即可保证子矩阵规模<span class="math inline">\(n/2\)</span>为整数。</p>
+<p>假定将A、B和C均分解为4个<span class="math inline">\(n/2\times n/2\)</span>的子矩阵：</p>
+<p><span class="math display">\[A=
+ \left[
+ \begin{matrix}
+   A_{11} &amp; A_{12} \\
+   A_{21} &amp; A_{22} \\
+  \end{matrix}
+  \right]
+，B=
+ \left[
+ \begin{matrix}
+   B_{11} &amp; B_{12} \\
+   B_{21} &amp; B_{22} \\
+  \end{matrix}
+  \right]
+，C=
+ \left[
+ \begin{matrix}
+   C_{11} &amp; C_{12} \\
+   C_{21} &amp; C_{22} \\
+  \end{matrix}
+  \right]
+\]</span> 根据矩阵乘法的定义，可以得到如下4个公式： <span class="math display">\[
+\begin{equation}\label{1}
+\begin{aligned}
+C_{11}&amp;=A_{11}\cdot B_{11}+A_{12}\cdot B_{21} \\
+C_{12}&amp;=A_{11}\cdot B_{12}+A_{12}\cdot B_{22} \\
+C_{21}&amp;=A_{21}\cdot B_{11}+A_{22}\cdot B_{21} \\
+C_{22}&amp;=A_{21}\cdot B_{12}+A_{22}\cdot B_{22} \\
+\end{aligned}
+\end{equation}
+\]</span></p>
+<p>步骤2中，创建如下10个矩阵： <span class="math display">\[
+\begin{equation}\label{2}
+\begin{aligned}
+S_1&amp;=B_{12}-B_{22}\\
+S_2&amp;=A_{11}-A_{12}\\
+S_3&amp;=A_{21}+A_{22}\\
+S_4&amp;=B_{21}-B_{21}\\
+S_5&amp;=A_{11}+A_{22}\\
+S_6&amp;=B_{11}+B_{22}\\
+S_7&amp;=A_{12}-A_{22}\\
+S_8&amp;=B_{21}+B_{22}\\
+S_9&amp;=A_{11}-A_{21}\\
+S_{10}&amp;=B_{11}+B_{12}\\
+\end{aligned}
+\end{equation}
+\]</span> 由于必须进行10次<span class="math inline">\(n/2\times n/2\)</span>矩阵的加减法，因此，该步骤花费<span class="math inline">\(\Theta(n^2)\)</span>时间。 步骤3中，递归的计算7次<span class="math inline">\(n/2\times n/2\)</span>矩阵的乘法，如下所示： <span class="math display">\[
+\begin{align*}
+P_1&amp;=A_{11}\cdot S_1\\
+P_2&amp;=S_2\cdot B_{22}\\
+P_3&amp;=S_3\cdot B_{11}\\
+P_4&amp;=A_{22}\cdot S_4\\
+P_5&amp;=S_5\cdot S_6\\
+P_6&amp;=S_7\cdot S_8\\
+P_7&amp;=S_9\cdot S_{10}\\
+\end{align*}
+\]</span> 步骤4中， <span class="math display">\[
+\begin{align*}
+C_{11}&amp;=P_5+P_4-P_2+P_6\\
+C_{12}&amp;=P_1+P_2\\
+C_{21}&amp;=P_3+P_4\\
+C_{22}&amp;=P_5+P_1-P_3-P_7\\
+\end{align*}
+\]</span> 共进行了8次<span class="math inline">\(n/2\times n/2\)</span>矩阵的加减法，因此花费<span class="math inline">\(\Theta(n^2)\)</span>时间。 代值计算后可以发现(2)式结果与(1)式是相同的。</p>
+<p>描述Strassen算法运行时间T(n)的递归式： <span class="math display">\[T(n)=\begin{cases}
+\Theta(1)&amp;n=1\\
+7T(n/2)+\Theta(n^2)&amp;n&gt;1\\
+\end{cases}\]</span></p>
+<p>  用主方法来求解这个递归式，可知解为<span class="math inline">\(T\left(n\right)=\Theta(n^{lg7})\)</span>，由于<span class="math inline">\(lg7\)</span>介于2.80和2.81之间，所以时间复杂度为<span class="math inline">\(O(n^{2.81})\)</span>。</p>
+<p>天知道Strassen是怎么想到这个方法的QAQ</p>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>]]></content>
+  </entry>
+  <entry>
     <title>堆中的路径</title>
     <url>/2019/03/30/%E5%A0%86%E4%B8%AD%E7%9A%84%E8%B7%AF%E5%BE%84/</url>
     <content><![CDATA[<p>将一系列给定数字插入一个初始为空的小顶堆<code>H[]</code>。随后对任意给定的下标<code>i</code>，打印从<code>H[i]</code>到根结点的路径。 <a id="more"></a></p>
@@ -919,6 +911,26 @@ C_{22}=P_5+P_1-P_3-P_7\\
 	    </script>]]></content>
   </entry>
   <entry>
+    <title>修改文章底部标签图形</title>
+    <url>/2019/09/27/%E4%BF%AE%E6%94%B9%E6%96%87%E7%AB%A0%E5%BA%95%E9%83%A8%E6%A0%87%E7%AD%BE%E5%9B%BE%E5%BD%A2/</url>
+    <content><![CDATA[<p>可能有人会觉得自带的<code>#</code>标签比较丑，那么可以考虑更改<code>themes\next\layout\_macro\post.swig</code>来更换一个图标</p>
+<a id="more"></a>
+<img src="/2019/09/27/%E4%BF%AE%E6%94%B9%E6%96%87%E7%AB%A0%E5%BA%95%E9%83%A8%E6%A0%87%E7%AD%BE%E5%9B%BE%E5%BD%A2/tags_before.png" class="" title="更改前">
+<img src="/2019/09/27/%E4%BF%AE%E6%94%B9%E6%96%87%E7%AB%A0%E5%BA%95%E9%83%A8%E6%A0%87%E7%AD%BE%E5%9B%BE%E5%BD%A2/tags_after.png" class="" title="更改后">
+<p>在<code>post.swig</code>文件中搜索<code>tag_indicate</code>找到<code>set tag_indicate = '#'</code>,将其改成<code>set tag_indicate = '&lt;i class="fa fa-tag"&gt;&lt;/i&gt;'</code>。</p>
+<p>更好的方法：可以直接在主题目录下的<code>_config.yml</code>中搜索<code>tag_icon</code>将其值改为true</p>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>]]></content>
+  </entry>
+  <entry>
     <title>快速幂取模</title>
     <url>/2020/07/07/%E5%BF%AB%E9%80%9F%E5%B9%82%E5%8F%96%E6%A8%A1/</url>
     <content><![CDATA[<p>现在让我们来计算<span class="math inline">\(a^b\%c\)</span> <a id="more"></a></p>
@@ -927,7 +939,7 @@ C_{22}=P_5+P_1-P_3-P_7\\
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">pow</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> a, <span class="keyword">long</span> <span class="keyword">long</span> b, <span class="keyword">long</span> <span class="keyword">long</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (b--)</span><br><span class="line">        ans = ans * a;</span><br><span class="line">    ans = ans % c;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>看上去没有问题，但是当<span class="math inline">\(a\)</span>和<span class="math inline">\(b\)</span>的值很大时，就算是long long类型也有可能让累乘的结果溢出，而且在做乘法时一共要进行<span class="math inline">\(b\)</span>次运算，时间上的代价也很大，那么是否能从这两方面进行优化呢？</p>
 <h2 id="快速幂">快速幂</h2>
-<p>快速幂是一个计算<span class="math inline">\(a^b\)</span>的小技巧，它的时间复杂度为$( n ) $，从一个简单的例子开始：</p>
+<p>快速幂是一个计算<span class="math inline">\(a^b\)</span>的小技巧，它的时间复杂度为<span class="math inline">\(\Theta \left( \log n \right)\)</span>，从一个简单的例子开始：</p>
 <p>现在你要计算<span class="math inline">\(62^9\)</span>这个数，假设你手上有个只能加减乘除的计算器，想必你肯定不会真的把<span class="math inline">\(62\)</span>这个数乘上<span class="math inline">\(9\)</span>次，因为这实在太慢了，我们会先计算<span class="math inline">\(62^4\)</span>的值，将其与自身相乘后再乘上一个<span class="math inline">\(62\)</span>就得到了结果，将这个规则递归下去，可以得到下面这样的流程</p>
 <p><span class="math display">\[
 62^9=\left( 62^4 \right) ^2*62=\left( \left( 62^2 \right) ^2 \right) ^2*62
@@ -938,7 +950,7 @@ C_{22}=P_5+P_1-P_3-P_7\\
 <h3 id="非递归实现">非递归实现</h3>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">pow</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> a, <span class="keyword">long</span> <span class="keyword">long</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (b)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (b &amp; <span class="number">1</span>)</span><br><span class="line">            ans = ans * a;</span><br><span class="line">        a = a * a;</span><br><span class="line">        b &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="取模">取模</h2>
-<p>如果c是一个素数，有如下数学公式 <span class="math display">\[
+<p>首先引入几个数学公式 <span class="math display">\[
 \begin{align}
 \left( a+b \right) \%c=\left[ \left( a\%c \right) +\left( b\%c \right) \right] \%c
 \\
@@ -949,16 +961,21 @@ C_{22}=P_5+P_1-P_3-P_7\\
 \]</span></p>
 <p>我们需要用到上面的第$( 3 ) $式，下面给出证明：</p>
 <p><span class="math display">\[
-a\%c=d\Rightarrow a=tc+d
-\\
-b\%c=e\Rightarrow b=kc+e
-\\
-ab\%c=\left( tc+d \right) \left( kc+e \right) \%c
-\\
-=\left( tkc^2+\left( te+dk \right) c+de \right) \%c
-\\
-=de\%c=\left[ \left( a\%c \right) *\left( b\%c \right) \right] \%c
+\begin{align*}
+a\%c &amp; =d\Rightarrow a=tc+d\\
+b\%c &amp; =e\Rightarrow b=kc+e\\
+ab\%c &amp; =\left( tc+d \right) \left( kc+e \right) \%c\\
+&amp; =\left( tkc^2+\left( te+dk \right) c+de \right) \%c\\
+&amp; =de\%c=\left[ \left( a\%c \right) *\left( b\%c \right) \right] \%c
+\end{align*}
 \]</span></p>
+<p>根据这个公式，可以知道</p>
+<p><span class="math display">\[
+a^b\%c=\left( a\%c \right) ^b\%c
+\]</span></p>
+<h2 id="最终结果">最终结果</h2>
+<p>根据以上结论，我们可以在循环乘积的过程中加入取模运算，这样就可以避免最终结果过大的情况，再结合之前的快速幂技巧，就可以得到最终的代码</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">pow</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> a, <span class="keyword">long</span> <span class="keyword">long</span> b, <span class="keyword">long</span> <span class="keyword">long</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    a %= c;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (b)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (b &amp; <span class="number">1</span>)</span><br><span class="line">            ans = (ans * a) % c;</span><br><span class="line">        a = (a * a) % c;</span><br><span class="line">        b &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <div id="gitalk-container"></div>
 <script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
