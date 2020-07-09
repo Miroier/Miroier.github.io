@@ -249,20 +249,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>将一系列给定数字插入一个初始为空的小顶堆<code>H[]</code>。随后对任意给定的下标<code>i</code>，打印从<code>H[i]</code>到根结点的路径。 <a id="more"></a></p>
-<h4 id="输入格式">输入格式</h4>
+        <p>将一系列给定数字插入一个初始为空的小顶堆<code>H[]</code>。随后对任意给定的下标<code>i</code>，打印从<code>H[i]</code>到根结点的路径。</p>
+<a id="more"></a>
+<h4 id="输入格式"><a class="markdownIt-Anchor" href="#输入格式"></a> 输入格式</h4>
 <p>每组测试第1行包含2个正整数N和M(≤1000)，分别是插入元素的个数、以及需要打印的路径条数。下一行给出区间[-10000, 10000]内的N个要被插入一个初始为空的小顶堆的整数。最后一行给出M个下标。</p>
-<h4 id="输出格式">输出格式</h4>
+<h4 id="输出格式"><a class="markdownIt-Anchor" href="#输出格式"></a> 输出格式</h4>
 <p>对输入中给出的每个下标<code>i</code>，在一行中输出从<code>H[i]</code>到根结点的路径上的数据。数字间以1个空格分隔，行末不得有多余空格。</p>
-<h4 id="输入样例">输入样例</h4>
+<h4 id="输入样例"><a class="markdownIt-Anchor" href="#输入样例"></a> 输入样例</h4>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">5 3</span><br><span class="line">46 23 26 24 10</span><br><span class="line">5 4 3</span><br></pre></td></tr></table></figure>
-<h4 id="输出样例">输出样例</h4>
+<h4 id="输出样例"><a class="markdownIt-Anchor" href="#输出样例"></a> 输出样例</h4>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">24 23 10</span><br><span class="line">46 23 10</span><br><span class="line">26 10</span><br></pre></td></tr></table></figure>
-<h4 id="代码">代码</h4>
+<h4 id="代码"><a class="markdownIt-Anchor" href="#代码"></a> 代码</h4>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXN 1001</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MINH -10001</span></span><br><span class="line"><span class="keyword">int</span> H[MAXN], <span class="built_in">size</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Create</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(<span class="keyword">int</span> X)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n, m, x, i, j;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;n, &amp;m);</span><br><span class="line">    Create();<span class="comment">//堆初始化</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;<span class="comment">//以逐个插入方式建堆</span></span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;x);</span><br><span class="line">        Insert(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;j);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d"</span>, H[j]);</span><br><span class="line">        <span class="keyword">while</span> (j &gt; <span class="number">1</span>)</span><br><span class="line">        &#123;<span class="comment">//沿根方向输出各节点</span></span><br><span class="line">            j /= <span class="number">2</span>;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">" %d"</span>, H[j]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Create</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">size</span> = <span class="number">0</span>;</span><br><span class="line">    H[<span class="number">0</span>] = MINH;</span><br><span class="line">    <span class="comment">//设置岗哨</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(<span class="keyword">int</span> X)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//将X插入H，这里省略检查堆是否已满的代码</span></span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = ++<span class="built_in">size</span>; H[i / <span class="number">2</span>] &gt; X; i /= <span class="number">2</span>)</span><br><span class="line">        H[i] = H[i / <span class="number">2</span>];</span><br><span class="line">    H[i] = X;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="测试点">测试点</h4>
+<h4 id="测试点"><a class="markdownIt-Anchor" href="#测试点"></a> 测试点</h4>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">测试点      提示</span><br><span class="line">0           sample 调整到根、到中间位置，有不需要调整的元素</span><br><span class="line">1           路径更长，交错，index从中间开始，有负数</span><br><span class="line">2           最小N和M</span><br><span class="line">3           最大N和M随机，元素取到正负10000</span><br></pre></td></tr></table></figure>
-
 <div id="gitalk-container"></div>
 <script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 
@@ -351,7 +351,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式"><span class="nav-number">1.</span> <span class="nav-text">输入格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式"><span class="nav-number">2.</span> <span class="nav-text">输出格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例"><span class="nav-number">3.</span> <span class="nav-text">输入样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例"><span class="nav-number">4.</span> <span class="nav-text">输出样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试点"><span class="nav-number">6.</span> <span class="nav-text">测试点</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式"><span class="nav-number">1.</span> <span class="nav-text"> 输入格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式"><span class="nav-number">2.</span> <span class="nav-text"> 输出格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例"><span class="nav-number">3.</span> <span class="nav-text"> 输入样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例"><span class="nav-number">4.</span> <span class="nav-text"> 输出样例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text"> 代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试点"><span class="nav-number">6.</span> <span class="nav-text"> 测试点</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -410,12 +410,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">39k</span>
+    <span title="站点总字数">40k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">35 分钟</span>
+    <span title="站点阅读时长">36 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
@@ -484,7 +484,7 @@
         });
     }
 
-    let { app_id, app_key, server_url } = {"enable":true,"app_id":"FwwsLUQV4oTzPhsPwLUq2QPz-gzGzoHsz","app_key":"uXdC7hLKUVwdLz9eEQVFAmUO","server_url":null,"security":false};
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"mrAp45FX040ETfOXf2tQrgUm-gzGzoHsz","app_key":"huAMiaq5jsiWPt9x7zASG0ae","server_url":null,"security":false};
     function fetchData(api_server) {
       var Counter = (method, url, data) => {
         return fetch(`${api_server}/1.1${url}`, {
