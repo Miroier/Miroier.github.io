@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="插入排序的平均时间复杂度是O(n2)O(n^2)O(n2),对于少量元素的排序，是个有效的算法">
+  <meta name="description" content="插入排序的平均时间复杂度是\(O(n^2)\),对于少量元素的排序，是个有效的算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="插入排序">
 <meta property="og:url" content="http://yoursite.com/2019/01/06/insertion-sort/index.html">
 <meta property="og:site_name" content="Seclusion">
-<meta property="og:description" content="插入排序的平均时间复杂度是O(n2)O(n^2)O(n2),对于少量元素的排序，是个有效的算法">
+<meta property="og:description" content="插入排序的平均时间复杂度是\(O(n^2)\),对于少量元素的排序，是个有效的算法">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-01-06T02:55:46.000Z">
 <meta property="article:modified_time" content="2020-07-07T10:03:12.386Z">
@@ -230,7 +230,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>945</span>
+              <span>940</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -249,16 +249,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>插入排序的平均时间复杂度是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>,对于少量元素的排序，是个有效的算法</p>
+        <p>插入排序的平均时间复杂度是<span class="math inline">\(O(n^2)\)</span>,对于少量元素的排序，是个有效的算法</p>
 <a id="more"></a>
 <p>插入排序的工作方式像许多人排序一手扑克牌。开始时，我们的左手为空并且桌面上的牌面向下。然后，我们每次从桌子上拿走一张牌并将它插入左手中正确的位置。为了找到一张牌的正确位置，我们从右到左将它与已在手中的每张牌进行比较。</p>
 <p>插入排序所需的时间取决于输入中元素的初始顺序。例如，对一个很大且其中的元素已经有序（或接近有序）的数组进行排序将会比对随机顺序的数组或逆序数组进行排序要快得多。</p>
-<h3 id="伪代码"><a class="markdownIt-Anchor" href="#伪代码"></a> 伪代码</h3>
+<h3 id="伪代码">伪代码</h3>
 <p>INSERTION-SORT(A) //对于数组A</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for j &#x3D; 2 to A.length</span><br><span class="line">    key&#x3D;A[i]</span><br><span class="line">    &#x2F;&#x2F;Insert A[j] to the sorted sequence A[1..j-1].</span><br><span class="line">    i &#x3D; j - 1</span><br><span class="line">    while i &gt; 0 and A[i] &gt; key</span><br><span class="line">        A[i+1] &#x3D; A[i]</span><br><span class="line">        i &#x3D; i - 1</span><br><span class="line">    A[i+1] &#x3D; key</span><br></pre></td></tr></table></figure>
-<h3 id="简单的实现"><a class="markdownIt-Anchor" href="#简单的实现"></a> 简单的实现</h3>
+<h3 id="简单的实现">简单的实现</h3>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *A;</span><br><span class="line">    <span class="keyword">int</span> length, i, j, key;</span><br><span class="line">    <span class="comment">//输入要排序的数字个数</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;length);</span><br><span class="line">    A = (<span class="keyword">int</span>*)<span class="built_in">malloc</span>((length+<span class="number">1</span>) * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="comment">//输入数字</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= length; i++)</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;A[i]);</span><br><span class="line">    <span class="comment">//排序</span></span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">2</span>; j &lt;= length; j++)</span><br><span class="line">    &#123;</span><br><span class="line">        key = A[j];</span><br><span class="line">        i = j - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &gt; <span class="number">0</span> &amp;&amp; A[i] &gt; key)</span><br><span class="line">        &#123;</span><br><span class="line">            A[i + <span class="number">1</span>] = A[i];</span><br><span class="line">            i = i - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        A[i + <span class="number">1</span>] = key;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= length; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d "</span>, A[i]);</span><br><span class="line">    <span class="built_in">free</span>(A);<span class="comment">//别忘了释放malloc来的空间</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对插入排序做一些改进我们可以得到一种更高效的排序算法–希尔排序</p>
+<p>对插入排序做一些改进我们可以得到一种更高效的排序算法--希尔排序</p>
 
 <div id="gitalk-container"></div>
 <script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
@@ -348,7 +348,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#伪代码"><span class="nav-number">1.</span> <span class="nav-text"> 伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的实现"><span class="nav-number">2.</span> <span class="nav-text"> 简单的实现</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#伪代码"><span class="nav-number">1.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的实现"><span class="nav-number">2.</span> <span class="nav-text">简单的实现</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -407,12 +407,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">40k</span>
+    <span title="站点总字数">39k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">36 分钟</span>
+    <span title="站点阅读时长">35 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
