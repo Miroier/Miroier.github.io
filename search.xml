@@ -987,4 +987,484 @@ a^b\%c=\left( a\%c \right) ^b\%c
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
   </entry>
+  <entry>
+    <title>OOP</title>
+    <url>/2020/11/27/OOP/</url>
+    <content><![CDATA[<p>C++OOP</p>
+<a id="more"></a>
+<h1 id="c的初步知识">C++的初步知识</h1>
+<h2 id="c对c的扩充">C++对C的扩充</h2>
+<h3 id="名字空间">名字空间</h3>
+<h4 id="名字空间-1">名字空间</h4>
+<ul>
+<li><p>C++标准库中的类和函数是在名字空间std中声明的。</p></li>
+<li><p>名字空间可以消除那些因重名而导致的命名冲突。</p></li>
+<li><p>能在名字空间以外声明或定义的实体，同样也能在名字空间之内声明或定义。</p></li>
+<li><p>一个名字空间由关键字namespace开始，通常后接一个标识符来标识名字空间。在名字空间开始和结束的地方分别用左右大括号标记。</p></li>
+<li><p>假设两个名字空间都有变量inflag，那么定义的语法为：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> ns1&#123;</span><br><span class="line">    <span class="keyword">int</span> inflag;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> ns2&#123;</span><br><span class="line">    <span class="keyword">int</span> inflag;</span><br><span class="line">&#125;</span><br><span class="line">==&gt;</span><br><span class="line">ns1::inflag=<span class="number">2</span>;</span><br><span class="line">ns2::inflag=<span class="number">-3</span>;</span><br><span class="line">==&gt;</span><br><span class="line"><span class="keyword">using</span> ns1::inflag;</span><br><span class="line">inflag=<span class="number">2</span>;</span><br><span class="line">ns2::inflag=<span class="number">-3</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="无名的名字空间">无名的名字空间</h4>
+<ul>
+<li><p>C++允许使用没有名字的名字空间</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> &#123;</span><br><span class="line">    <span class="keyword">int</span> inflag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>由于名字空间没有名字，因此无法在其它文件中引用。</p></li>
+<li><p>无名名字空间内的成员的作用域为本文件从声明无名名字空间的位置开始到文件结束。</p></li>
+</ul>
+<h3 id="c的输入输出">C++的输入/输出</h3>
+<ul>
+<li>C++的输入／输出是由I/O流类库提供的。流类对象cin和cout分别代表标准的输入设备和输出设备。它们在文件iostream声明。</li>
+</ul>
+<h4 id="用cout进行输出">用cout进行输出</h4>
+<p>在C++中<strong>输出操作</strong>可理解为将数据插入到输出流对象中。<strong>屏幕</strong>输出是标准输出操作，用来将表达式的结果输出到显示器的屏幕上。其一般形式可表示为：</p>
+<p>cout&lt;&lt;表达式1&lt;&lt;表达式2&lt;&lt;…&lt;&lt;表达式n；</p>
+<p>其中，<strong>cout</strong>是预定义的标准<strong>输出流对象</strong>，<strong>&lt;&lt;</strong>是输出运算符。用它可以输出各种不同类型的数据。</p>
+<h4 id="用cin进行输入">用cin进行输入</h4>
+<p>在C++中<strong>输入操作</strong>可理解为从输入流对象中提取数据。<strong>键盘</strong>输入是标准输入，其一般形式可表示为：</p>
+<p>cin&gt;&gt;变量1&gt;&gt;变量2&gt;&gt;…&gt;&gt;变量n；</p>
+<p>其中，<strong>cin</strong>是预定义的标准<strong>输入流对象</strong>，<strong>&gt;&gt;</strong>是输入运算符。</p>
+<h3 id="用const定义常量">用const定义常量</h3>
+<ul>
+<li><p>C语言中常用#define命令来定义符号常量</p>
+<ul>
+<li>在预编译时进行字符置换，又称宏替换</li>
+</ul></li>
+<li><p>C++通过给常量命名的方式定义常量：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span>&lt;数据类型名&gt;&lt;常量名&gt;=&lt;表达式&gt;;</span><br><span class="line"><span class="keyword">const</span>  <span class="keyword">int</span> MaxLine =<span class="number">1000</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>用const定义标识符常量时，<strong>一定要对其初始化。在说明时进行初始化是对这种常量置值的唯一方法</strong> ，不能用赋值运算符对这种常量进行赋值。如</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">MaxLine =<span class="number">35</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>const常量与宏常量相比的优点：</p>
+<ul>
+<li>const常量有数据类型，而宏常量没有数据类型。</li>
+<li>有些集成化的调试工具可以对const常量进行调试，但不能对宏常量进行调试。</li>
+</ul></li>
+</ul>
+<h3 id="函数原型声明">函数原型声明</h3>
+<ul>
+<li><p>在C语言中，如果函数调用的位置在函数定义之前，则应在函数调用之前对所调用的函数作声明。但如果所调用的函数是整型的，也可以不进行函数声明。</p></li>
+<li><p>对于函数声明的形式，C语言<strong>建议</strong>采用函数原型声明。</p></li>
+<li><p>在C++中，如果函数调用的位置在函数定义之前，则要求在函数调用之前<strong>必须</strong>对所调用的函数作函数原型声明。</p></li>
+<li><p>函数声明的一般形式为</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">函数类型 函数名（参数表）；</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="函数的重载">函数的重载</h3>
+<ul>
+<li><p>定义 在同一作用域中用<strong>同一函数名定义多个函数</strong>，这些函数的参数个数和参数类型不同，这些同名的函数用来实现不同的功能。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span>,<span class="keyword">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">add</span><span class="params">(<span class="keyword">double</span>,<span class="keyword">double</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;add(<span class="number">5</span>, <span class="number">10</span>)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;add(<span class="number">5.0</span>, <span class="number">10.5</span>)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">add</span><span class="params">(<span class="keyword">double</span> a, <span class="keyword">double</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">15</span><br><span class="line">15.5</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="函数模板">函数模板</h3>
+<ul>
+<li><p>为什么引入函数模板？函数重载存在的问题。</p></li>
+<li><p><em>定义</em> 实际上是一个通用函数，其函数类型和形参类型不具体指定，用一个虚拟的类型来代表。</p></li>
+<li><p>凡是函数体相同的函数都可以用这个模板来代替，不必定义多个函数，只需在模板中定义一次即可。</p></li>
+<li><p>在调用函数时系统会根据实参的类型来取代模板中的虚拟类型，从而实现了不同函数的功能。</p></li>
+<li><p>函数模板的定义</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> 或 <span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">T <span class="title">max</span><span class="params">(T a,T b)</span></span>&#123;</span><br><span class="line">   <span class="keyword">return</span>(a&gt;b)? a:b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>只适用于函数的参数个数相同而类型不同，且函数体相同的情况。</p>
+</blockquote></li>
+<li><p>函数模板是对一组函数的描述，它以任意类型T为参数及函数返回值。</p></li>
+<li><p>函数模板不是一个实实在在的函数，编译系统并不产生任何执行代码。</p></li>
+<li><p>当编译系统在程序中发现有与函数模板中相匹配的函数调用时，便生成一个重载函数，该重载函数的函数体与函数模板的函数体相同。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span>(a&gt;b)? a:b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>该重载函数称为<strong>模板函数</strong>，它是函数模板的一个具体实例，只处理一种唯一的数据类型。</p>
+</blockquote></li>
+<li><p><em>定义</em> 函数模板时可以使用多个类型参数，每个类型参数前面只需加上关键字typename或class，用逗号分隔：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">T1</span> <span class="title">max</span>(<span class="title">T1</span> <span class="title">a</span>,<span class="title">T2</span> <span class="title">b</span>)&#123;</span></span><br><span class="line">   <span class="keyword">return</span> (a&gt;b) ? a : (T1)b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>函数模板比函数重载更方便，程序更简洁。</p>
+</blockquote></li>
+</ul>
+<h3 id="有默认参数的函数">有默认参数的函数</h3>
+<ul>
+<li><p>一般情况下，在函数调用时形参从实参那里取得值，因此实参的个数应与形参相同。</p></li>
+<li><p>C++可以给形参一个默认值，这样形参就不必一定要从实参取值。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">函数声明：<span class="function"><span class="keyword">int</span> <span class="title">area</span><span class="params">(<span class="keyword">int</span> a=<span class="number">6</span>)</span></span>;</span><br><span class="line">(<span class="number">1</span>)  area(<span class="number">7</span>); </span><br><span class="line">(<span class="number">2</span>)  area(); &lt;==&gt; area(<span class="number">6</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>如果有多个形参，可以指定任意个默认值。</p></li>
+<li><p>实参与形参的结合是从左至右进行的，因此指定默认值的参数必须放在形参列表中的<strong>最右端</strong>。</p></li>
+<li><p>必须在函数调用之前将默认值的信息通知编译系统。</p></li>
+<li><p>当重载函数与默认参数函数<strong>共同使用</strong>时，要注意出现<strong>二义性</strong>问题。</p></li>
+</ul>
+<h3 id="引用reference">引用(reference)</h3>
+<h4 id="引用">引用</h4>
+<ul>
+<li><p><em>定义</em> 对变量起另外一个名字 (别名alias)，这个名字称为该变量的引用。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">&lt;类型&gt;   &amp;&lt;引用变量名&gt; = &lt;原变量名&gt;；</span><br></pre></td></tr></table></figure></li>
+<li><p>其中<strong>原变量名</strong>必须是一个已定义过的变量。如：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>   max ;</span><br><span class="line"><span class="keyword">int</span>  &amp;refmax=max;</span><br></pre></td></tr></table></figure></li>
+<li><p>refmax并没有重新在内存中开辟存储单元，只是<strong>引用</strong>max的单元。max与refmax<strong>在内存中占用同一地址，即同一地址两个名字</strong>。</p></li>
+<li><p>对引用类型的变量，说明以下几点：</p>
+<ol type="1">
+<li><p>引用在定义的时候要初始化</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>  &amp;refmax; <span class="comment">//错误，没有具体的引用对象</span></span><br><span class="line"><span class="keyword">int</span>  &amp;refmax=max; <span class="comment">//max是已定义过的变量</span></span><br></pre></td></tr></table></figure></li>
+<li><p>对引用的操作就是对被引用的变量的操作</p></li>
+<li><p>引用类型变量的初始化值不能是一个常数</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>  &amp;ref1 = <span class="number">5</span>; <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure></li>
+<li><p>一旦引用被声明，它就不能再指向其它的变量</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>  a1, a2;</span><br><span class="line"><span class="keyword">int</span>  &amp;b=a1; <span class="comment">//使b成为变量a1的引用</span></span><br><span class="line"><span class="keyword">int</span>  &amp;b=a2; <span class="comment">//错误</span></span><br></pre></td></tr></table></figure></li>
+<li><p>对引用的初始化，可以用一个变量名，也可以用另一个引用</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>  a=<span class="number">3</span>;</span><br><span class="line"><span class="keyword">int</span>  &amp;b=a; <span class="comment">//使b成为变量a的引用</span></span><br><span class="line"><span class="keyword">int</span>  &amp;c=b; <span class="comment">//使c成为引用b的别名</span></span><br></pre></td></tr></table></figure></li>
+<li><p>引用同变量一样有地址，可以对其地址进行操作，即将其地址赋给一指针。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>  a, *p;</span><br><span class="line"><span class="keyword">int</span>  &amp;m=a; <span class="comment">//&amp;是变量的引用</span></span><br><span class="line">p=&amp;m; <span class="comment">//&amp;是变量的地址</span></span><br><span class="line">*p=<span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当&amp;m的前面有<strong>类型符</strong>时（如int &amp;m），它必然是对引用的声明；如果前面无类型符（如cout&lt;&lt;&amp;m）,则是取变量的地址。</p>
+</blockquote></li>
+<li><p>对const常量的引用使用如下方式</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i=<span class="number">5</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;a=i; <span class="comment">//声明常引用，不允许改变a的值</span></span><br><span class="line">a =<span class="number">3</span>； <span class="comment">//错误</span></span><br><span class="line">i =<span class="number">3</span>； <span class="comment">//正确</span></span><br></pre></td></tr></table></figure></li>
+</ol></li>
+<li><p>以下的声明是非法的</p>
+<ul>
+<li>企图建立void类型的引用 void &amp;a</li>
+<li>企图建立引用的数组 int &amp; a[6]</li>
+<li>企图建立指向引用的指针 int &amp; *p</li>
+</ul></li>
+<li><p>指针与引用的区别：</p>
+<ol type="1">
+<li>指针是通过地址<strong>间接</strong>访问某个变量，而引用是通过别名<strong>直接</strong>访问某个变量。</li>
+<li>引用必须初始化，而<strong>一旦被初始化后不得再作为其它变量的别名</strong>。指针若不进行初始化，编译器不会报错。</li>
+</ol></li>
+</ul>
+<h4 id="引用与函数">引用与函数</h4>
+<p>引用的用途主要是用来作<strong>函数的参数</strong>或<strong>函数的返回值</strong>。</p>
+<h5 id="作函数的参数">作函数的参数</h5>
+<ul>
+<li><p>C语言中函数的参数传递有两种情况：</p>
+<ul>
+<li><p>将变量名作为实参</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swapint</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">3</span>, j = <span class="number">5</span>;</span><br><span class="line">    swapint(i, j);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt;“,”&lt;&lt; j &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="number">3</span>,<span class="number">5</span></span><br></pre></td></tr></table></figure></li>
+<li><p>传递变量的指针</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swapint</span><span class="params">(<span class="keyword">int</span> *p1, <span class="keyword">int</span> *p2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    temp = *p1;</span><br><span class="line">    *p1 = *p2;</span><br><span class="line">    *p2 = temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">3</span>, j = <span class="number">5</span>;</span><br><span class="line">    swapint(&amp;i, &amp;j);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt;“,”&lt;&lt; j &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="number">5</span>,<span class="number">3</span></span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p>C++把变量的引用作为函数形参，即传送变量的别名。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swapint</span><span class="params">(<span class="keyword">int</span> &amp;a, <span class="keyword">int</span> &amp;b)</span> <span class="comment">//a,b是实参i,j的别名</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">3</span>, j = <span class="number">5</span>;</span><br><span class="line">    swapint(i, j); <span class="comment">//实参为变量</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; i &lt;&lt;“,”&lt;&lt; j &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">5,3</span><br></pre></td></tr></table></figure></li>
+<li><p>引用和指针变量作为形参的区别</p>
+<ul>
+<li>引用作为形参，实参是<strong>变量</strong>;指针变量作形参,实参是<strong>地址</strong>。</li>
+<li>指针变量要另外开辟内存单元，其内容是地址；引用不是一个独立的变量，不单独占内存单元。</li>
+<li>必须用指针运算符*来表示指针变量所指向的变量；而引用就代表该变量。</li>
+<li>引用比指针更直观、方便、容易理解。</li>
+</ul></li>
+</ul>
+<h5 id="作函数的返回值">作函数的返回值</h5>
+<ul>
+<li>一般情况下，<strong>函数不作为左值</strong>（即函数不能放在赋值号左边）。</li>
+<li>如果将函数定义为返回引用类型，因为返回的是一个变量的别名，就可以将函数放在左边，即给这个变量赋值。</li>
+<li>这一点类同于函数的返回值为指针类型 。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">4</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> &amp;<span class="title">f</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    a = a + x;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t = <span class="number">5</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; f(t) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//输出9(a=9)</span></span><br><span class="line">    f(t) = <span class="number">20</span>;            <span class="comment">//先调用，再赋值 a=20</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; f(t) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//输出25(a=25)</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>一个函数返回引用类型，<strong>必须返回某个类型的变量</strong>。</p></li>
+<li><p>返回的变量的引用，<span style="color:red;">这个变量必须是全局变量或静态局部变量，即存储在静态区中的变量。</span></p></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> &amp;<span class="title">f</span><span class="params">(<span class="keyword">int</span> &amp;x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> t = <span class="number">2</span>;</span><br><span class="line">    t = x++;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">3</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; f(a) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//输出3   a=4   t=3</span></span><br><span class="line">    f(a) = <span class="number">20</span>;            <span class="comment">//t=20   a=5</span></span><br><span class="line">    a = a + <span class="number">5</span>;            <span class="comment">//a=10</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; f(a) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//输出10   a=11</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="内联函数">内联函数</h3>
+<ul>
+<li><p>调用函数需要一定的时间，如果有的函数需要频繁使用，则累计所用时间会很长，从而降低程序的执行效率。</p></li>
+<li><p>C++提供一种提高效率的方法，即在编译时将所调用函数的代码嵌入到主函数中。这种嵌入到主函数中的函数称为<strong>内联函数</strong>(inline function，<strong>内置函数</strong>，<strong>内嵌函数</strong>)</p></li>
+<li><p>内联函数是C++对C函数的扩充，是一种以<strong>空间效率换取时间效率</strong>的机制。</p></li>
+<li><p>内联函数定义的一般格式为：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">inline</span> &lt;函数值类型&gt;  &lt;函数名&gt;(&lt;参数表&gt;)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;函数体&gt;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>调用内联函数时，编译器首先检查调用是否正确（类型安全检查或者自动进行类型转换）。<strong>如果正确，则将内联函数的代码直接替换函数调用，并且用实参换形参</strong>，于是省去了函数调用的开销。因此，内联机制增加了空间开销而节约了时间开销。</p></li>
+<li><p>内联函数与用#define命令实现的带参宏定义有些相似，但不完全相同</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Max(a,b) (a)&gt;(b) ? (a) : (b)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? a : b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>用内联函数可以达到用#define宏置换的目的，但不会出现带参宏定义的副作用。</p></li>
+<li><p>慎用内联</p>
+<ul>
+<li>使用内联函数可以节省运行时间，但却增加了目标程序的长度。</li>
+<li>函数体内出现循环或递归等复杂的结构控制语句时，不适合定义为内联函数。</li>
+<li>一个好的编译器将会根据函数的函数体，自动取消不值得的内联。</li>
+</ul></li>
+</ul>
+<h3 id="作用域运算符">作用域运算符</h3>
+<ul>
+<li><p>每一个变量都有其有效的作用域，只能在变量的作用域内使用该变量，不能直接使用其它作用域中的变量</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">float</span> a = <span class="number">13.5</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; ::a &lt;&lt; <span class="built_in">endl</span>; <span class="comment">//::a表示全局作用域中的变量a。注意：不能用::访问函数中的局部变量</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">5</span><br><span class="line">13.5</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="字符串变量">字符串变量</h3>
+<ul>
+<li><p>C++用一种更方便的字符串类型(string类型)定义字符串变量。string不是基本类型，是一个字符串类</p></li>
+<li><p>定义字符串变量</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> string1;            <span class="built_in">string</span> string2=“China”;</span><br></pre></td></tr></table></figure></li>
+<li><p>对字符串变量的赋值</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">string1=“Canada”;      string1=string2;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在定义字符串变量时不需指定长度，它的长度随其中的字符串长度而改变</li>
+<li>可以对字符串变量中某一字符进行操作 string2[2]=‘a’;</li>
+<li>字符串常量以‘\0’作为结束符，但将字符串常量存放到字符串变量中时，只存放字符串本身而不包括‘\0’</li>
+</ul></li>
+<li><p>字符串变量的输入输出</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cin</span>&gt;&gt;string1;          <span class="built_in">cout</span>&lt;&lt;string2;</span><br></pre></td></tr></table></figure></li>
+<li><p>字符串变量的运算</p>
+<ul>
+<li><p>用赋值运算符实现字符串复制</p></li>
+<li><p>```cpp string1=string2; 与strcpy(string1,string2);相似<br />
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">* 用加法运算符实现字符串连接</span><br><span class="line"></span><br><span class="line">  &#96;&#96;&#96;cpp</span><br><span class="line">  string1&#x3D;string1+string2;</span><br></pre></td></tr></table></figure></p></li>
+<li><p>用关系运算符(==,&gt;,&lt;,!=,&gt;=,&lt;=)实现字符串比较</p></li>
+</ul></li>
+<li><p>字符串数组</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> name[<span class="number">3</span>]=&#123;“Zhang”,”Li”,”Wang”&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在一个字符串数组中包含若干个元素，每个元素相当于一个字符串变量<br />
+</li>
+<li>不要求每个字符串元素具有相同的长度，即使对同一个元素而言，它的长度也可以变化</li>
+<li>每一个字符串元素中只包含字符串本身的字符而不包括‘\0’</li>
+</ul></li>
+</ul>
+<h3 id="动态分配撤销内存newdelete">动态分配/撤销内存(new/delete)</h3>
+<ul>
+<li><p>C语言利用malloc和free分配和撤销内存空间。</p></li>
+<li><p>使用malloc必须指定需要开辟的内存空间的大小，而且其返回值为 void *类型，必须进行强制类型转换才能使其返回的指针指向具体的数据。</p></li>
+<li><p>new运算从堆中分配一块与<类型>相适应的存储空间，若分配成功，将这块存储空间的起始地址存入<指针变量名>。new的使用格式为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;指针变量名&gt;&#x3D;new &lt;类型&gt;;</span><br><span class="line">&lt;指针变量名&gt;&#x3D;new &lt;类型&gt;(&lt;初值&gt;);</span><br><span class="line">&lt;指针变量名&gt;&#x3D;new &lt;类型&gt;[&lt;元素个数&gt;];</span><br></pre></td></tr></table></figure></li>
+<li><p>delete运算符用来释放<指针变量名>指向的动态存储空间。使用格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">delete &lt;指针变量名&gt;  </span><br><span class="line">delete[] &lt;指针变量名&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>其中，第2种格式用于释放指针指向的连续存储空间，即释放数组占用的空间。</p></li>
+<li><p>动态整数存储空间。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(<span class="number">1</span>) <span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>; <span class="comment">//分配存放整数的空间</span></span><br><span class="line">    <span class="keyword">delete</span> p;</span><br><span class="line">(<span class="number">2</span>) <span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">3</span>); <span class="comment">//整数初值为3</span></span><br><span class="line">    <span class="keyword">delete</span> p;</span><br></pre></td></tr></table></figure></li>
+<li><p>连续存储空间（即数组空间）。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>]; <span class="comment">//该数组有5个元素</span></span><br><span class="line"><span class="keyword">delete</span>[] p;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="测试">测试</h2>
+<p>1.找出下面程序的错误。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;  <span class="keyword">int</span> a,b;</span><br><span class="line">   c=add(a,b)</span><br><span class="line">   <span class="built_in">cout</span>&lt;&lt;<span class="string">"a+b="</span>&lt;&lt;c&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span>;</span><br><span class="line">&#123;  z=x+y;</span><br><span class="line">   <span class="keyword">return</span>(z);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.写出下面程序的输出结果。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dd</span><span class="params">(<span class="keyword">int</span> &amp;x,<span class="keyword">int</span> &amp;y,<span class="keyword">int</span> z)</span></span></span><br><span class="line"><span class="function"></span>&#123; x=x+z;</span><br><span class="line">  y=y-x;</span><br><span class="line">  z=<span class="number">10</span>;</span><br><span class="line">  <span class="built_in">cout</span>&lt;&lt;x&lt;&lt;<span class="string">", "</span>&lt;&lt;y&lt;&lt;<span class="string">", "</span>&lt;&lt;z&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="keyword">int</span>  a=<span class="number">3</span>,b=<span class="number">4</span>,c=<span class="number">5</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span>  i=<span class="number">0</span>;i&lt;<span class="number">2</span>;i++)</span><br><span class="line">    dd(a,b,c);</span><br><span class="line">  <span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="string">","</span>&lt;&lt;b&lt;&lt;<span class="string">", "</span>&lt;&lt;c&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="类和对象的特性">类和对象的特性</h1>
+<h2 id="面向过程与面向对象">面向过程与面向对象</h2>
+<ul>
+<li>面向过程的软件开发方法
+<ul>
+<li>按照功能划分软件的结构</li>
+<li>自顶向下的设计方法</li>
+<li>以函数作为程序主体</li>
+</ul></li>
+<li>面向对象的软件开发方法
+<ul>
+<li>将软件系统看作各种对象的集合</li>
+<li>系统结构比较稳定</li>
+<li>对象将数据及函数的具体实现方式进行封装</li>
+<li>提高了软件的可重用性、可维护性和可扩展性</li>
+</ul></li>
+<li>面向过程编程与面向对象编程的区别：
+<ul>
+<li>面向过程编程先确定算法，再确定数据结构；面向对象编程先确定数据结构，再确定运算。</li>
+<li>面向过程编程的程序员，习惯于建立数据结构存放数据，并定义函数来操作数据；面向对象编程的程序员则构造一个对象模型，将数据与函数组织在一起。</li>
+</ul></li>
+<li>掌握面向对象的困难之处在于<strong>思路的转换</strong>
+<ul>
+<li>我们通常习惯于考虑解决问题的方法，而不是考虑将问题抽象成对象再去解决它。</li>
+</ul></li>
+</ul>
+<h2 id="对象和类">对象和类</h2>
+<h2 id="对象和类-1">对象和类</h2>
+<ul>
+<li><p>对象是什么？</p>
+<ul>
+<li><p>实际的对象</p>
+<ul>
+<li><p>可以被感官感知的实物</p></li>
+<li><p>思想、感觉或行为所及的概念或物理上的东西</p></li>
+</ul></li>
+<li><p>软件对象</p>
+<ul>
+<li>将状态（数据）和行为（功能）捆绑在一起的软件结构/模块，这两个部分合起来表示实际（物理或概念）对象的抽象</li>
+</ul></li>
+<li><p>对象的状态/数据/属性</p>
+<ul>
+<li><p><strong>学生</strong>对象的状态/数据</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">姓名</span><br><span class="line">学号</span><br><span class="line">出生日期</span><br><span class="line">地址</span><br><span class="line">专业</span><br><span class="line">本学期选择的课程清单</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>课程</strong>对象的状态/数据</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">课程编号</span><br><span class="line">课程名称</span><br><span class="line">课程所需的学时</span><br><span class="line">讲授该课程的教师名单</span><br></pre></td></tr></table></figure></li>
+<li><p>对象的行为/操作/函数</p>
+<ul>
+<li><p><strong>学生</strong>对象的行为/操作</p>
+<p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">注册一门课程</span><br><span class="line">取消一门课程</span><br><span class="line">选定一个专业</span><br></pre></td></tr></table></figure></p></li>
+<li><p>课程对象的行为/操作</p>
+<p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">允许学生注册</span><br><span class="line">确定某个学生是否注册了该课程</span><br><span class="line">告知该课程需要多少学时</span><br><span class="line">告知哪一位教师讲授这门课程</span><br></pre></td></tr></table></figure></p></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>类是什么？</p>
+<ul>
+<li><p>类是描述一组相似对象共有特征的抽象</p>
+<ul>
+<li>每一个属于该类的对象的数据结构（也就是属性的名称和类型）</li>
+<li>由这些对象执行的操作/函数 （如何命令对象执行这些操作，以及为了实际执行这些操作对象必须执行的后台动作 ）</li>
+</ul></li>
+<li><p>类定义的实例</p>
+<p><img src="./image-20201127104123081.png" alt="image-20201127104123081" style="zoom:50%;" /></p></li>
+<li><p>实例化对象</p>
+<ul>
+<li><p>从类创建某个对象的过程</p>
+<p><img src="image-20201127104250435.png" alt="image-20201127104250435" style="zoom:50%;" /></p></li>
+</ul></li>
+<li><p>对象和类的关系</p>
+<ul>
+<li>对象是类的一个具有特定属性值的具体实例</li>
+<li>从一个类可以创建（实例化）多个对象</li>
+<li>相同类的两个对象具有相同的属性和函数，但属性值不同</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="类的定义">类的定义</h2>
+<ul>
+<li><p>概念的抽象</p></li>
+<li><p>类的UML表示法</p></li>
+<li><p>类的定义方式</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> 类名             </span></span><br><span class="line"><span class="class">&#123;</span>  </span><br><span class="line">    &lt;类成员&gt;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中，类成员包括数据成员和成员函数。</p></li>
+</ul>
+<h3 id="账户account结构体类型">账户Account结构体类型</h3>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Account</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> id[<span class="number">16</span>];          <span class="comment">//账号</span></span><br><span class="line">    <span class="keyword">char</span> name[<span class="number">50</span>];   <span class="comment">//户名</span></span><br><span class="line">    <span class="keyword">char</span> pwd[<span class="number">6</span>];       <span class="comment">//密码</span></span><br><span class="line">    <span class="keyword">double</span> balance;  <span class="comment">//余额</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Account</span> <span class="title">a</span>;</span>       <span class="comment">//C++中，可以省略struct</span></span><br><span class="line">    a.balance = <span class="number">10000</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"balance = "</span>&lt;&lt;a.balance &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在C++中，一个结构体代表一个所有成员都是public的类，该类不能对外界隐藏自己的重要信息和私密信息。结构体表示一个没有封装的类。</li>
+<li>需要对账户类进行封装！C++提供了类机制。</li>
+</ul>
+<p><img src="image-20201127104622801.png" alt="image-20201127104622801" style="zoom:50%;" /></p>
+<ul>
+<li><p>账户类的代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> id[<span class="number">16</span>];          <span class="comment">//账号</span></span><br><span class="line">    <span class="keyword">char</span> name[<span class="number">50</span>];   <span class="comment">//户名</span></span><br><span class="line">    <span class="keyword">char</span> pwd[<span class="number">6</span>];       <span class="comment">//密码</span></span><br><span class="line">    <span class="keyword">double</span> balance;  <span class="comment">//余额</span></span><br><span class="line">&#125;;                             <span class="comment">//以括号及分号结束</span></span><br></pre></td></tr></table></figure></li>
+<li><p>同理，Account类对象可定义为：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Account a;</span><br></pre></td></tr></table></figure></li>
+<li><p>示例类的信息隐藏特性。</p>
+<p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> id[<span class="number">16</span>];          <span class="comment">//帐号</span></span><br><span class="line">    <span class="keyword">char</span> name[<span class="number">50</span>];   <span class="comment">//户名</span></span><br><span class="line">    <span class="keyword">char</span> pwd[<span class="number">6</span>];       <span class="comment">//密码</span></span><br><span class="line">    <span class="keyword">double</span> balance;  <span class="comment">//余额</span></span><br><span class="line">&#125;;                             <span class="comment">//以括号及分号结束</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Account a;</span><br><span class="line">    a.balance = <span class="number">10000</span>;   </span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p></li>
+<li><p>进一步细化类定义的一般格式为：</p>
+<p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> &lt;类名&gt;</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">&lt;访问控制符&gt;:</span><br><span class="line">    &lt;成员函数&gt;</span><br><span class="line">&lt;访问控制符&gt;:</span><br><span class="line">    &lt;数据成员&gt;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+<h3 id="访问权限控制">访问权限控制</h3>
+<ul>
+<li>访问控制符包括public（公有）、private（私有）和protected（保护）。</li>
+<li>三种访问权限的成员<strong>与</strong>出现的先后<strong>顺序无关</strong>，并且允许多次出现，但是一个成员只能具有一种访问属性。</li>
+<li>一般来说，将类的public成员放在类体的前面，将protected、private成员放在类体的后面。</li>
+</ul>
+<h4 id="时间类">时间类</h4>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:	<span class="comment">//外部接口，公有成员函数</span></span><br><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">SetTime</span><span class="params">(<span class="keyword">int</span> NewH, <span class="keyword">int</span> NewM, <span class="keyword">int</span> NewS)</span></span>;</span><br><span class="line">	 <span class="function"><span class="keyword">void</span> <span class="title">ShowTime</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:	<span class="comment">//私有数据成员</span></span><br><span class="line">	 <span class="keyword">int</span> Hour,Minute,Second;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="公有成员public-member">公有成员（public member）</h4>
+<ul>
+<li>公有成员在程序的<strong>任何地方</strong>都可以被访问，是类的<strong>对外接口</strong>。而且在类外只能访问类的公有成员（继承除外）。</li>
+<li>一般来说，成员函数的访问权限设为公有的，类外通过公有成员函数来操纵该类对象的属性。</li>
+</ul>
+<h4 id="私有成员private-member">私有成员（private member）</h4>
+<ul>
+<li>私有成员<strong>只能</strong>被本类中的<strong>成员函数和友元</strong>访问，而不能被类外调用。所谓类外指的是普通函数或其他类的成员函数。</li>
+<li>一般来说，数据成员的访问权限设为私有的或保护的（如果有继承关系时）。</li>
+</ul>
+<h4 id="保护成员protected-member">保护成员（protected member）</h4>
+<ul>
+<li>保护成员具有<strong>双重性</strong>，对其派生类而言，保护成员如同公有成员；对其他程序则表现得像私有成员。</li>
+<li>一般来说，程序中有类继承时，可以将部分类成员定义为保护成员，以便派生类访问，同时，对类簇外又实现了信息隐藏。</li>
+</ul>
+<h4 id="进一步细化">进一步细化</h4>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> &lt;类名&gt;</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">&lt;访问控制符&gt;:</span><br><span class="line">    &lt;成员函数的声明&gt;</span><br><span class="line">&lt;访问控制符&gt;:</span><br><span class="line">    &lt;数据成员的声明&gt;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;成员函数的实现&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>类定义一般分为说明部分和实现部分。说明部分是说明该类中的成员，实现部分是对成员函数的定义。格式如下：</p>
+<p><img src="image-20201127105530519.png" alt="image-20201127105530519" style="zoom:50%;" /></p></li>
+</ul>
+<h3 id="数据成员">数据成员</h3>
+<ul>
+<li><p>数据成员的声明看起来很像变量声明。但是，数据成员不能在类体中被显式地初始化。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> Hour=<span class="number">0</span>;     <span class="comment">// 错误</span></span><br><span class="line">    <span class="keyword">int</span> Minute=<span class="number">0</span>;   <span class="comment">// 错误</span></span><br><span class="line">    <span class="keyword">int</span> Second=<span class="number">0</span>;   <span class="comment">// 错误</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p>类的数据成员将通过<strong>构造函数</strong>进行初始化。</p></li>
+</ul>
+<h3 id="成员函数">成员函数</h3>
+<ul>
+<li><p>类的成员函数的声明与一般函数的声明一样：</p>
+<p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">&lt;函数值类型&gt;  &lt;函数名&gt;(&lt;参数表&gt;);</span><br></pre></td></tr></table></figure></p>
+<p>参数表中可以只含参数类型而不含参数名</p></li>
+</ul>
+<h3 id="成员函数的实现方式">成员函数的实现方式</h3>
+<ul>
+<li>成员函数是类中描述行为的成员，同时也是对封装的数据进行操作的唯一途径。</li>
+<li>成员函数的实现既可以在<strong>类中</strong>，也可以在<strong>类外</strong>。从类定义的格式可知，<strong>一般</strong>在类中声明成员函数，在类外具体实现成员函数。</li>
+<li>如果成员函数已经在类中定义，则不需要在类外实现。需要注意的是，<strong>在类中定义的成员函数自动成为内联函数。</strong></li>
+</ul>
+<h4 id="在类中实现成员函数">在类中实现成员函数</h4>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;	</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>	//时间类的定义</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">public</span>:	       <span class="comment">//外部接口，公有成员函数</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">SetTime</span><span class="params">(<span class="keyword">int</span> NewH, <span class="keyword">int</span> NewM, <span class="keyword">int</span> NewS)</span></span></span><br><span class="line"><span class="function">   </span>&#123;   Hour=NewH;</span><br><span class="line">       Minute=NewM;</span><br><span class="line">       Second=NewS; </span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">ShowTime</span><span class="params">()</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">     <span class="built_in">cout</span>&lt;&lt;Hour&lt;&lt;<span class="string">":"</span>&lt;&lt;Minute&lt;&lt;<span class="string">":"</span>&lt;&lt;Second&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">   &#125;</span><br><span class="line"> <span class="keyword">private</span>:	 <span class="comment">//私有数据成员</span></span><br><span class="line">   <span class="keyword">int</span> Hour,Minute,Second;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="在类外实现成员函数">在类外实现成员函数</h4>
+<ul>
+<li><p>若在类体外实现，则需要使用<strong>作用域运算符“::”</strong>，用它来<strong>标识</strong>某个成员函数是属于哪个类的，其定义格式如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">&lt;函数值类型&gt; &lt;类名&gt;::&lt;成员函数名&gt;(&lt;参数表&gt;)</span><br><span class="line">&#123;</span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>虽然在类外定义成员函数，但它仍能访问类的任何成员。成员函数必须先在类内声明，而且类体必须在成员函数定义之前出现。</p></li>
+</ul>
+<h4 id="时间类单文件">时间类（单文件）</h4>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>   </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">SetTime</span><span class="params">(<span class="keyword">int</span> NewH,<span class="keyword">int</span> NewM,<span class="keyword">int</span> New S)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ShowTime</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> Hour,Minute,Second;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//时间类成员函数的实现</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Time::SetTime</span><span class="params">(<span class="keyword">int</span> NewH,<span class="keyword">int</span> NewM,<span class="keyword">int</span> New S)</span> </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    Hour=NewH;       <span class="comment">//成员函数可直接访问私有成员</span></span><br><span class="line">    Minute=NewM;</span><br><span class="line">    Second=NewS;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Time::ShowTime</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;Hour&lt;&lt;<span class="string">":"</span>&lt;&lt;Minute&lt;&lt;<span class="string">":"</span>&lt;&lt;Second&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="时间类多文件">时间类（多文件）</h4>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//time.h                //头文件</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;	</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>	       //时间类的声明</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:	              <span class="comment">//外部接口，公有成员函数</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">SetTime</span><span class="params">(<span class="keyword">int</span> NewH, <span class="keyword">int</span> NewM, <span class="keyword">int</span> NewS)</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">ShowTime</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:	       <span class="comment">//私有数据成员</span></span><br><span class="line">  <span class="keyword">int</span> Hour,Minute,Second;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//time.cpp                //源程序文件</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"time.h"</span>	<span class="comment">//包含类的声明所在的头文件</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Time::SetTime</span><span class="params">(<span class="keyword">int</span> NewH, <span class="keyword">int</span> NewM, <span class="keyword">int</span> NewS)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   Hour=NewH;       <span class="comment">//成员函数可直接访问私有成员</span></span><br><span class="line">   Minute=NewM;</span><br><span class="line">   Second=NewS;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Time::ShowTime</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="built_in">cout</span>&lt;&lt;Hour&lt;&lt;<span class="string">":"</span>&lt;&lt;Minute&lt;&lt;<span class="string">":"</span>&lt;&lt;Second&lt;&lt;<span class="built_in">endl</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将类的声明和实现分别放在两个不同的文件中，这样做有以下几点好处：
+<ul>
+<li>类的实现文件通常较大，分开便于阅读、管理和维护。</li>
+<li>对软件开发商而言，他们可以向用户提供一些程序模块的接口，而不公开程序的源代码。分开管理就可以很好地解决此问题。</li>
+<li>将类定义放在头文件中，以后使用不必再定义，只须一条包含命令即可，实现了代码重用。</li>
+<li>便于团队对大型软件的分工合作开发。</li>
+</ul></li>
+</ul>
+<h2 id="创建对象">创建对象</h2>
+<ul>
+<li><p>对象的定义格式与普通变量相同。定义格式如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">&lt;类名&gt; &lt;对象名表&gt;;</span><br></pre></td></tr></table></figure></li>
+<li><p><对象名表>中可以有一个或多个<strong>对象名</strong>。当有多个对象名时，用逗号分隔。<对象名表>中还可以是指向对象的<strong>指针名</strong>或<strong>引用名</strong>，也可以是<strong>对象数组名</strong>。</p></li>
+</ul>
+<p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Time time1,time2; <span class="comment">//声明对象time1,time2</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>对象创建的另一种方式：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> &lt;类名&gt;&#123;</span>…&#125; &lt;对象名&gt;;</span><br></pre></td></tr></table></figure>
+<p>在声明类的同时创建对象。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>&#123;</span>…&#125; time1,time2;</span><br></pre></td></tr></table></figure></li>
+<li><p>对象的UML表示法</p></li>
+</ul>
+<h2 id="类成员的访问">类成员的访问</h2>
+<ul>
+<li><p>面向对象程序设计中，对类成员的访问往往通过<strong>接口</strong>（类的成员函数）实现。</p></li>
+<li><p>在设计接口时，应注意为该类可以<strong>暴露</strong>给外界的信息提供接口，同时<strong>隐藏</strong>私密信息。</p></li>
+<li><p>定义了类及其对象，就可以通过对象来使用其公有成员，从而达到对对象内部属性的访问和修改。</p></li>
+<li><p><strong>在类中</strong>可<strong>直接</strong>使用成员名<strong>访问</strong>类成员，public、private和protected属性的成员都可以被访问。</p></li>
+<li><p>类外访问对象中的成员可以有3种方法：</p>
+<ul>
+<li><p>通过对象名和成员运算符访问对象中的成员。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">&lt;对象名&gt;.&lt;公有成员&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过指向对象的指针变量访问对象中的成员。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">&lt;对象指针名&gt; -&gt; &lt;公有成员&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过对象的引用访问对象中的成员。</p></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x, y;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> m, n;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Setxy</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        x = a;</span><br><span class="line">        y = b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; x &lt;&lt;“,”&lt;&lt; y &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a1, a2; <span class="comment">//定义对象</span></span><br><span class="line">    a1.m = <span class="number">10</span>;</span><br><span class="line">    a1.n = <span class="number">20</span>;      <span class="comment">//为公有成员数据赋值</span></span><br><span class="line">    a1.Setxy(<span class="number">2</span>, <span class="number">5</span>); <span class="comment">//为私有成员数据赋值</span></span><br><span class="line">    a1.Print();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="number">2</span>,<span class="number">5</span></span><br></pre></td></tr></table></figure></li>
+<li><p>用成员运算符“.”只能访问对象的<strong>公有成员</strong>，而不能访问对象的私有成员或保护成员。</p></li>
+<li><p>若要访问对象的私有的数据成员，<strong>只能通过对象的公有成员函数</strong>来获取。</p></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x, y;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> m, n;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Setxy</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> <span class="comment">//必须通过类内公有函数访问私有数据成员</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        x = a;</span><br><span class="line">        y = b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; x &lt;&lt;“,”&lt;&lt; y &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a1, a2;</span><br><span class="line">    a1.m = <span class="number">10</span>;</span><br><span class="line">    a1.n = <span class="number">20</span>;          <span class="comment">//为公有成员数据赋值</span></span><br><span class="line">    a1.x = <span class="number">2</span>, a1.y = <span class="number">5</span>; <span class="comment">//非法，私有成员不能在类外访问</span></span><br><span class="line">    a1.Setxy(<span class="number">2</span>, <span class="number">5</span>);</span><br><span class="line">    a1.Print();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="类作用域">类作用域</h3>
+<p>类体的区域称为<strong>类作用域</strong>。类的成员函数与数据成员，其作用域都是属于类的作用域，仅在该类的范围内有效，<strong>故不能在主函数中直接通过函数名和成员名来调用</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">float</span> x, y;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">float</span> m, n;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Setxy</span><span class="params">(<span class="keyword">float</span> a, <span class="keyword">float</span> b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        x = a;</span><br><span class="line">        y = b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; x &lt;&lt;“,”&lt;&lt; y &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a1, a2;</span><br><span class="line">    m = <span class="number">20</span>;</span><br><span class="line">    n = <span class="number">10</span>;</span><br><span class="line">    Setxy(<span class="number">2.0</span>, <span class="number">5.0</span>); <span class="comment">//不能直接调用</span></span><br><span class="line">    Print();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="时间类-1">时间类</h3>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Time time1;            <span class="comment">//声明对象time1</span></span><br><span class="line">    time1.SetTime(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);  <span class="comment">//通过对象time1访问公有成员函数</span></span><br><span class="line">    time1.ShowTime();      <span class="comment">//通过对象time1访问公有成员函数</span></span><br><span class="line">    Time time2;            <span class="comment">//声明对象time2</span></span><br><span class="line">    time2.SetTime(<span class="number">8</span>,<span class="number">30</span>,<span class="number">5</span>); <span class="comment">//通过对象time2访问公有成员函数</span></span><br><span class="line">    time2.ShowTime();      <span class="comment">//通过对象time2访问公有成员函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0:0:0</span><br><span class="line">8:30:5</span><br></pre></td></tr></table></figure>
+<p>在主函数的末尾加上一句：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="keyword">sizeof</span>(time1)&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="keyword">sizeof</span>(time2);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0:0:0</span><br><span class="line">8:30:5</span><br><span class="line">12</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
+<p>由此说明，各对象空间中<strong>只有数据成员</strong>，<strong>而无成员函数</strong>的空间。成员函数只存储一份，由对象共享。</p>
+<h2 id="测试-1">测试</h2>
+<p>找出程序中的错误，并改正。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">set_time</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">show_time</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">int</span> hour;</span><br><span class="line">    <span class="keyword">int</span> minute;</span><br><span class="line">    <span class="keyword">int</span> sec;  		                     </span><br><span class="line">&#125;;</span><br><span class="line">Time t;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    set_time();</span><br><span class="line">    show_time();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set_time</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;   <span class="built_in">cin</span>&gt;&gt;t.hour;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;t.minute;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;t.sec;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_time</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;t.hour&lt;&lt;“:”&lt;&lt;t.minute&lt;&lt;“:”&lt;&lt;t.sec&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>]]></content>
+  </entry>
 </search>
