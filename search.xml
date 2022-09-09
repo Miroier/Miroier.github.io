@@ -43,6 +43,9 @@
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>插入排序</title>
@@ -67,6 +70,9 @@
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>最大子列和</title>
@@ -87,6 +93,9 @@
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>OOP</title>
@@ -2234,6 +2243,9 @@ rose命令：它用来绘制极坐标系下的柱状图。</p>
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>Root Of AVL Tree</title>
@@ -2265,6 +2277,9 @@ rose命令：它用来绘制极坐标系下的柱状图。</p>
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>随机选择算法</title>
@@ -2291,6 +2306,9 @@ rose命令：它用来绘制极坐标系下的柱状图。</p>
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>选择排序</title>
@@ -2313,6 +2331,9 @@ rose命令：它用来绘制极坐标系下的柱状图。</p>
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>矩阵乘法的Strassen算法</title>
@@ -2411,6 +2432,9 @@ C_{22}&amp;=P_5+P_1-P_3-P_7\\
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>修改文章底部标签图形</title>
@@ -2516,6 +2540,9 @@ C_{22}&amp;=P_5+P_1-P_3-P_7\\
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>堆中的路径</title>
@@ -2543,6 +2570,9 @@ C_{22}&amp;=P_5+P_1-P_3-P_7\\
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>快速幂取模</title>
@@ -2566,11 +2596,11 @@ C_{22}&amp;=P_5+P_1-P_3-P_7\\
 <h2 id="取模">取模</h2>
 <p>首先引入几个数学公式 <span class="math display">\[
 \begin{align}
-\left( a+b \right) \%c=\left[ \left( a\%c \right) +\left( b\%c \right) \right] \%c
+\left( a+b \right) \%c &amp;=\left[ \left( a\%c \right) +\left( b\%c \right) \right] \%c \tag{1}
 \\
-\left( a-b \right) \%c=\left[ \left( a\%c \right) -\left( b\%c \right) \right] \%c
+\left( a-b \right) \%c &amp;=\left[ \left( a\%c \right) -\left( b\%c \right) \right] \%c \tag{2}
 \\
-\left( a*b \right) \%c=\left[ \left( a\%c \right) *\left( b\%c \right) \right] \%c
+\left( a*b \right) \%c &amp;=\left[ \left( a\%c \right) *\left( b\%c \right) \right] \%c \tag{3}
 \end{align}
 \]</span></p>
 <p>我们需要用到上面的第$( 3 ) $式，下面给出证明：</p>
@@ -2600,5 +2630,8 @@ a^b\%c=\left( a\%c \right) ^b\%c
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
   </entry>
 </search>
