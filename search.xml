@@ -2634,4 +2634,1072 @@ a^b\%c=\left( a\%c \right) ^b\%c
         <tag>算法</tag>
       </tags>
   </entry>
+  <entry>
+    <title>CUDA开启的GPU编程</title>
+    <url>/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<p><a href="https://www.bilibili.com/video/BV16b4y1E74f/?vd_source=2e8d245875bf227dd9f030691ed088ee">【并行计算】CUDA在现代C++中如何运用？看这一个就够了！_哔哩哔哩_bilibili</a></p>
+<span id="more"></span>
+<h1 id="第0章hello-world"><a class="markdownIt-Anchor" href="#第0章hello-world"></a> 第0章：Hello, world!</h1>
+<h2 id="cmake-中启用-cuda-支持"><a class="markdownIt-Anchor" href="#cmake-中启用-cuda-支持"></a> CMake 中启用 CUDA 支持</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908105746.png" class="">
+<ul>
+<li>最新版的 CMake（3.18 以上），只需在 LANGUAGES 后面加上 CUDA 即可启用。</li>
+<li>然后在 add_executable 里直接加你的 .cu 文件，和 .cpp 一样。</li>
+</ul>
+<h2 id="cuda-编译器兼容-c17"><a class="markdownIt-Anchor" href="#cuda-编译器兼容-c17"></a> CUDA 编译器兼容 C++17</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908105757.png" class="">
+<ul>
+<li>CUDA 的语法，基本完全兼容 C++。包括 C<ins>17 新特性，都可以用。甚至可以把任何一个 C</ins> 项目的文件后缀名全部改成 .cu，都能编译出来。</li>
+<li>这是 CUDA 的一大好处，CUDA 和 C++ 的关系就像 C++ 和 C 的关系一样，大部分都兼容，因此能很方便地重用 C++ 现有的任何代码库，引用 C++ 头文件等。</li>
+<li>host 代码和 device 代码写在同一个文件内，这是 OpenCL 做不到的。</li>
+</ul>
+<h2 id="编写一段在-gpu-上运行的代码"><a class="markdownIt-Anchor" href="#编写一段在-gpu-上运行的代码"></a> 编写一段在 GPU 上运行的代码</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908105804.png" class="">
+<ul>
+<li>定义函数 kernel，前面加上 __global__ 修饰符，即可让他在 GPU 上执行。</li>
+<li>不过调用 kernel 时，不能直接 kernel()，而是要用 kernel&lt;&lt;&lt;1, 1&gt;&gt;&gt;() 这样的三重尖括号语法。为什么？这里面的两个 1 有什么用？稍后会说明。</li>
+<li>运行以后，就会在 GPU 上执行 printf 了。</li>
+<li>这里的 kernel 函数在 GPU 上执行，称为核函数，用 __global__ 修饰的就是核函数。</li>
+</ul>
+<h2 id="没有反应同步一下"><a class="markdownIt-Anchor" href="#没有反应同步一下"></a> 没有反应？同步一下！</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908105812.png" class="">
+<ul>
+<li>然而如果直接编译运行刚刚那段代码，是不会打印出 Hello, world! 的。</li>
+<li>这是因为 GPU 和 CPU 之间的通信，为了高效，是异步的。也就是 CPU 调用 kernel&lt;&lt;&lt;1, 1&gt;&gt;&gt;() 后，并不会立即在 GPU 上执行完毕，再返回。实际上只是把 kernel 这个任务推送到 <u></u>GPU 的执行队列上，然后立即返回，并不会等待执行完毕。</li>
+<li><u></u>因此可以调用 cudaDeviceSynchronize()，让 CPU 陷入等待，等 GPU 完成队列的所有任务后再返回。从而能够在 main 退出前等到 kernel 在 GPU 上执行完。</li>
+</ul>
+<h2 id="定义在-gpu-上的设备函数"><a class="markdownIt-Anchor" href="#定义在-gpu-上的设备函数"></a> 定义在 GPU 上的设备函数</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908105848.png" class="">
+<ul>
+<li>__global__ 用于定义核函数，他在 GPU 上执行，从 CPU 端通过三重尖括号语法调用，可以有参数，不可以有返回值。</li>
+<li>而 __device__ 则用于定义设备函数，他在 GPU 上执行，但是从 GPU 上调用的，而且不需要三重尖括号，和普通函数用起来一样，可以有参数，有返回值。</li>
+<li>即：host 可以调用 global；global 可以调用 device；device 可以调用 device。</li>
+</ul>
+<h2 id="声明为内联函数"><a class="markdownIt-Anchor" href="#声明为内联函数"></a> 声明为内联函数</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908105915.png" class="">
+<ul>
+<li>注意，inline 在现代 C++ 中的效果是声明一个函数为 weak 符号，和性能优化意义上的内联无关。</li>
+<li>优化意义上的内联指把函数体直接放到调用者那里去。</li>
+<li>因此 CUDA 编译器提供了一个“私货”关键字：__inline__ 来声明一个函数为内联。不论是 CPU 函数还是 GPU 都可以使用，只要你用的 CUDA 编译器。GCC 编译器相应的私货则是 __attribute__((“inline”))。</li>
+<li>注意声明为 __inline__ 不一定就保证内联了，如果函数太大编译器可能会放弃内联化。因此 CUDA 还提供 __forceinline__ 这个关键字来强制一个函数为内联。GCC 也有相应的 <strong>attribute</strong>((“always_inline”))。</li>
+<li>此外，还有 __noinline__ 来禁止内联优化。</li>
+</ul>
+<blockquote>
+<p>一般编译器会自动帮我们内联</p>
+</blockquote>
+<h2 id="定义在-cpu-上的主机函数"><a class="markdownIt-Anchor" href="#定义在-cpu-上的主机函数"></a> 定义在 CPU 上的主机函数</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908114421.png" class="">
+<ul>
+<li>__device__ 将函数定义在 GPU 上，而 __host__ 则相反，将函数定义在 CPU 上。</li>
+</ul>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908114634.png" class="">
+<ul>
+<li>CUDA 完全兼容 C++，因此任何函数如果没有指明修饰符，则默认就是 __host__，即 CPU 上的函数。</li>
+</ul>
+<h2 id="同时定义在-cpu-和-gpu-上"><a class="markdownIt-Anchor" href="#同时定义在-cpu-和-gpu-上"></a> 同时定义在 CPU 和 GPU 上</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908114701.png" class="">
+<p>通过 __host__ __device__ 这样的双重修饰符，可以把函数同时定义在 CPU 和 GPU 上，这样 CPU 和 GPU 都可以调用。</p>
+<h2 id="让-constexpr-函数自动变成-cpu-和-gpu-都可以调用"><a class="markdownIt-Anchor" href="#让-constexpr-函数自动变成-cpu-和-gpu-都可以调用"></a> 让 constexpr 函数自动变成 CPU 和 GPU 都可以调用</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908115046.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908115123.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908115051.png" class="">
+<ul>
+<li>这样相当于把 constexpr 函数自动变成修饰 __host__ __device__，从而两边都可以调用。</li>
+<li>因为 constexpr 通常都是一些可以内联的函数，数学计算表达式之类的，一个个加上太累了，所以产生了这个需求。</li>
+<li>不过必须指定 --expt-relaxed-constexpr 这个选项才能用这个特性，我们可以用 CMake 的生成器表达式来实现只对 .cu 文件开启此选项（不然给到 gcc 就出错了）。</li>
+<li>当然，constexpr 里没办法调用 printf，也不能用 __syncthreads 之类的 GPU 特有的函数，因此也不能完全替代 __host__ 和 __device__。</li>
+</ul>
+<h2 id="通过-ifdef-指令针对-cpu-和-gpu-生成不同的代码"><a class="markdownIt-Anchor" href="#通过-ifdef-指令针对-cpu-和-gpu-生成不同的代码"></a> 通过 #ifdef 指令针对 CPU 和 GPU 生成不同的代码</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908115523.png" class="">
+<ul>
+<li>CUDA 编译器具有多段编译的特点。</li>
+<li>一段代码他会先送到 CPU 上的编译器（通常是系统自带的编译器比如 gcc 和 msvc）生成 CPU 部分的指令码。然后送到真正的 GPU 编译器生成 GPU 指令码。最后再链接成同一个文件，看起来好像只编译了一次一样，实际上你的代码会被预处理很多次。</li>
+<li>他在 GPU 编译模式下会定义 __CUDA_ARCH__ 这个宏，利用 #ifdef 判断该宏是否定义，就可以判断当前是否处于 GPU 模式，从而实现一个函数针对 GPU 和 CPU 生成两份源码级不同的代码。</li>
+</ul>
+<h2 id="__cuda_arch__-是个版本号"><a class="markdownIt-Anchor" href="#__cuda_arch__-是个版本号"></a> __CUDA_ARCH__ 是个版本号</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908120929.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908120934.png" class="">
+<ul>
+<li>其实 __CUDA_ARCH__ 是一个整数，表示当前编译所针对的 GPU 的架构版本号是多少。这里是 520 表示版本号是 5.2.0，最后一位始终是 0 不用管，我们通常简称他的版本号为 52 就行了。</li>
+<li>这个版本号是编译时指定的版本，不是运行时检测到的版本。编译器默认就是最老的 52，能兼容所有 GTX900 以上显卡。</li>
+</ul>
+<h2 id="针对不同的架构使用不同的代码"><a class="markdownIt-Anchor" href="#针对不同的架构使用不同的代码"></a> 针对不同的架构，使用不同的代码</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121034.png" class="">
+<h2 id="通过-cmake-设置架构版本号"><a class="markdownIt-Anchor" href="#通过-cmake-设置架构版本号"></a> 通过 CMake 设置架构版本号</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121123.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121128.png" class="">
+<ul>
+<li>可以用 CMAKE_CUDA_ARCHITECTURES 这个变量，设置要针对哪个架构生成 GPU 指令码。</li>
+<li>小彭老师的显卡是 RTX2080，他的版本号是 75，因此最适合他用的指令码版本是 75。</li>
+<li>如果不指定，编译器默认的版本号是 52，他是针对 GTX900 系列显卡的。</li>
+<li>不过英伟达的架构版本都是向前兼容的，即版本号为 75 的 RTX2080 也可以运行版本号为 52 的指令码，虽然不够优化，但是至少能用。也就是要求：编译期指定的版本 ≤ 运行时显卡的版本。</li>
+</ul>
+<h2 id="cmake_cuda_architectures-会自动转换成-gpu-code-等编译-flag"><a class="markdownIt-Anchor" href="#cmake_cuda_architectures-会自动转换成-gpu-code-等编译-flag"></a> CMAKE_CUDA_ARCHITECTURES 会自动转换成 --gpu-code 等编译 flag</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121301.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121307.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121311.png" class="">
+<h2 id="版本号不要太新了"><a class="markdownIt-Anchor" href="#版本号不要太新了"></a> 版本号不要太新了</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121352.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121420.png" class="">
+<ul>
+<li>比如这里设置了 RTX3000 系列的架构版本号 86，在 RTX2080 上就运行不出结果。</li>
+<li>最坑的是他不会报错！也不输出任何东西！就像没有那个 kernel 一样！所以一定要注意调对你的版本号。否则就会这样 kernel 好像没有执行过一样，只有 CPU 上的代码被执行了。</li>
+</ul>
+<h2 id="指定多个版本号"><a class="markdownIt-Anchor" href="#指定多个版本号"></a> 指定多个版本号</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121501.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121510.png" class="">
+<ul>
+<li>可以指定多个版本号，之间用分号分割。</li>
+<li>运行时可以自动选择最适合当前显卡的版本号，通常用于打包发布的时候。</li>
+<li>不过这样会导致 GPU 编译器重复编译很多遍，每次针对不同的架构，所以编译会变得非常慢，生成的可执行文件也会变大。</li>
+<li>通常在自己的电脑上用时，同学们只要根据自己显卡的指定一个版本号即可。</li>
+</ul>
+<p>如果 CMakeLists.txt 里没有指定，也可以从命令行参数指定：</p>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908121607.png" class="">
+<h2 id="版本号和商品名对照表"><a class="markdownIt-Anchor" href="#版本号和商品名对照表"></a> 版本号和商品名对照表</h2>
+<p>更老的版本如 GT-630 已经被 CUDA 11 废除，因此本课程要求同学有 GTX900 及以上显卡。如果需要在老显卡上运行的话，可以看下面那个链接，查一下你的显卡对应的版本号是多少，然后在 CMake 里设置个一样的，应该就能用了。</p>
+<p><a href="https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/">https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/</a></p>
+<ul>
+<li>版本52：Quadro M6000 , GeForce 900, GTX-970, GTX-980, GTX Titan X</li>
+<li>版本53：Tegra (Jetson) TX1 / Tegra X1, Drive CX, Drive PX, Jetson Nano</li>
+<li>版本60：Quadro GP100, Tesla P100, DGX-1 (Generic Pascal)</li>
+<li>版本61：GTX 1080, GTX 1070, GTX 1060, GTX 1050, GTX 1030 (GP108), GT 1010 (GP108) Titan Xp, Tesla P40, Tesla P4, Discrete GPU on the NVIDIA Drive PX2</li>
+<li>版本62：Integrated GPU on the NVIDIA Drive PX2, Tegra (Jetson) TX2</li>
+<li>版本70：DGX-1 with Volta, Tesla V100, GTX 1180 (GV104), Titan V, Quadro GV100</li>
+<li>版本72：Jetson AGX Xavier, Drive AGX Pegasus, Xavier NX</li>
+<li>版本75：GTX/RTX Turing – GTX 1660 Ti, RTX 2060, RTX 2070, RTX 2080, Titan RTX, Quadro RTX 4000, Quadro RTX 5000, Quadro RTX 6000, Quadro RTX 8000, Quadro T1000/T2000, Tesla T4</li>
+<li>版本80：NVIDIA A100 (the name “Tesla” has been dropped – GA100), NVIDIA DGX-A100</li>
+<li>版本86：Tesla GA10x cards, RTX Ampere – RTX 3080, GA102 – RTX 3090, RTX A2000, A3000, A4000, A5000, A6000, NVIDIA A40, GA106 – RTX 3060, GA104 – RTX 3070, GA107 – RTX 3050, Quadro A10, Quadro A16, Quadro A40, A2 Tensor Core GPU</li>
+</ul>
+<h2 id="小彭老师每日锐评"><a class="markdownIt-Anchor" href="#小彭老师每日锐评"></a> 小彭老师每日锐评</h2>
+<ul>
+<li>顺便，Pascal、Turing、Ampere 什么的高大上架构名，那个是老黄拿来营销用的。</li>
+<li>我们不考虑韭菜情怀的话不用管，我们只需要指定架构的版本号是多少就行啦。</li>
+<li>毕竟一个 72 这样一个单调的整数，听起来没有“高大上地致敬科学家们的名字以彰显其高尚人文情怀的超绝境界”吸引投资人嘛。</li>
+</ul>
+<h1 id="第1章线程与板块"><a class="markdownIt-Anchor" href="#第1章线程与板块"></a> 第1章：线程与板块</h1>
+<h2 id="三重尖括号里的数字代表什么意思"><a class="markdownIt-Anchor" href="#三重尖括号里的数字代表什么意思"></a> 三重尖括号里的数字代表什么意思？</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908175402.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908175409.png" class="">
+<ul>
+<li>刚刚说了 CUDA 的核函数调用时需要用 kernel&lt;&lt;&lt;1, 1&gt;&gt;&gt;() 这种奇怪的语法，这里面的数字代表什么意思呢？</li>
+<li>不妨把 &lt;&lt;&lt;1, 1&gt;&gt;&gt; 改成 &lt;&lt;&lt;1, 3&gt;&gt;&gt; 试试看。你会看到 Hello, world! 打印了三遍！</li>
+<li>原来，三重尖括号里的第二个参数决定着启动 kernel 时所用 GPU 的线程数量。</li>
+<li>GPU 是为并行而生的，可以开启很大数量的线程，用于处理大吞吐量的数据。</li>
+</ul>
+<h2 id="获取线程编号"><a class="markdownIt-Anchor" href="#获取线程编号"></a> 获取线程编号</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908175853.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908175858.png" class="">
+<ul>
+<li>可以通过 threadIdx.x 获取当前线程的编号，我们打印一下试试看。</li>
+<li>这是 CUDA 中的特殊变量之一，只有在核函数里才可以访问。</li>
+<li>可以看到线程编号从0开始计数，打印出了0，1，2。这也是我们指定了线程数量为 3 的缘故。</li>
+<li>等等，为什么后面有个 .x？稍后再说明。</li>
+</ul>
+<h2 id="获取线程数量"><a class="markdownIt-Anchor" href="#获取线程数量"></a> 获取线程数量</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908180147.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908180153.png" class="">
+<ul>
+<li>还可以用 blockDim.x 获取当前线程数量，也就是我们在尖括号里指定的 3。</li>
+<li>可是为什么叫 blockDim？我觉得应该叫 threadNum 才比较合理？</li>
+<li>小彭老师也这么觉得，可能是历史遗留下来的问题，就不追究了。</li>
+</ul>
+<h2 id="线程之上板块"><a class="markdownIt-Anchor" href="#线程之上板块"></a> 线程之上：板块</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908180223.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908180227.png" class="">
+<ul>
+<li>CUDA 中还有一个比线程更大的概念，那就是板块（block），一个板块可以有多个线程组成。这就是为什么刚刚获取线程数量的变量用的是 blockDim，实际上 blockDim 的含义是每个板块有多少个线程。</li>
+<li>要指定板块的数量，只需调节三重尖括号里第一个参数即可。我们这里调成 2。总之：</li>
+<li>&lt;&lt;&lt;板块数量，每个板块中的线程数量&gt;&gt;&gt;</li>
+<li>可以看到这里我们启动了两个板块，各有3个线程，都打印了一样的数据。</li>
+</ul>
+<h2 id="获取板块编号和数量"><a class="markdownIt-Anchor" href="#获取板块编号和数量"></a> 获取板块编号和数量</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908180328.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908180334.png" class="">
+<ul>
+<li>板块的编号可以用 blockIdx.x 获取。</li>
+<li>板块的总数可以用 gridDim.x 获取。</li>
+<li>可以看到这里执行了两个板块，每个板块又有三个线程，总共有2*3=6个线程。</li>
+<li>而且看到这里板块1在板块0之前执行了，这是因为板块之间是高度并行的，不保证执行的先后顺序。线程之间也是，这里线程打印顺序没乱，不过是碰巧小于32而已。</li>
+</ul>
+<h2 id="注意不要混淆"><a class="markdownIt-Anchor" href="#注意不要混淆"></a> 注意不要混淆</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908180441.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908180447.png" class="">
+<ul>
+<li>当前线程在板块中的编号：threadIdx</li>
+<li>当前板块中的线程数量：blockDim</li>
+<li>当前板块的编号：blockIdx</li>
+<li>总的板块数量：gridDim</li>
+<li>线程(thread)：并行的最小单位</li>
+<li>板块(block)：包含若干个线程</li>
+<li>网格(grid)：指整个任务，包含若干个板块</li>
+<li>从属关系：线程＜板块＜网格</li>
+<li>调用语法：&lt;&lt;&lt;gridDim, blockDim&gt;&gt;&gt;</li>
+</ul>
+<h2 id="区分板块和线程有点麻烦扁平化他们"><a class="markdownIt-Anchor" href="#区分板块和线程有点麻烦扁平化他们"></a> 区分板块和线程有点麻烦？“扁平化”他们！</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908180704.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908180709.png" class="">
+<ul>
+<li>你可能觉得纳闷，既然已经有线程可以并行了，为什么还要引入板块的概念？稍后会说明区分板块的重要原因。</li>
+<li>如需总的线程数量：blockDim * gridDim</li>
+<li>如需总的线程编号：blockDim * blockIdx + threadIdx</li>
+<li>剧透一下：实际上 GPU 的板块相当于 CPU 的线程，GPU 的线程相当于 CPU 的SIMD，可以这样理解，但不完全等同。</li>
+</ul>
+<h2 id="图片解释板块和线程"><a class="markdownIt-Anchor" href="#图片解释板块和线程"></a> 图片解释板块和线程</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908181233.png" class="">
+<ul>
+<li>如需总的线程数量：blockDim * gridDim</li>
+<li>如需总的线程编号：blockDim * blockIdx + threadIdx</li>
+</ul>
+<h2 id="三维的板块和线程编号"><a class="markdownIt-Anchor" href="#三维的板块和线程编号"></a> 三维的板块和线程编号</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908181522.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908181527.png" class="">
+<ul>
+<li>CUDA 也支持三维的板块和线程区间。</li>
+<li>只要在三重尖括号内指定的参数改成 dim3 类型即可。dim3 的构造函数就是接受三个无符号整数（unsigned int）非常简单。</li>
+<li>dim3(x, y, z)</li>
+<li>这样在核函数里就可以通过 threadIdx.y 获取 y 方向的线程编号，以此类推。</li>
+</ul>
+<h2 id="那二维呢"><a class="markdownIt-Anchor" href="#那二维呢"></a> 那二维呢？</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908181623.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908181627.png" class="">
+<ul>
+<li>需要二维的话，只需要把 dim3 最后一位（z方向）的值设为 1 即可。这样就只有 xy 方向有大小，就相当于二维了，不会有性能损失。实际上一维的 &lt;&lt;&lt;m, n&gt;&gt;&gt; 不过是 &lt;&lt;&lt;dim3(m, 1, 1), dim3(n, 1, 1)&gt;&gt;&gt; 的简写而已。</li>
+</ul>
+<h2 id="图片解释三维的板块和线程"><a class="markdownIt-Anchor" href="#图片解释三维的板块和线程"></a> 图片解释三维的板块和线程</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908224934.png" class="">
+<ul>
+<li>之所以会把 blockDim 和 gridDim 分三维主要是因为 GPU 的业务常常涉及到三维图形学和二维图像，觉得这样很方便，并不一定 GPU 硬件上是三维这样排列的。</li>
+<li>三维情况下同样可以获取总的线程编号（扁平化）。</li>
+<li>如需总的线程数量：blockDim * gridDim</li>
+<li>如需总的线程编号：blockDim * blockIdx + threadIdx</li>
+</ul>
+<h2 id="分离-__device__-函数的声明和定义出错"><a class="markdownIt-Anchor" href="#分离-__device__-函数的声明和定义出错"></a> 分离 __device__ 函数的声明和定义：出错</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908225116.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908225122.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908225127.png" class="">
+<ul>
+<li>默认情况下 GPU 函数必须定义在同一个文件里。如果你试图分离声明和定义，调用另一个文件里的 __device__ 或 __global__ 函数，就会出错。</li>
+</ul>
+<h2 id="分离-__device__-函数的声明和定义解决"><a class="markdownIt-Anchor" href="#分离-__device__-函数的声明和定义解决"></a> 分离 __device__ 函数的声明和定义：解决</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908225204.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908225209.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908225227.png" class="">
+<ul>
+<li>
+<p>开启 CMAKE_CUDA_SEPARABLE_COMPILATION 选项（设为 ON），即可启用分离声明和定义的支持。</p>
+</li>
+<li>
+<p>不过我还是建议把要相互调用的 __device__ 函数放在同一个文件，这样方便编译器自动内联优化（第四课讲过）。</p>
+<h2 id="两种开启方式全局有效-or-仅针对单个程序"><a class="markdownIt-Anchor" href="#两种开启方式全局有效-or-仅针对单个程序"></a> 两种开启方式：全局有效 or 仅针对单个程序</h2>
+</li>
+</ul>
+<p>对下方所有的程序启用（推荐）：</p>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908225834.png" class="">
+<p>只对 main 这个程序启用：</p>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908225842.png" class="">
+<p>顺便一提，CXX_STANDARD 和 CUDA_ARCHITECTURES 也有这两种方式，我一般推荐直接设置全局的 CMAKE_CXX_STANDARD 即可应用到全部 add_executable/add_library 的对象上，比较方便。</p>
+<h2 id="进一步核函数调用核函数"><a class="markdownIt-Anchor" href="#进一步核函数调用核函数"></a> 进一步：核函数调用核函数</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908225904.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220908225909.png" class="">
+<ul>
+<li>从 Kelper 架构开始，__global__ 里可以调用另一个 __global__，也就是说核函数可以调用另一个核函数，且其三重尖括号里的板块数和线程数可以动态指定，无需先传回到 CPU 再进行调用，这是 CUDA 特有的能力。</li>
+</ul>
+<p>常用于这种情况：需要从 GPU 端动态计算出 blockDim 和 gridDim，而又不希望导回数据到 CPU 导致强制同步影响性能。</p>
+<p>这种模式被称为动态并行（dynamic parallelism），OpenGL 有一个 glDispatchComputeIndirect 的 API 和这个很像，但毕竟没有 CUDA 可以直接在核函数里调用核函数并指定参数这么方便……</p>
+<p>不过，这个功能同样需要开启 CUDA_SEPARABLE_COMPILATION。</p>
+<h1 id="第2章内存管理"><a class="markdownIt-Anchor" href="#第2章内存管理"></a> 第2章：内存管理</h1>
+<h2 id="如何从核函数里返回数据"><a class="markdownIt-Anchor" href="#如何从核函数里返回数据"></a> 如何从核函数里返回数据？</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220911161130.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220911161134.png" class="">
+<ul>
+<li>我们试着把 kernel 的返回类型声明为 int，试图从 GPU 返回数据到 CPU。</li>
+<li>但发现这样做会在编译期出错，为什么？</li>
+<li>刚刚说了 kernel 的调用是异步的，返回的时候，并不会实际让 GPU 把核函数执行完毕，必须 cudaDeviceSynchronize() 等待他执行完毕（和线程的 join 很像）。所以，不可能从 kernel 里通过返回值获取 GPU 数据，因为 kernel 返回时核函数并没有真正在 GPU 上执行。所以核函数返回类型必须是 void。</li>
+</ul>
+<blockquote>
+<p>所有的global必须为void</p>
+</blockquote>
+<h2 id="试图解决通过指针传递"><a class="markdownIt-Anchor" href="#试图解决通过指针传递"></a> 试图解决：通过指针传递</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220911161926.png" class="">
+<ul>
+<li>那你可能会想，既然不能返回，那作为指针传入局部变量的引用，不就好了。</li>
+<li>这样，在 cudaDeviceSynchronize() 以后，应该可以获取数据了吧？</li>
+<li>结果令人失望，尽管给 kernel 传了指向 ret 的指针，但 ret 的值并没有被改写成功。</li>
+</ul>
+<h2 id="分析返回的错误代码"><a class="markdownIt-Anchor" href="#分析返回的错误代码"></a> 分析返回的错误代码</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220911162030.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220911162035.png" class="">
+<ul>
+<li>CUDA 的函数，如 cudaDeviceSynchronize()。</li>
+<li>他们出错时，并不会直接终止程序，也不会抛出 C++ 的异常，而是返回一个错误代码，告诉你出的具体什么错误，这是出于通用性考虑。</li>
+<li>这个错误代码的类型是 cudaError_t，其实就是个 enum 类型，相当于 int。</li>
+<li>可以通过 cudaGetErrorName 获取该 enum 的具体名字。这里显示错误号为 77，具体名字是 cudaErrorIllegalAddress。意思是我们访问了非法的地址，和 CPU 上的 Segmentation Fault 差不多。</li>
+</ul>
+<h2 id="封装好了helper_cudah"><a class="markdownIt-Anchor" href="#封装好了helper_cudah"></a> 封装好了：helper_cuda.h</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922165356.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922165417.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922165429.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922165503.png" class="">
+<ul>
+<li>其实 CUDA toolkit 安装时，会默认附带一系列案例代码，这些案例中提供了一些非常有用的头文件和工具类，比如这个文件：</li>
+<li>/opt/cuda/samples/common/inc/helper_cuda.h</li>
+<li>把他和 helper_string.h 一起拷到头文件目录里，然后改一下 CMakeLists.txt 让他包含这个头文件目录。</li>
+<li>他定义了 checkCudaErrors 这个宏，使用时只需：</li>
+<li>checkCudaErrors(cudaDeviceSynchronize())</li>
+<li>即可自动帮你检查错误代码并打印在终端，然后退出。还会报告出错所在的行号，函数名等，很方便。</li>
+</ul>
+<h2 id="堆上分配试试"><a class="markdownIt-Anchor" href="#堆上分配试试"></a> 堆上分配试试？</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922165820.png" class="">
+<ul>
+<li>那你可能会想，难道是因为我的 ret 创建在栈上，所以 GPU 不能访问，才出错的？</li>
+<li>于是你试图用 malloc 在堆上分配一个 int 来给 GPU 访问，结果还是失败了。</li>
+</ul>
+<h2 id="原因gpu-使用独立的显存不能访问-cpu-内存"><a class="markdownIt-Anchor" href="#原因gpu-使用独立的显存不能访问-cpu-内存"></a> 原因：GPU 使用独立的显存，不能访问 CPU 内存</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922170132.png" class="">
+<ul>
+<li>原来，GPU 和 CPU 各自使用着独立的内存。CPU 的内存称为主机内存(host)。GPU 使用的内存称为设备内存(device)，他是显卡上板载的，速度更快，又称显存。</li>
+<li>而不论栈还是 malloc 分配的都是 CPU 上的内存，所以自然是无法被 GPU 访问到。</li>
+<li>因此可以用用 cudaMalloc 分配 GPU 上的显存，这样就不出错了，结束时 cudaFree 释放。</li>
+<li>注意到 cudaMalloc 的返回值已经用来表示错误代码，所以返回指针只能通过 &amp;pret 二级指针。</li>
+</ul>
+<h2 id="反之亦然cpu-也不能访问-gpu-的内存地址"><a class="markdownIt-Anchor" href="#反之亦然cpu-也不能访问-gpu-的内存地址"></a> 反之亦然，CPU 也不能访问 GPU 的内存地址</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922170510.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922170443.png" class="">
+<ul>
+<li>你可能已经迫不及待想通过 *pret 访问其返回值了。但是不行，因为 GPU 访问不了 CPU 的内存地址，同理，CPU 也访问不了 GPU 的内存地址。一访问 CPU 就奔溃了。</li>
+</ul>
+<h2 id="跨-gpucpu-地址空间拷贝数据"><a class="markdownIt-Anchor" href="#跨-gpucpu-地址空间拷贝数据"></a> 跨 GPU/CPU 地址空间拷贝数据</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922170652.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922170701.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922170708.png" class="">
+<ul>
+<li>因此可以用 cudaMemcpy，他能够在 GPU 和 CPU 内存之间拷贝数据。</li>
+<li>这里我们希望把 GPU 上的内存数据拷贝到 CPU 内存上，也就是从设备内存(device)到主机内存(host)，因此第四个参数指定为 cudaMemcpyDeviceToHost。</li>
+<li>同理，还有 cudaMemcpyHostToDevice 和 cudaMemcpyDeviceToDevice。</li>
+</ul>
+<h2 id="cudamemcpy-会自动同步"><a class="markdownIt-Anchor" href="#cudamemcpy-会自动同步"></a> cudaMemcpy 会自动同步！</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922170904.png" class="">
+<ul>
+<li>注意：cudaMemcpy 会自动进行同步操作，即和 cudaDeviceSynchronize() 等价！因此前面的 cudaDeviceSynchronize() 实际上可以删掉了。</li>
+</ul>
+<h2 id="统一内存地址技术unified-memory"><a class="markdownIt-Anchor" href="#统一内存地址技术unified-memory"></a> 统一内存地址技术（Unified Memory）</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922171122.png" class="">
+<ul>
+<li>还有一种在比较新的显卡上支持的特性，那就是统一内存(managed)，只需把 cudaMalloc 换成 cudaMallocManaged 即可，释放时也是通过 cudaFree。这样分配出来的地址，不论在 CPU 还是 GPU 上都是一模一样的，都可以访问。而且拷贝也会自动按需进行（当从 CPU 访问时），无需手动调用 cudaMemcpy，大大方便了编程人员，特别是含有指针的一些数据结构。</li>
+</ul>
+<h2 id="注意不要混淆-2"><a class="markdownIt-Anchor" href="#注意不要混淆-2"></a> 注意不要混淆</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220922171257.png" class="">
+<ul>
+<li>主机内存(host)：malloc、free</li>
+<li>设备内存(device)：cudaMalloc、cudaFree</li>
+<li>统一内存(managed)：cudaMallocManaged、cudaFree</li>
+<li>如果我没记错的话，统一内存是从 Pascal 架构开始支持的，也就是 GTX9 开头及以上。</li>
+<li>虽然方便，但并非完全没有开销，有条件的话还是尽量用分离的设备内存和主机内存吧。</li>
+</ul>
+<h1 id="第3章数组"><a class="markdownIt-Anchor" href="#第3章数组"></a> 第3章：数组</h1>
+<h2 id="分配数组"><a class="markdownIt-Anchor" href="#分配数组"></a> 分配数组</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928140501.png" class="">
+<ul>
+<li>如 malloc 一样，可以用 cudaMalloc 配合 n * sizeof(int)，分配一个大小为 n 的整型数组。这样就会有 n 个连续的 int 数据排列在内存中，而 arr 则是指向其起始地址。然后把 arr 指针传入 kernel，即可在里面用 arr[i] 访问他的第 i 个元素。</li>
+<li>然后因为我们用的统一内存(managed)，所以同步以后 CPU 也可以直接读取。</li>
+</ul>
+<h2 id="多个线程并行地给数组赋值"><a class="markdownIt-Anchor" href="#多个线程并行地给数组赋值"></a> 多个线程，并行地给数组赋值</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928141641.png" class="">
+<ul>
+<li>刚刚的 for 循环是串行的，我们可以把线程数量调为 n，然后用 threadIdx.x 作为 i 索引。这样就实现了，每个线程负责给数组中一个元素的赋值。</li>
+</ul>
+<h2 id="小技巧网格跨步循环grid-stride-loop"><a class="markdownIt-Anchor" href="#小技巧网格跨步循环grid-stride-loop"></a> 小技巧：网格跨步循环（grid-stride loop）</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928141854.png" class="">
+<ul>
+<li>无论调用者指定了多少个线程（blockDim），都能自动根据给定的 n 区间循环，不会越界，也不会漏掉几个元素。</li>
+<li>这样一个 for 循环非常符合 CPU 上常见的 parallel for 的习惯，又能自动匹配不同的 blockDim，看起来非常方便。</li>
+</ul>
+<h2 id="从线程到板块"><a class="markdownIt-Anchor" href="#从线程到板块"></a> 从线程到板块</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928142449.png" class="">
+<ul>
+<li>核函数内部，用之前说到的 blockDim. x * blockIdx. x + threadIdx. x 来获取线程在整个网格中编号。</li>
+<li>外部调用者，则是根据不同的 n 决定板块的数量（gridDim），而每个板块具有的线程数量（blockDim）则是固定的 128。</li>
+<li>因此，我们可以用 n / 128 作为 gridDim，这样总的线程数刚好的 n，实现了每个线程负责处理一个元素。</li>
+</ul>
+<h2 id="边角料难题"><a class="markdownIt-Anchor" href="#边角料难题"></a> 边角料难题</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928142602.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928142607.png" class="">
+<ul>
+<li>但这样的话，n 只能是的 128 的整数倍，如果不是就会漏掉最后几个元素。</li>
+<li>主要是 C 语言的整数除法 n / nthreads，他是向下取整的，比如 7 / 4 = 1。</li>
+<li>比如 n 为 65535，那么最后 127 个元素是没有赋值的。</li>
+</ul>
+<h2 id="解决边角料难题"><a class="markdownIt-Anchor" href="#解决边角料难题"></a> 解决边角料难题</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928142652.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928142656.png" class="">
+<ul>
+<li>解决方法就是：采用向上取整的除法。</li>
+<li>可是 C 语言好像没有向上整除的除法这个运算符？没关系，用这个式子即可：</li>
+<li>(n + nthreads - 1) / nthreads</li>
+<li>例如：(7 + 3) / 4 = 2，(8 + 3 ) / 4 = 2。</li>
+<li>由于向上取整，这样会多出来一些线程，因此要在 kernel 内判断当前 i 是否超过了 n，如果超过就要提前退出，防止越界。</li>
+</ul>
+<blockquote>
+<p>勘误：<br />
+(n + nthreads - 1) / nthreads，图中代码写错了<br />
+代码第7行应为i&gt;=n</p>
+</blockquote>
+<h2 id="网格跨步循环应用于线程和板块一起上的情况"><a class="markdownIt-Anchor" href="#网格跨步循环应用于线程和板块一起上的情况"></a> 网格跨步循环：应用于线程和板块一起上的情况</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928143035.png" class="">
+<ul>
+<li>网格跨步循环实际上本来是这样，利用扁平化的线程数量和线程编号实现动态大小。</li>
+<li>同样，无论调用者指定每个板块多少线程（blockDim），总共多少板块（gridDim）。都能自动根据给定的 n 区间循环，不会越界，也不会漏掉几个元素。</li>
+<li>这样一个 for 循环非常符合 CPU 上常见的 parallel for 的习惯，又能自动匹配不同的 blockDim 和 gridDim，看起来非常方便。</li>
+</ul>
+<blockquote>
+<p>本方法出自英伟达官方博客： <a href="https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/">https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/</a></p>
+</blockquote>
+<h2 id="第4章c-封装"><a class="markdownIt-Anchor" href="#第4章c-封装"></a> 第4章：C++ 封装</h2>
+<h2 id="stdvector-的秘密第二模板参数"><a class="markdownIt-Anchor" href="#stdvector-的秘密第二模板参数"></a> std::vector 的秘密：第二模板参数</h2>
+<ul>
+<li>你知道吗？std::vector 作为模板类，其实有两个模板参数：std::vector&lt;T, AllocatorT&gt;</li>
+<li>那为什么我们平时只用了 std::vector&lt;T&gt; 呢？因为第二个参数默认是 std::allocator&lt;T&gt;。</li>
+<li>也就是 std::vector&lt;T&gt; 等价于 std::vector&lt;T, std::allocator&lt;T&gt;&gt;。</li>
+<li>std::allocator&lt;T&gt; 的功能是负责分配和释放内存，初始化 T 对象等等。</li>
+<li>他具有如下几个成员函数：</li>
+<li>T *allocate(size_t n)                        // 分配长度为n，类型为T的数组，返回其起始地址</li>
+<li>void deallocate(T *p, size_t n)        // 释放长度为n，起始地址为p，类型为T的数组</li>
+</ul>
+<h2 id="抽象的-stdallocator-接口"><a class="markdownIt-Anchor" href="#抽象的-stdallocator-接口"></a> 抽象的 std::allocator 接口</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928143527.png" class="">
+<ul>
+<li>vector 会调用 std::allocator&lt;T&gt; 的 allocate/deallocate 成员函数，他又会去调用标准库的 malloc/free 分配和释放内存空间（即他分配是的 CPU 内存）。</li>
+<li>我们可以自己定义一个和 std::allocator&lt;T&gt; 一样具有 allocate/deallocate 成员函数的类，这样就可以“骗过”vector，让他不是在 CPU 内存中分配，而是在 CUDA 的统一内存(managed)上分配。</li>
+<li>实际上这种“骗”来魔改类内部行为的操作，正是现代 C++ 的 concept 思想所在。因此替换 allocator 实际上是标准库允许的，因为他提升了标准库的泛用性。</li>
+</ul>
+<h2 id="进一步避免初始化为0"><a class="markdownIt-Anchor" href="#进一步避免初始化为0"></a> 进一步：避免初始化为0</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928222000.png" class="">
+<ul>
+<li>vector 在初始化的时候（或是之后 resize 的时候）会调用所有元素的无参构造函数，对 int 类型来说就是零初始化。然而这个初始化会是在 CPU 上做的，因此我们需要禁用他。</li>
+<li>可以通过给 allocator 添加 construct 成员函数，来魔改 vector 对元素的构造。默认情况下他可以有任意多个参数，而如果没有参数则说明是无参构造函数。</li>
+<li>因此我们只需要判断是不是有参数，然后是不是传统的 C 语言类型（plain-old-data），如果是，则跳过其无参构造，从而避免在 CPU 上低效的零初始化。</li>
+</ul>
+<h2 id="进一步核函数可以是一个模板函数"><a class="markdownIt-Anchor" href="#进一步核函数可以是一个模板函数"></a> 进一步：核函数可以是一个模板函数</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928222519.png" class="">
+<ul>
+<li>刚刚说过 CUDA 的优势在于对 C++ 的完全支持。所以 __global__ 修饰的核函数自然也是可以为模板函数的。</li>
+<li>调用模板时一样可以用自动参数类型推导，如有手动指定的模板参数（单尖括号）请放在三重尖括号的前面。</li>
+</ul>
+<h2 id="进一步核函数可以接受函子functor实现函数式编程"><a class="markdownIt-Anchor" href="#进一步核函数可以接受函子functor实现函数式编程"></a> 进一步：核函数可以接受函子（functor），实现函数式编程</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928225715.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928225739.png" class="">
+<ul>
+<li>不过要注意三点：</li>
+<li>这里的 Func 不可以是 Func const &amp;，那样会变成一个指向 CPU 内存地址的指针，从而出错。所以 CPU 向 GPU 的传参必须按值传。</li>
+<li>做参数的这个函数必须是一个有着成员函数 operator() 的类型，即 functor 类。而不能是独立的函数，否则报错。</li>
+<li>这个函数必须标记为 <strong>device</strong>，即 GPU 上的函数，否则会变成 CPU 上的函数。</li>
+</ul>
+<h2 id="进一步函子可以是-lambda-表达式"><a class="markdownIt-Anchor" href="#进一步函子可以是-lambda-表达式"></a> 进一步：函子可以是 lambda 表达式</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928225947.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928225939.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928230007.png" class="">
+<ul>
+<li>可以直接写 lambda 表达式，不过必须在 [] 后，() 前，插入 <strong>device</strong> 修饰符。</li>
+<li>而且需要开启 --extended-lambda 开关。</li>
+<li>为了只对 .cu 文件开启这个开关，可以用 CMake 的生成器表达式，限制 flag 只对 CUDA 源码生效，这样可以混合其他 .cpp 文件也不会发生 gcc 报错的情况了。。</li>
+</ul>
+<h2 id="如何捕获外部变量"><a class="markdownIt-Anchor" href="#如何捕获外部变量"></a> 如何捕获外部变量？</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928230857.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928230902.png" class="">
+<ul>
+<li>如果试图用 [&amp;] 捕获变量是会出错的，毕竟这时候捕获到的是堆栈（CPU内存）上的变量 arr 本身，而不是 arr 所指向的内存地址（GPU内存）。</li>
+</ul>
+<blockquote>
+<p>arr 指向的数组在 GPU 中，但 arr 本身在 CPU 的栈中，所以捕获的是指向 arr 的指针</p>
+</blockquote>
+<h2 id="如何捕获外部变量-2"><a class="markdownIt-Anchor" href="#如何捕获外部变量-2"></a> 如何捕获外部变量？</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928231208.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928231215.png" class="">
+<ul>
+<li>你可能会想，是不是可以用 [=] 按值捕获，这样捕获到的就是指针了吧？</li>
+<li>错了，不要忘了我们第二课说过，vector 的拷贝是深拷贝（绝大多数C++类都是深拷贝，除了智能指针和原始指针）。这样只会把 vector 整个地拷贝到 GPU 上！而不是浅拷贝其起始地址指针。</li>
+</ul>
+<blockquote>
+<p>由于 arr 是 vector，所以捕获的 arr 这个对象，将 arr 整个地拷贝到 GPU 上</p>
+</blockquote>
+<h2 id="如何捕获外部变量-3"><a class="markdownIt-Anchor" href="#如何捕获外部变量-3"></a> 如何捕获外部变量？</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928232633.png" class="">
+<ul>
+<li>正确的做法是先获取 arr. data () 的值到 arr_data 变量，然后用 [=] 按值捕获 arr_data，函数体里面也通过 arr_data 来访问 arr。</li>
+<li>为什么这样？因为 data () 返回一个起始地址的原始指针，而原始指针是浅拷贝的，所以可以拷贝到 GPU 上，让他访问。这样和之前作为核函数参数是一样的，不过是作为 Func 结构体统一传入了。</li>
+</ul>
+<h2 id="如何捕获外部变量-4"><a class="markdownIt-Anchor" href="#如何捕获外部变量-4"></a> 如何捕获外部变量？</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928232737.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220928232742.png" class="">
+<ul>
+<li>或者在 [] 里这样直接写自定义捕获的表达式也是可以的，这样就可以用同一变量名。</li>
+</ul>
+<h1 id="第-5-章数学运算"><a class="markdownIt-Anchor" href="#第-5-章数学运算"></a> 第 5 章：数学运算</h1>
+<h2 id="经典案例并行地求-sin-值"><a class="markdownIt-Anchor" href="#经典案例并行地求-sin-值"></a> 经典案例，并行地求 sin 值</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220929122528.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220929122533.png" class="">
+<ul>
+<li>就让我们在 GPU 上并行地计算从 sin (0) 到 sin (65535) 的值，并填入到数组 arr 中。</li>
+<li>这里为什么用 sinf 而不是 sin？</li>
+<li>因为 sin 是 double 类型的正弦函数，而我们需要的 sinf 是 float 类型的正弦函数。可不要偷懒少打一个 f 哦，否则影响性能。</li>
+<li>完成同步之后，和 CPU 算出来的比较差值，看看 GPU 算的是否准确无误，从右边的输出可以看到基本是一致的。</li>
+</ul>
+<h2 id="测试一下时间"><a class="markdownIt-Anchor" href="#测试一下时间"></a> 测试一下时间</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220929123726.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220929123732.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220929123737.png" class="">
+<ul>
+<li>使用第六节课中的 ticktock. h 测试一下 CPU 和 GPU 的用时。</li>
+<li>注意，这里一定要把 TOCK 放到同步之后。原因之前说过，因为对 GPU 核函数的调用是异步的，只有 cudaDeviceSynchronize () 以后才真正完成执行，才能算出真的时间。</li>
+<li>查看结果，发现 GPU 比 CPU 快了很多，这是当然的。</li>
+</ul>
+<blockquote>
+<p>这里只快了 20 倍，是因为 GPU 需要初始化的原因，实际上能快 100 多倍</p>
+</blockquote>
+<h2 id="调整参数"><a class="markdownIt-Anchor" href="#调整参数"></a> 调整参数</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220929124027.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20220929124033.png" class="">
+<ul>
+<li>适当调整板块数量 gridDim 和每板块的线程数量 blockDim，还可以更快一些。</li>
+<li>顺便一提，这样的数学函数还有 sqrtf，rsqrtf，cbrtf，rcbrtf，powf，sinf，cosf，sinpif，cospif，sincosf，sincospif，logf，log2f，log10f，expf，exp2f，exp10f，tanf，atanf，asinf，acosf，fmodf，fabsf，fminf，fmaxf。</li>
+</ul>
+<blockquote>
+<p><a href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html#math-libraries">https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html#math-libraries</a><br />
+sqrtf: 平方根，rsqrtf: 平方根的倒数<br />
+cbrtf：三次方根，rcbrtf: 三次方根的倒数<br />
+sinpif: sin (x) * pi，sincosf: 同时计算 sin 和 cos，比单独计算更高效</p>
+</blockquote>
+<h2 id="稍微快一些但不完全精确的-__sinf"><a class="markdownIt-Anchor" href="#稍微快一些但不完全精确的-__sinf"></a> 稍微快一些，但不完全精确的 __sinf</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014093141.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014093235.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014093223.png" class="">
+<ul>
+<li>两个下划线的 __sinf 是 GPU intrinstics，精度相当于 GLSL 里的那种。适合对精度要求不高，但有性能要求的图形学任务。</li>
+<li>类似的这样的低精度內建函数还有 __expf、__logf、__cosf、__powf 等。</li>
+<li>还有 __fdividef (x, y) 提供更快的浮点除法，和一般的除法有相同的精确度，但是在 2^216 &lt; y &lt; 2^218 时会得到错误的结果。</li>
+</ul>
+<h2 id="编译器选项use_fast_math"><a class="markdownIt-Anchor" href="#编译器选项use_fast_math"></a> 编译器选项：–use_fast_math</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014094248.png" class="">
+<ul>
+<li>如果开启了 --use_fast_math 选项，那么所有对 sinf 的调用都会自动被替换成 __sinf。</li>
+<li>–ftz=true 会把极小数 (denormal) 退化为 0。</li>
+<li>–prec-div=false 降低除法的精度换取速度。</li>
+<li>–prec-sqrt=false 降低开方的精度换取速度。</li>
+<li>–fmad 因为非常重要，所以默认就是开启的，会自动把 a * b + c 优化成乘加 (FMA) 指令。</li>
+<li>开启 --use_fast_math 后会自动开启上述所有。</li>
+</ul>
+<h2 id="saxpyscalar-a-times-x-plus-y"><a class="markdownIt-Anchor" href="#saxpyscalar-a-times-x-plus-y"></a> SAXPY（Scalar A times X Plus Y）</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014094511.png" class="">
+<ul>
+<li>即标量 A 乘 X 加 Y。</li>
+<li>这是很多 CUDA 教科书上的 Hello, world。</li>
+<li>却是小彭老师课第5章的结尾。</li>
+</ul>
+<h1 id="第-6-章thrust-库"><a class="markdownIt-Anchor" href="#第-6-章thrust-库"></a> 第 6 章：thrust 库</h1>
+<h2 id="替换成-cuda-官方提供的-thrustuniversal_vector"><a class="markdownIt-Anchor" href="#替换成-cuda-官方提供的-thrustuniversal_vector"></a> 替换成 CUDA 官方提供的 thrust::universal_vector</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014095408.png" class="">
+<ul>
+<li>虽然自己实现 CudaAllocator 很有趣，也帮助我们理解了底层原理。但是既然 CUDA 官方已经提供了 thrust 库，那就用他们的好啦。</li>
+<li>universal_vector 会在统一内存上分配，因此不论 GPU 还是 CPU 都可以直接访问到。</li>
+</ul>
+<h2 id="换成分离的-device_vector-和-host_vector"><a class="markdownIt-Anchor" href="#换成分离的-device_vector-和-host_vector"></a> 换成分离的 device_vector 和 host_vector</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014095601.png" class="">
+<ul>
+<li>而 device_vector 则是在 GPU 上分配内存，host_vector 在 CPU 上分配内存。</li>
+<li>可以通过 = 运算符在 device_vector 和 host_vector 之间拷贝数据，他会自动帮你调用 cudaMemcpy，非常智能。</li>
+<li>比如这里的 x_dev = x_host 会把 CPU 内存中的 x_host 拷贝到 GPU 的 x_dev 上。</li>
+</ul>
+<h2 id="模板函数thrustgenerate"><a class="markdownIt-Anchor" href="#模板函数thrustgenerate"></a> 模板函数：thrust::generate</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014100127.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014100215.png" class="">
+<h2 id="模板函数thrustfor_each"><a class="markdownIt-Anchor" href="#模板函数thrustfor_each"></a> 模板函数：thrust::for_each</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014100353.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014100425.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014100432.png" class="">
+<ul>
+<li>同理，还有 thrust:: for_each (b, e, f) 对标 std:: for_each。他会把 [b, e) 区间的每个元素 x 调用一遍 f(x)。这里的 x 实际上是一个引用。如果 b 和 e 是常值迭代器则是个常引用，可以用 cbegin ()，cend () 获取常值迭代器。</li>
+<li>当然还有 thrust:: reduce，thrust:: sort，thrust:: find_if，thrust:: count_if，thrust:: reverse，thrust:: inclusive_scan 等。</li>
+</ul>
+<h2 id="thrust-模板函数的特点根据容器类型自动决定在-cpu-还是-gpu-执行"><a class="markdownIt-Anchor" href="#thrust-模板函数的特点根据容器类型自动决定在-cpu-还是-gpu-执行"></a> thrust 模板函数的特点：根据容器类型，自动决定在 CPU 还是 GPU 执行</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014100743.png" class="">
+<ul>
+<li>for_each 可以用于 device_vector 也可用于 host_vector。当用于 host_vector 时则函数是在 CPU 上执行的，用于 device_vector 时则是在 GPU 上执行的。</li>
+<li>看右边，这就是为什么我们用于 x_host 那个 for_each 的 lambda 没有修饰，而用于 x_dev 的那个 lambda 需要修饰 __device__。</li>
+</ul>
+<h2 id="for_each-用于整数的循环counting_iterator"><a class="markdownIt-Anchor" href="#for_each-用于整数的循环counting_iterator"></a> for_each 用于整数的循环：counting_iterator</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014101010.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014101049.png" class="">
+<ul>
+<li>可以用 thrust::make_counting_iterator(num) 构建一个计数迭代器，他作为区间表示的就是整数的区间。</li>
+</ul>
+<blockquote>
+<p>和 python 的 range 比较像</p>
+</blockquote>
+<h2 id="合并多个迭代器为一个zip_iterator"><a class="markdownIt-Anchor" href="#合并多个迭代器为一个zip_iterator"></a> 合并多个迭代器为一个：zip_iterator</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014101235.png" class="">
+<ul>
+<li>可以用 thrust::make_zip_iterator (a, b) 把多个迭代器合并起来，相当于 Python 里的 zip。</li>
+<li>然后在函数体里通过 auto const &amp;tup 捕获，并通过 thrust:: get&lt;index&gt;(tup) 获取这个合并迭代器的第 index 个元素……之所以他搞这么复杂，其实是因为 thrust 需要兼容一些“老年程序”爱用的 C<ins>03，不然早该换成 C</ins>11 的 std:: tuple 和 C++17 的 structual-binding 语法了……反正我是不喜欢用他的迭代器这一套，简单的问题反而复杂化。</li>
+<li>怪不得王鑫磊在 ZPC 里要自己造轮子哦，虽然是 C++03，总感觉是几百年前的编程语言。</li>
+<li>现在很多“老年”教材对 cpp 的认识也停留在 C<ins>03，B站/油管偶尔翻出几个介绍 C</ins>11 新特性的视频已经算很先进很前卫了，然而现在 C++23 的标准都已经开始往官网上挂了……</li>
+</ul>
+<h1 id="第-7-章原子操作"><a class="markdownIt-Anchor" href="#第-7-章原子操作"></a> 第 7 章：原子操作</h1>
+<h2 id="经典案例数组求和"><a class="markdownIt-Anchor" href="#经典案例数组求和"></a> 经典案例：数组求和</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014102856.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014101552.png" class="">
+<ul>
+<li>如何并行地对数组进行求和操作？</li>
+<li>首先让我们试着用串行的思路来解题。</li>
+<li>因为 __global__ 函数不能返回值，只能通过指针。因此我们先分配一个大小为 1 的 sum 数组，其中 sum[0] 用来返回数组的和。这样我们同步之后就可以通过 sum[0] 看到求和的结果了。</li>
+<li>可是算出来的结果却明显不对，为什么？</li>
+</ul>
+<h2 id="经典案例数组求和-2"><a class="markdownIt-Anchor" href="#经典案例数组求和-2"></a> 经典案例：数组求和</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014102937.png" class="">
+<ul>
+<li>
+<p>这是因为 GPU 上的线程是并行执行的，然而 sum[0] += arr[i] 这个操作，实际上被拆分成四步：</p>
+</li>
+<li>
+<p>读取 sum[0] 到寄存器 A</p>
+</li>
+<li>
+<p>读取 arr[i] 到寄存器 B</p>
+</li>
+<li>
+<p>让寄存器 A 的值加上寄存器 B 的值</p>
+</li>
+<li>
+<p>写回寄存器 A 到 sum[0]</p>
+</li>
+<li>
+<p>这样有什么问题呢？</p>
+</li>
+<li>
+<p>假如有两个线程分别在 i=0 和 i=1，同时执行：</p>
+</li>
+<li>
+<p>线程0：读取 sum[0] 到寄存器A（A=0）</p>
+</li>
+<li>
+<p>线程1：读取 sum[0] 到寄存器A（A=0）</p>
+</li>
+<li>
+<p>线程0：读取 arr[0] 到寄存器B（B=arr[0]）</p>
+</li>
+<li>
+<p>线程1：读取 arr[1] 到寄存器B（B=arr[1]）</p>
+</li>
+<li>
+<p>线程0：让寄存器A加上寄存器B（A=arr[0]）</p>
+</li>
+<li>
+<p>线程1：让寄存器A加上寄存器B（A=arr[1]）</p>
+</li>
+<li>
+<p>线程0：写回寄存器A到 sum[0]（sum[0]=arr[0]）</p>
+</li>
+<li>
+<p>线程1：写回寄存器A到 sum[0]（sum[0]=arr[1]）</p>
+</li>
+<li>
+<p>这样一来最后 sum[0] 的值是 arr[1]。而不是我们期望的 arr[0] + arr[1]，即算出来的总和变少了！</p>
+</li>
+</ul>
+<h2 id="解决使用原子操作"><a class="markdownIt-Anchor" href="#解决使用原子操作"></a> 解决：使用原子操作</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014103524.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014103633.png" class="">
+<ul>
+<li>所以，熟悉 CPU 上并行编程的同学们可能就明白了，要用 atomic 对吧！</li>
+<li>原子操作的功能就是保证读取/加法/写回三个操作，不会有另一个线程来打扰。</li>
+<li>CUDA 也提供了这种函数，即 atomicAdd。效果和 += 一样，不过是原子的。他的第一个参数是个指针，指向要修改的地址。第二个参数是要增加多少。也就是说：</li>
+<li>atomicAdd (dst, src) 和 *dst += src 差不多。</li>
+</ul>
+<h2 id="atomicadd会返回旧值划重点"><a class="markdownIt-Anchor" href="#atomicadd会返回旧值划重点"></a> atomicAdd：会返回旧值（划重点！）</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014105427.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014103802.png" class="">
+<ul>
+<li>old = atomicAdd (dst, src) 其实相当于：</li>
+<li>old = *dst; *dst += src;</li>
+<li>利用这一点可以实现往一个全局的数组 res 里追加数据的效果（push_back），其中 sum 起到了记录当前数组大小的作用。</li>
+<li>因为返回的旧值就相当于在数组里“分配”到了一个位置一样，不会被别人占据。</li>
+</ul>
+<blockquote>
+<p>程序的作用是将 arr 中大于 2 的值放到 res 里</p>
+</blockquote>
+<h2 id="其他原子操作"><a class="markdownIt-Anchor" href="#其他原子操作"></a> 其他原子操作</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014103949.png" class="">
+<ul>
+<li>atomicAdd(dst, src)：*dst += src</li>
+<li>atomicSub(dst, src)：*dst -= src</li>
+<li>atomicOr(dst, src)：*dst |= src</li>
+<li>atomicAnd(dst, src)：*dst &amp;= src</li>
+<li>atomicXor(dst, src)：*dst ^= src</li>
+<li>atomicMax(dst, src)：*dst = std::max(*dst, src)</li>
+<li>atomicMin(dst, src)：*dst = std::min(*dst, src)</li>
+<li>当然，他们也都会返回旧值（如果需要的话）。</li>
+</ul>
+<h2 id="atomicexch原子地写入并读取旧值"><a class="markdownIt-Anchor" href="#atomicexch原子地写入并读取旧值"></a> atomicExch：原子地写入并读取旧值</h2>
+<ul>
+<li>除了刚刚那几个带有运算的原子操作，也有这种单纯是写入而没有读出的。</li>
+<li>old = atomicExch(dst, src) 相当于：</li>
+<li>old = *dst; *dst = src;</li>
+<li>注：Exch是exchange的简写，对标的是std::atomic的exchange函数。</li>
+</ul>
+<h2 id="atomiccas原子地判断是否相等相等则写入并读取旧值"><a class="markdownIt-Anchor" href="#atomiccas原子地判断是否相等相等则写入并读取旧值"></a> atomicCAS：原子地判断是否相等，相等则写入，并读取旧值</h2>
+<ul>
+<li>old = atomicCAS(dst, cmp, src) 相当于：</li>
+<li>old = *dst;</li>
+<li>if (old == cmp)</li>
+<li>*dst = src;</li>
+<li>为什么需要这么复杂的一个原子指令？</li>
+</ul>
+<blockquote>
+<p>对标 c++的 atomic::compare_exchange_strong</p>
+</blockquote>
+<h2 id="atomiccas可以实现任意原子操作"><a class="markdownIt-Anchor" href="#atomiccas可以实现任意原子操作"></a> atomicCAS：可以实现任意原子操作</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014110620.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014110640.png" class="">
+<ul>
+<li>据悉，一些老版本 CUDA 的 atomicAdd 是不支持 float 类型的，可以用 CAS 配合按位转换（bit-cast）的函数 __float_as_int 和 __int_as_float 来实现浮点原子加法。</li>
+<li>当然我们 CUDA 11 的 atomicAdd 本身就支持 float 了，不需要这样魔改，这里仅仅作为展示 atomicCAS 潜力的案例。</li>
+</ul>
+<blockquote>
+<p>expect != old，说明值被其它线程改写了</p>
+</blockquote>
+<h2 id="atomiccas可以实现任意原子操作-2"><a class="markdownIt-Anchor" href="#atomiccas可以实现任意原子操作-2"></a> atomicCAS：可以实现任意原子操作</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014110824.png" class="">
+<ul>
+<li>里面换成 expect * src，就变成了原子乘法  atomicMul——虽然 CUDA 没提供，但是我们自己基于万能的 atomicCAS 实现了！</li>
+</ul>
+<h2 id="atomiccas可以实现任意原子操作-3"><a class="markdownIt-Anchor" href="#atomiccas可以实现任意原子操作-3"></a> atomicCAS：可以实现任意原子操作</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014111303.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014111318.png" class="">
+<ul>
+<li>据悉，一些老版本 CUDA 的 atomicAdd 是不支持 float 类型的，可以用 CAS 配合按位转换（bit-cast）的函数 __float_as_int 和 __int_as_float 来实现浮点原子加法。</li>
+<li>当然我们 CUDA 11 的 atomicAdd 本身就支持 float 了，不需要这样魔改，这里仅仅作为展示 atomicCAS 潜力的案例。</li>
+</ul>
+<h2 id="原子操作的问题影响性能"><a class="markdownIt-Anchor" href="#原子操作的问题影响性能"></a> 原子操作的问题：影响性能</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014111502.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014111542.png" class="">
+<ul>
+<li>不过由于原子操作要保证同一时刻只能有一个线程在修改某个地址，如果多个线程同时修改同一个就需要像“排队”那样，一个线程修改完了另一个线程才能进去，非常低效。</li>
+<li>但是为什么这里用了 2^24 个元素，按理说应该卡的不行了，却还是非常快的样子？</li>
+<li>那是因为 CUDA 编译器比较聪明，自动优化了……稍后会解释他优化的原理。</li>
+</ul>
+<h2 id="解决线程局部变量"><a class="markdownIt-Anchor" href="#解决线程局部变量"></a> 解决：线程局部变量</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014111829.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014111836.png" class="">
+<ul>
+<li>解决方法之一就是：先累加到局部变量 local_sum，最后一次性累加到全局的 sum。</li>
+<li>这样每个线程就只有一次原子操作，而不是网格跨步循环的那么多次原子操作了。当然，我们需要调小 gridDim * blockDim 使其远小于 n，这样才能够减少原子操作的次数。比如右边就减少了 4096/512=8 倍的原子操作。这就是胡渊鸣所说的 TLS。</li>
+</ul>
+<blockquote>
+<p>每个板块 512 个线程，n/4096 个板块，相乘一共是 n/8 个线程，一共有 n 个数据，也就是每个线程先将 8 个数据累加到线程的本地变量中，然后 atomicAdd 到全局变量中<br />
+板块中的线程数量：blockDim: 512<br />
+板块中的线程编号：threadIdx: [0, 512)<br />
+板块数量：gridDim: n/4096<br />
+板块编号：blockIdx: [0, n/4096)<br />
+总感觉不是很直观，不知道每个线程是如何访问数组的，列一下每个线程访问的位置：<br />
+[0, n / 8, n / 8 * 2,…]<br />
+[1, n / 8 + 1, n / 8 * 2 + 1,…]<br />
+…<br />
+[512 * (n / 4096 - 1) + 511, n / 8 + (n / 8 - 1), n / 8 * 2 + (n / 8 - 1),…]<br />
+所以可以把数组全部访问完</p>
+</blockquote>
+<blockquote>
+<p>这个问题还有更好的解法，看下一章。</p>
+</blockquote>
+<h1 id="第-8-章板块与共享内存"><a class="markdownIt-Anchor" href="#第-8-章板块与共享内存"></a> 第 8 章：板块与共享内存</h1>
+<h2 id="到底为什么需要区分出板块的概念"><a class="markdownIt-Anchor" href="#到底为什么需要区分出板块的概念"></a> 到底为什么需要区分出板块的概念？</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014172021.png" class="">
+<h2 id="smstreaming-multiprocessors与板块block"><a class="markdownIt-Anchor" href="#smstreaming-multiprocessors与板块block"></a> SM（Streaming Multiprocessors）与板块（block）</h2>
+<ul>
+<li>GPU 是由多个流式多处理器（SM）组成的。每个 SM 可以处理一个或多个板块。</li>
+<li>SM 又由多个流式单处理器（SP）组成。每个 SP 可以处理一个或多个线程。</li>
+<li>每个 SM 都有自己的一块共享内存（shared memory），他的性质类似于 CPU 中的缓存——和主存相比很小，但是很快，用于缓冲临时数据。还有点特殊的性质，我们稍后会讲。</li>
+<li>通常板块数量总是大于 SM 的数量，这时英伟达驱动就会在多个 SM 之间调度你提交的各个板块。正如操作系统在多个 CPU 核心之间调度线程那样……</li>
+<li>不过有一点不同，GPU 不会像 CPU 那样做时间片轮换——板块一旦被调度到了一个 SM 上，就会一直执行，直到他执行完退出，这样的好处是不存在保存和切换上下文（寄存器，共享内存等）的开销，毕竟 GPU 的数据量比较大，禁不起这样切换来切换去……</li>
+<li>一个 SM 可同时运行多个板块，这时多个板块共用同一块共享内存（每块分到的就少了）。</li>
+<li>而板块内部的每个线程，则是被进一步调度到 SM 上的每个 SP。</li>
+</ul>
+<h2 id="无原子的解决方案sum-变成数组"><a class="markdownIt-Anchor" href="#无原子的解决方案sum-变成数组"></a> 无原子的解决方案：sum 变成数组</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014172751.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014172801.png" class="">
+<ul>
+<li>刚刚的数组求和例子，其实可以不需要原子操作。</li>
+<li>首先，声明 sum 为比原数组小 1024 倍的数组。</li>
+<li>然后在 GPU 上启动 n / 1024 个线程，每个负责原数组中 1024 个数的求和，然后写入到 sum 的对应元素中去。</li>
+<li>因为每个线程都写入了不同的地址，所以不存在任何冲突，也不需要原子操作了。</li>
+<li>然后求出的大小为 n / 1024 的数组，已经足够小了，可以直接在 CPU 上完成最终的求和。也就是 GPU 先把数据尺寸缩减 1024 倍到 CPU 可以接受的范围内，然后让 CPU 完成的思路。</li>
+</ul>
+<blockquote>
+<p>之前是 0.013s，现在是 0.011s，因为包括了驱动初始化之类的时间，所以实际上的进步更大</p>
+</blockquote>
+<h2 id="先读取到线程局部数组然后分步缩减"><a class="markdownIt-Anchor" href="#先读取到线程局部数组然后分步缩减"></a> 先读取到线程局部数组，然后分步缩减</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014174251.png" class="">
+<p>![](./Pasted image 20221014173751.png)</p>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014173758.png" class="">
+<ul>
+<li>刚刚我们直接用了一个 for 循环迭代所有1024个元素，实际上内部仍然是一个串行的过程，数据是强烈依赖的（local_sum += arr[j] 可以体现出，下一时刻的 local_sum 依赖于上一时刻的 local_sum）。</li>
+<li>要消除这种依赖，可以通过右边这样的逐步缩减，这样每个 for 循环内部都是没有数据依赖，从而是可以并行的（对 CPU 而言是 SIMD 和指令级并行，虽然 GPU 没有，但为了引出共享内存的概念我才这样改）。</li>
+</ul>
+<blockquote>
+<p>这里运行变慢了，为了引出共享内存</p>
+</blockquote>
+<h2 id="板块的共享内存shared-memory"><a class="markdownIt-Anchor" href="#板块的共享内存shared-memory"></a> 板块的共享内存（shared memory）</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014174743.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014174809.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014174818.png" class="">
+<ul>
+<li>
+<p>刚刚已经实现了无数据依赖可以并行的 for，那么如何把他真正变成并行的呢？这就是板块的作用了，我们可以把刚刚的线程升级为板块，刚刚的 for 升级为线程，然后把刚刚 local_sum 这个线程局部数组升级为板块局部数组。那么如何才能实现板块局部数组呢？</p>
+</li>
+<li>
+<p>同一个板块中的每个线程，都共享着一块存储空间，他就是共享内存。在 CUDA 的语法中，共享内存可以通过定义一个修饰了 __shared__ 的变量来创建。因此我们可以把刚刚的 local_sum 声明为 __shared__ 就可以让他从每个线程有一个，升级为每个板块有一个了。</p>
+</li>
+<li>
+<p>然后把刚刚的 j 换成板块编号，i 换成线程编号就好啦。</p>
+</li>
+<li>
+<p>但是刚刚算出来的结果好像不对了？</p>
+</li>
+<li>
+<p>这是因为 SM 执行一个板块中的线程时，并不是全部同时执行的。而是一会儿执行这个线程，一会儿执行那个线程。有可能一个线程已经执行到 if (j &lt; 32) 了，而另一个线程还没执行完 if (j &lt; 64)，从而出错。可是为什么 GPU 要这样设计？</p>
+</li>
+<li>
+<p>因为其中某个线程有可能因为在等待内存数据的抵达，这时大可以切换到另一个线程继续执行计算任务，等这个线程陷入内存等待时，原来那个线程说不定就好了呢？（记得上节课说过内存延迟是阻碍 CPU 性能提升的一大瓶颈，GPU 也是如此。CPU 解决方案是超线程技术，一个物理核提供两个逻辑核，当一个逻辑核陷入内存等待时切换到另一个逻辑核上执行，避免空转。GPU 的解决方法就是单个 SM 执行很多个线程，然后在遇到内存等待时，就自动切换到另一个线程）</p>
+</li>
+</ul>
+<blockquote>
+<p>shared memory 大小由架构版本号决定</p>
+</blockquote>
+<h2 id="板块内线程的同步"><a class="markdownIt-Anchor" href="#板块内线程的同步"></a> 板块内线程的同步</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014175826.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014175808.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014175817.png" class="">
+<ul>
+<li>因此，我们可以给每个 if 分支后面加上 __syncthreads () 指令。</li>
+<li>他的功能是，强制同步当前板块内的所有线程。也就是让所有线程都运行到 __syncthreads () 所在位置以后，才能继续执行下去。</li>
+<li>这样就能保证之前其他线程的 local_sum 都已经写入成功了。</li>
+</ul>
+<blockquote>
+<p>__syncthreads () 不能放到 if 里面</p>
+</blockquote>
+<h2 id="线程组warp32-个线程为一组"><a class="markdownIt-Anchor" href="#线程组warp32-个线程为一组"></a> 线程组（warp）：32 个线程为一组</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014185242.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014185255.png" class="">
+<ul>
+<li>其实，SM 对线程的调度是按照 32 个线程为一组来调度的。也就是说，0-31号线程为一组，32-63号线程为一组，以此类推。</li>
+<li>因此 SM 的调度无论如何都是对一整个线程组（warp）进行的，不可能出现一个组里只有单独一个线程被调走，要么 32 个线程一起调走。</li>
+<li>所以其实 j &lt; 32 之后，就不需要 __syncthreads () 了。因为此时所有访问 local_sum 的线程都在一个组里嘛！反正都是一起调度走，不需要同步。</li>
+<li>结果却错了，难道小彭老师讲的 warp 调度不对？</li>
+</ul>
+<h2 id="是编译器干的大好事"><a class="markdownIt-Anchor" href="#是编译器干的大好事"></a> 是编译器干的大好事！</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014185429.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014185437.png" class="">
+<ul>
+<li>其实是编译器自作聪明优化了我们对 local_sum 的访问，导致结果不对的。解决：把 local_sum 数组声明为 volatile 禁止编译器优化（第四课介绍过）。</li>
+</ul>
+<h2 id="什么是线程组分歧warp-divergence"><a class="markdownIt-Anchor" href="#什么是线程组分歧warp-divergence"></a> 什么是线程组分歧（warp divergence）</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014185854.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014190447.png" class="">
+<ul>
+<li>GPU 线程组（warp）中 32 个线程实际是绑在一起执行的，就像 CPU 的 SIMD 那样。因此如果出现分支（if）语句时，如果 32 个 cond 中有的为真有的为假，则会导致两个分支都被执行！不过在 cond 为假的那几个线程在真分支会避免修改寄存器和访存，产生副作用。而为了避免会产生额外的开销。因此建议 GPU 上的 if 尽可能 32 个线程都处于同一个分支，要么全部真要么全部假，否则实际消耗了两倍时间！</li>
+</ul>
+<blockquote>
+<p>避免修改寄存器和访存相当于 CPU 的 SIMD 指令 _mm_blendv_ps 和 _mm_store_mask_ps，不过 GPU 这种 SIMT 的设计能够自动处理分支和循环的分歧，这是他门槛比 CPU 低的一点。<br />
+——王鑫磊</p>
+</blockquote>
+<h2 id="避免线程组产生分歧"><a class="markdownIt-Anchor" href="#避免线程组产生分歧"></a> 避免线程组产生分歧</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014190245.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014190302.png" class="">
+<p>解决：我们加 if 的初衷是为了节省不必要的运算用的，然而对于 j &lt; 32 以下那几个并没有节省运算（因为分支是按 32 个线程一组的），反而增加了分歧需要避免副作用的开销。因此可以把 j &lt; 32 以下的那几个赋值合并为一个，这样反而快。</p>
+<h2 id="使用网格跨步循环一次读取多个-arr-元素"><a class="markdownIt-Anchor" href="#使用网格跨步循环一次读取多个-arr-元素"></a> 使用网格跨步循环一次读取多个 arr 元素</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014191140.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014191124.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014191151.png" class="">
+<ul>
+<li>可见共享内存中做求和开销还是有点大，之后那么多次共享内存的访问，前面却只有一次全局内存 arr 的访问，是不是太少了。</li>
+<li>因此可以通过网格跨步循环增加每个线程访问 arr 的次数，从而超过共享内存部分的时间。</li>
+<li>当然也别忘了在 main 中增加 gridDim 的大小。</li>
+</ul>
+<h2 id="通过模板函数包装一下"><a class="markdownIt-Anchor" href="#通过模板函数包装一下"></a> 通过模板函数包装一下</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014191905.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014191912.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014191918.png" class="">
+<ul>
+<li>使用板块局部数组（共享内存）来加速数组求和</li>
+<li>这就是胡渊鸣所说的 BLS（block-local storage）</li>
+</ul>
+<blockquote>
+<p><a href="https://developer.download.nvidia.cn/assets/cuda/files/reduction.pdf">https://developer.download.nvidia.cn/assets/cuda/files/reduction.pdf</a></p>
+</blockquote>
+<h2 id="进一步当数组非常大缩减后的数组可以继续递归地用-gpu-求和"><a class="markdownIt-Anchor" href="#进一步当数组非常大缩减后的数组可以继续递归地用-gpu-求和"></a> 进一步，当数组非常大，缩减后的数组可以继续递归地用 GPU 求和</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014192145.png" class="">
+<ul>
+<li>这是第六课说过的方法。递归地缩并，时间复杂度是 O (logn)。</li>
+<li>同样是缩并到一定小的程度开始就切断 (cutoff)，开始用 CPU 串行求和。</li>
+</ul>
+<h2 id="编译器真智能"><a class="markdownIt-Anchor" href="#编译器真智能"></a> 编译器真智能！</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014192518.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014192525.png" class="">
+<ul>
+<li>刚刚说到虽然用了 atomicAdd 按理说是非常低效的，然而却没有低效，这是因为编译器自动优化成刚刚用 BLS 的数组求和了！可以看到他优化后的效率和我们的 BLS 相仿，甚至还要快一些！</li>
+<li>结论：刚刚我们深入研究了如何 BLS 做数组求和，只是出于学习原理的目的。实际做求和时，直接写 atomicAdd 即可。反正编译器会自动帮我们优化成 BLS，而且他优化得比我们手写的更好……</li>
+<li>然后 atomicMax 求数组最大值，也同理。</li>
+</ul>
+<h2 id="怪事"><a class="markdownIt-Anchor" href="#怪事"></a> 怪事</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014192732.png" class="">
+<ul>
+<li>不过看了一下生成的 PTX 汇编，好像也没有优化掉的样子？难道是 CUBIN 那一阶段做的？还是驱动做的？还在向王鑫磊求教中……</li>
+</ul>
+<h1 id="第-9-章共享内存进阶"><a class="markdownIt-Anchor" href="#第-9-章共享内存进阶"></a> 第 9 章：共享内存进阶</h1>
+<h2 id="gpu-的内存模型"><a class="markdownIt-Anchor" href="#gpu-的内存模型"></a> GPU 的内存模型</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014192953.png" class="">
+<blockquote>
+<p>一个 GPU 有多个 SM 组成，每个 SM 一次执行 32 个线程，它会在一个板块中的多个 warp 中反复迁来迁去隐藏内存延迟，每个线程有寄存器，如果 blockDim 太大，每个线程迁移前都要存储寄存器，分到的寄存器数量变少，造成寄存器打翻</p>
+</blockquote>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014193229.png" class="">
+<h2 id="全局内存在-main-中通过-cudamalloc-分配的内存"><a class="markdownIt-Anchor" href="#全局内存在-main-中通过-cudamalloc-分配的内存"></a> 全局内存：在 main () 中通过 cudaMalloc 分配的内存</h2>
+<p>![](./Pasted image 20221014193550.png)</p>
+<h2 id="共享内存每个板块都有一个通过-shared-声明"><a class="markdownIt-Anchor" href="#共享内存每个板块都有一个通过-shared-声明"></a> 共享内存：每个板块都有一个，通过 <strong>shared</strong> 声明</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014193604.png" class="">
+<h2 id="寄存器存储着每个线程的局部变量"><a class="markdownIt-Anchor" href="#寄存器存储着每个线程的局部变量"></a> 寄存器：存储着每个线程的局部变量</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014193618.png" class="">
+<h2 id="板块中线程数量过多寄存器打翻register-spill"><a class="markdownIt-Anchor" href="#板块中线程数量过多寄存器打翻register-spill"></a> 板块中线程数量过多：寄存器打翻（register spill）</h2>
+<ul>
+<li>GPU 线程的寄存器，实际上也是一块比较小而块的内存，称之为寄存器仓库（register file）。板块内的所有的线程共用一个寄存器仓库。</li>
+<li>当板块中的线程数量（blockDim）过多时，就会导致每个线程能够分配到的寄存器数量急剧缩小。而如果你的程序恰好用到了非常多的寄存器，那就没办法全部装在高效的寄存器仓库里，而是要把一部分“打翻”到一级缓存中，这时对这些寄存器读写的速度就和一级缓存一样，相对而言低效了。若一级缓存还装不下，那会打翻到所有 SM 共用的二级缓存。</li>
+<li>此外，如果在线程局部分配一个数组，并通过动态下标访问（例如遍历 BVH 时用到的模拟栈），那无论如何都是会打翻到一级缓存的，因为寄存器不能动态寻址。</li>
+<li>对于 Fermi 架构来说，每个线程最多可以有 63 个寄存器（每个有 4 字节）。</li>
+</ul>
+<blockquote>
+<p><a href="https://developer.download.nvidia.cn/CUDA/training/register_spilling.pdf">https://developer.download.nvidia.cn/CUDA/training/register_spilling.pdf</a></p>
+</blockquote>
+<h2 id="板块中的线程数量过少延迟隐藏latency-hiding失效"><a class="markdownIt-Anchor" href="#板块中的线程数量过少延迟隐藏latency-hiding失效"></a> 板块中的线程数量过少：延迟隐藏（latency hiding）失效</h2>
+<ul>
+<li>我们说过，每个 SM 一次只能执行板块中的一个线程组（warp），也就是32个线程。</li>
+<li>而当线程组陷入内存等待时，可以切换到另一个线程，继续计算，这样一个 warp 的内存延迟就被另一个 warp 的计算延迟给隐藏起来了。因此，如果线程数量太少的话，就无法通过在多个 warp 之间调度来隐藏内存等待的延迟，从而低效。</li>
+<li>此外，最好让板块中的线程数量（blockDim）为32的整数倍，否则假如是 33 个线程的话，那还是需要启动两个 warp，其中第二个 warp 只有一个线程是有效的，非常浪费。</li>
+<li>结论：对于使用寄存器较少、访存为主的核函数（例如矢量加法），使用大 blockDim 为宜。反之（例如光线追踪）使用小 blockDim，但也不宜太小。</li>
+</ul>
+<h2 id="经典案例矩阵转置"><a class="markdownIt-Anchor" href="#经典案例矩阵转置"></a> 经典案例：矩阵转置</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014200612.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014200643.png" class="">
+<ul>
+<li>为什么需要多维？直接手动求模运算获取 x，y 坐标不行吗？看右边这个例子。</li>
+<li>回顾一下：我们第七课讲过，CPU 上的并行 for，通常会做循环分块提升缓存局域性。但是如果我们是传统的两层的 for 循环就低效了，对于矩阵转置这种需要 y 方向非连续访问而言，循环分块会带来很大提升。</li>
+<li>所以该怎么做才能让 GPU 也循环分块呢？</li>
+</ul>
+<blockquote>
+<p>CPU 上采用循环分块，GPU 上呢？</p>
+</blockquote>
+<h2 id="经典案例矩阵转置-2"><a class="markdownIt-Anchor" href="#经典案例矩阵转置-2"></a> 经典案例：矩阵转置</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014203053.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014203201.png" class="">
+<ul>
+<li>很简单，只需要使用二维的 blockDim 和 gridDim，然后在核函数里分别计算 x 和 y 的扁平化线程编号就行了！他会自动变成循环分块一样的效果，有利于缓存局域性。</li>
+<li>顺便一提 Taichi 没有用多维的 blockDim，他统一用一维的网格跨步循环来扁平化高维循环，这就是为什么我们用 Taichi 的 for 处理二维、三维数据的 stencil 时会比较低效。因为他们根本就不考虑循环分块的！</li>
+</ul>
+<h2 id="使用共享内存"><a class="markdownIt-Anchor" href="#使用共享内存"></a> 使用共享内存</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014202722.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014202757.png" class="">
+<ul>
+<li>刚刚那样的话对 in 的读取是存在跨步的，而 GPU 喜欢连续的顺序读取，这样跨步就不高效了。</li>
+<li>但是因为我们的目的是做矩阵转置，无论是 in 还是 out 必然有一个是需要跨步的，怎么办？</li>
+<li>因此可以先通过把 in 分块，按块跨步地读，而块内部则仍是连续地读——从低效的全局内存读到高效的共享内存中，然后在共享内存中跨步地读，连续地写到 out 指向的低效的全局内存中。</li>
+<li>这样跨步的开销就开在高效的共享内存上，而不是低效的全局内存上，因此会变快。</li>
+</ul>
+<h2 id="共享内存什么是区块bank"><a class="markdownIt-Anchor" href="#共享内存什么是区块bank"></a> 共享内存：什么是区块（bank）</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014203510.png" class="">
+<ul>
+<li>GPU 的共享内存，实际上是 32 块内存条通过并联组成的（有点类似 CPU 的双通道内存条）。</li>
+<li>每个 bank 都可以独立地访问，他们每个时钟周期都可以读取一个 int。</li>
+<li>然后，他们把地址空间分为 32 分，第 i 根内存条，负责 addr % 32 == i 的那几个 int 的存储。这样交错存储，可以保证随机访问时，访存能够尽量分摊到 32 个区块，这样速度就提升了 32 倍。</li>
+<li>比如：__shared__ int arr[1024];</li>
+<li>那么 arr[0] 是存储在 bank 0，arr[1] 是 bank 1……arr[32] 又是 bank 0，arr[33] 又是 bank 1。</li>
+</ul>
+<blockquote>
+<p>如果同时读 arr[1] 和 arr[33] 的话，就会发生 bank conflict</p>
+</blockquote>
+<h2 id="区块冲突bank-conflict"><a class="markdownIt-Anchor" href="#区块冲突bank-conflict"></a> 区块冲突（bank conflict）</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014203834.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014203840.png" class="">
+<ul>
+<li>然而这种设计有一个问题，那就是如果多个线程同时访问到了同一个 bank 的话，就需要排队。比如右图，线程0-3同时访问了 bank 0，但是同一个 bank 是需要排队，也就是串行访问的，所以线程0-3实际上没有真正并行起来，慢了4倍！</li>
+<li>那可能你觉得好像没什么问题，反正一般不会让两个线程访问 __shared__ 数组的同一个元素嘛！但是别忘了，刚刚说了 bank 是按照 addr % 32 来划分的，也就是说 arr[0] 和 arr[32] 是同属于 bank 0 的，如果两个线程同时访问了 arr[0] 和 arr[32] 就会出现 bank conflict 导致必须排队影响性能！</li>
+</ul>
+<h2 id="回到矩阵转置的案例如何解决区块冲突"><a class="markdownIt-Anchor" href="#回到矩阵转置的案例如何解决区块冲突"></a> 回到矩阵转置的案例：如何解决区块冲突？</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014204138.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014204144.png" class="">
+<ul>
+<li>而刚刚那个矩阵转置的例子，这里的 blockSize 是 32。可以看到第一个对 tmp 的访问是没冲突的。</li>
+<li>而分析一下第二个对 tmp 的访问：threadIdx=(0,0) 的线程 0 会访问 tmp[0] 位于 bank 0；threadIdx=(0,1) 的线程 1 会访问 tmp[32] 也位于 bank 0；threadIdx=(0,1) 的线程 2 会访问 tmp[64] 也位于 bank 0……也就是说，同一个 warp 的所有线程都在访问 bank 0！这导致读取无法并行，必须串行排队，从而（单看共享内存的效率）会变慢 32 倍。（不过据说最新架构中好像把 bank 数降低到 16 个，也就是 half-warp 了）</li>
+</ul>
+<h2 id="故意把二维数组的跨步从-32-调为-33解决区块冲突"><a class="markdownIt-Anchor" href="#故意把二维数组的跨步从-32-调为-33解决区块冲突"></a> 故意把二维数组的跨步从 32 调为 33：解决区块冲突</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014204340.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014204348.png" class="">
+<ul>
+<li>解决方法就是，把 tmp 这个二维数组从 32x32 变成 33x32。通常我们总以为把数组大小对齐到二的幂次是好事，但对共享内存对齐地划分 bank 这种独特的特性来说，有时故意不对齐反而是好事……</li>
+<li>这样线程 0 访问的就是 arr[0] 位于 bank 0，线程 1 访问的就是 arr[33] 位于 bank 1，线程 2 访问的就是 arr[66] 位于 bank 2……正好变成了一个线程访问一个 bank，没有冲突，不需要排队，从而可以并行访问！</li>
+</ul>
+<h2 id="共享内存区块冲突bank-conflict"><a class="markdownIt-Anchor" href="#共享内存区块冲突bank-conflict"></a> 共享内存区块冲突（bank conflict）</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014204545.png" class="">
+<blockquote>
+<p>如果所有线程访问不同的 bank，或者读同一个地址（比如都读 arr[0]，通过广播机制优化），没有 bank conflict<br />
+如果所有线程访问同一个 bank，只能排队读，就会低效</p>
+</blockquote>
+<h2 id="gpu-优化手法总结"><a class="markdownIt-Anchor" href="#gpu-优化手法总结"></a> GPU 优化手法总结</h2>
+<ul>
+<li>线程组分歧（wrap divergence）：尽量保证 32 个线程都进同样的分支，否则两个分支都会执行。</li>
+<li>延迟隐藏（latency hiding）：需要有足够的 blockDim 供 SM 在陷入内存等待时调度到其他线程组。</li>
+<li>寄存器打翻（register spill）：如果核函数用到很多局部变量（寄存器），则 blockDim 不宜太大。</li>
+<li>共享内存（shared memory）：全局内存比较低效，如果需要多次使用，可以先读到共享内存。</li>
+<li>跨步访问（coalesced acccess）：建议先顺序读到共享内存，让高带宽的共享内存来承受跨步。</li>
+<li>区块冲突（bank conflict）：同一个 warp 中多个线程访问共享内存中模 32 相等的地址会比较低效，可以把数组故意搞成不对齐的 33 跨步来避免。</li>
+<li>顺便一提，英伟达的 warp 大小是 32，而 AMD 的显卡则是 64，其他概念如共享内存基本类似。</li>
+</ul>
+<h1 id="第-10-章插桩操作实战"><a class="markdownIt-Anchor" href="#第-10-章插桩操作实战"></a> 第 10 章：插桩操作实战</h1>
+<h2 id="读写图像"><a class="markdownIt-Anchor" href="#读写图像"></a> 读写图像</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205602.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205126.png" class="">
+<ul>
+<li>首先是读写图像的函数，利用了 stb_image 这个单头文件库。</li>
+</ul>
+<h2 id="x-方向模糊"><a class="markdownIt-Anchor" href="#x-方向模糊"></a> X 方向模糊</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205440.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205155.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205250.png" class="">
+<p>•然后看实现径向模糊的核函数。</p>
+<h2 id="y-方向模糊"><a class="markdownIt-Anchor" href="#y-方向模糊"></a> Y 方向模糊</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205532.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205722.png" class="">
+<h2 id="经典案例jacobi-迭代"><a class="markdownIt-Anchor" href="#经典案例jacobi-迭代"></a> 经典案例：jacobi 迭代</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205629.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205634.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205734.png" class="">
+<ul>
+<li>相比第七课 CPU 的 ghost cell 处理方式，这里用了 std::min 和 std::max 来防止访问越界。主要是 GPU 的 SIMT 处理这个比较擅长，不像 CPU 如果这样来钳制可能导致矢量化失败。</li>
+</ul>
+<h2 id="减轻-membound一次代替四次迭代"><a class="markdownIt-Anchor" href="#减轻-membound一次代替四次迭代"></a> 减轻 membound：一次代替四次迭代</h2>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205948.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014205955.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014210002.png" class="">
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014210104.png" class="">
+<ul>
+<li>和第七课提到的循环合并法局部迭代一样的方式。</li>
+<li>不过这里改用了 GPU 的板块共享内存，线程之间自动并行，没有像 CPU 那样用循环。</li>
+</ul>
+
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"b72d5298f3697eb74696","clientSecret":"4cb6a985e89acb4525561d9c1cc12c589a7dccf6","repo":"Miroier.github.io","owner":"Miroier","admin":["Miroier"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>]]></content>
+  </entry>
 </search>
