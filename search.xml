@@ -3049,7 +3049,7 @@ a^b\%c=\left( a\%c \right) ^b\%c
 <blockquote>
 <p>本方法出自英伟达官方博客： https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/</p>
 </blockquote>
-<h2 id="第4章c-封装">第4章：C++ 封装</h2>
+<h1 id="第4章c-封装">第4章：C++ 封装</h1>
 <h2 id="stdvector-的秘密第二模板参数">std::vector 的秘密：第二模板参数</h2>
 <ul>
 <li>你知道吗？std::vector 作为模板类，其实有两个模板参数：std::vector&lt;T, AllocatorT&gt;</li>
