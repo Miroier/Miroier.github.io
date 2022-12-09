@@ -172,7 +172,7 @@
 <meta property="og:image" content="http://yoursite.com/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014172751.png">
 <meta property="og:image" content="http://yoursite.com/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014172801.png">
 <meta property="og:image" content="http://yoursite.com/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014174251.png">
-<meta property="og:image" content="http://yoursite.com/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/Pasted%20image%2020221014173751.png">
+<meta property="og:image" content="http://yoursite.com/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221209203923.png">
 <meta property="og:image" content="http://yoursite.com/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014173758.png">
 <meta property="og:image" content="http://yoursite.com/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014174743.png">
 <meta property="og:image" content="http://yoursite.com/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014174809.png">
@@ -1271,7 +1271,7 @@
 </blockquote>
 <h2 id="先读取到线程局部数组然后分步缩减">先读取到线程局部数组，然后分步缩减</h2>
 <img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014174251.png" class="">
-<p><img data-src="./Pasted%20image%2020221014173751.png" /></p>
+<img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221209203923.png" class="">
 <img data-src="/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B-20221014173758.png" class="">
 <ul>
 <li>刚刚我们直接用了一个 for 循环迭代所有1024个元素，实际上内部仍然是一个串行的过程，数据是强烈依赖的（local_sum += arr[j] 可以体现出，下一时刻的 local_sum 依赖于上一时刻的 local_sum）。</li>
