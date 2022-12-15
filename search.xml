@@ -2637,7 +2637,7 @@ a^b\%c=\left( a\%c \right) ^b\%c
   <entry>
     <title>CUDA开启的GPU编程</title>
     <url>/2022/12/09/CUDA%E5%BC%80%E5%90%AF%E7%9A%84GPU%E7%BC%96%E7%A8%8B/</url>
-    <content><![CDATA[<p><a href="https://www.bilibili.com/video/BV16b4y1E74f/?vd_source=2e8d245875bf227dd9f030691ed088ee">【并行计算】CUDA在现代C++中如何运用？看这一个就够了！_哔哩哔哩_bilibili</a></p>
+    <content><![CDATA[<p>笔记</p>
 <span id="more"></span>
 <h1 id="第0章hello-world">第0章：Hello, world!</h1>
 <h2 id="cmake-中启用-cuda-支持">CMake 中启用 CUDA 支持</h2>
@@ -3636,5 +3636,8 @@ a^b\%c=\left( a\%c \right) ^b\%c
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
+      <categories>
+        <category>高性能并行编程与优化</category>
+      </categories>
   </entry>
 </search>
