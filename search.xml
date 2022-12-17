@@ -2211,9 +2211,9 @@ rose命令：它用来绘制极坐标系下的柱状图。</p>
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
-      <tags>
-        <tag>数学建模</tag>
-      </tags>
+      <categories>
+        <category>数学建模</category>
+      </categories>
   </entry>
   <entry>
     <title>一元多项式的乘法与加法运算</title>
