@@ -3707,7 +3707,7 @@ proof.\sum\nolimits_{i=0}^{n-1}{\left( \omega _{n}^{k} \right) ^i}=\frac{\left( 
 <h1 id="dft-及-fft-原理推导">DFT 及 FFT 原理推导</h1>
 <h2 id="离散傅里叶变换-dft">离散傅里叶变换 DFT</h2>
 <p><span class="math inline">\(A\left( x \right) =\sum_{i=0}^{n-1}{a_ix^i}\)</span> 在 <span class="math inline">\(\omega _{n}^{0},\omega _{n}^{1},\cdots ,\omega _{n}^{n-1}\)</span> 处的值为 <span class="math inline">\(y_0,y_1,\cdots ,y_{n-1}\)</span></p>
-<p>离散傅里叶变换后的结果 <span class="math inline">\(y_i=A\left( \omega _{n}^{i} \right) =\sum_{j=0}^{n-1}{\omega _{n}^{ij}x^j}\)</span>，记为 <span class="math inline">\(y=\mathrm{DFT}_n\left ( a \right)\)</span></p>
+<p>离散傅里叶变换后的结果 <span class="math inline">\(y_i=A\left( \omega _{n}^{i} \right) =\sum_{j=0}^{n-1}{\omega _{n}^{ij}a^j}\)</span>，记为 <span class="math inline">\(y=\mathrm{DFT}_n\left ( a \right)\)</span></p>
 <p>使用秦九韶算法一次求值的时间复杂度是 <span class="math inline">\(O(n)\)</span>，求 n 个值的总复杂度是 <span class="math inline">\(O(n^2)\)</span></p>
 <h2 id="快速傅里叶变换-fft">快速傅里叶变换 FFT</h2>
 <p>通过单位根的性质去除冗余的计算量，将时间复杂度降为 <span class="math inline">\(O\left ( n\log n \right)\)</span></p>
