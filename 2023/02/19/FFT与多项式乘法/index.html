@@ -29,11 +29,13 @@
 <meta property="og:site_name" content="Seclusion">
 <meta property="og:description" content="学习FFT过程中的笔记">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2023/02/19/FFT%E4%B8%8E%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B9%98%E6%B3%95/FFT%E4%B8%8E%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B9%98%E6%B3%95-20230223222749.png">
 <meta property="article:published_time" content="2023-02-19T14:54:26.000Z">
 <meta property="article:modified_time" content="2023-02-19T14:54:26.000Z">
 <meta property="article:author" content="Miroier">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2023/02/19/FFT%E4%B8%8E%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B9%98%E6%B3%95/FFT%E4%B8%8E%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B9%98%E6%B3%95-20230223222749.png">
 
 
 <link rel="canonical" href="http://yoursite.com/2023/02/19/FFT%E4%B8%8E%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B9%98%E6%B3%95/">
@@ -146,7 +148,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-text">前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E6%95%B0"><span class="nav-text">复数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BD%8D%E6%A0%B9"><span class="nav-text">单位根</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="nav-text">多项式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dft-%E5%8F%8A-fft-%E5%8E%9F%E7%90%86%E6%8E%A8%E5%AF%BC"><span class="nav-text">DFT 及 FFT 原理推导</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%BB%E6%95%A3%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2-dft"><span class="nav-text">离散傅里叶变换 DFT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2-fft"><span class="nav-text">快速傅里叶变换 FFT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-text">C++代码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E6%95%88%E5%AE%9E%E7%8E%B0-fft"><span class="nav-text">高效实现 FFT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%9D%B4%E8%9D%B6%E6%93%8D%E4%BD%9C"><span class="nav-text">蝴蝶操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%AE%9E%E7%8E%B0"><span class="nav-text">迭代实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E9%80%86%E5%BA%8F%E7%BD%AE%E6%8D%A2"><span class="nav-text">位逆序置换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fft-%E9%80%86%E5%8F%98%E6%8D%A2"><span class="nav-text">FFT 逆变换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E9%80%86%E5%8F%98%E6%8D%A2-idft"><span class="nav-text">快速傅里叶逆变换 IDFT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fft-%E6%B1%82%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%8D%B7%E7%A7%AF"><span class="nav-text">FFT 求多项式卷积</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">参考资料</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-text">前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E6%95%B0"><span class="nav-text">复数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BD%8D%E6%A0%B9"><span class="nav-text">单位根</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="nav-text">多项式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dft-%E5%8F%8A-fft-%E5%8E%9F%E7%90%86%E6%8E%A8%E5%AF%BC"><span class="nav-text">DFT 及 FFT 原理推导</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%BB%E6%95%A3%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2-dft"><span class="nav-text">离散傅里叶变换 DFT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2-fft"><span class="nav-text">快速傅里叶变换 FFT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-text">C++代码实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E6%95%88%E5%AE%9E%E7%8E%B0-fft"><span class="nav-text">高效实现 FFT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%9D%B4%E8%9D%B6%E6%93%8D%E4%BD%9C"><span class="nav-text">蝴蝶操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%AE%9E%E7%8E%B0"><span class="nav-text">迭代实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E9%80%86%E5%BA%8F%E7%BD%AE%E6%8D%A2"><span class="nav-text">位逆序置换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fft-%E9%80%86%E5%8F%98%E6%8D%A2"><span class="nav-text">FFT 逆变换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E9%80%86%E5%8F%98%E6%8D%A2-idft"><span class="nav-text">快速傅里叶逆变换 IDFT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fft-%E6%B1%82%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%8D%B7%E7%A7%AF"><span class="nav-text">FFT 求多项式卷积</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E4%B8%80%E8%88%AC%E6%80%A7%E5%88%86%E8%A7%A3"><span class="nav-text">扩展：一般性分解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">参考资料</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -306,14 +308,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>11k</span>
+      <span>18k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
+      <span>17 分钟</span>
     </span>
 </div>
 
@@ -496,6 +498,147 @@ R\left( x \right) =\lfloor \frac{R\left( \lfloor x/2 \rfloor \right)}{2} \rfloor
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2 2</span><br><span class="line">1 2 3</span><br><span class="line">4 5 6</span><br></pre></td></tr></table></figure>
 <p>测试输出数据</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4 13 28 27 18</span><br></pre></td></tr></table></figure>
+<h1 id="扩展一般性分解">扩展：一般性分解</h1>
+<p>除了常见的 2 基底 FFT 以外，对于更一般的 <span class="math inline">\(N=N_1N_2\)</span> 问题，也有办法在理论上进行拆解，将问题化为数个 <span class="math inline">\(N_1\)</span> 与 <span class="math inline">\(N_2\)</span> 点离散傅里叶变换问题。特别的是，透过互质在数论上的特性，对于 <span class="math inline">\(N_1\)</span> 与 <span class="math inline">\(N_2\)</span> 互质的情况，可以进一步节省运算。</p>
+<p>下面目前只讨论 <span class="math inline">\(N_1N_2\)</span> 非互质的情况。</p>
+<p>为避免之后的符号混淆，我们先将 <span class="math inline">\(N_1N_2\)</span> 置换为 <span class="math inline">\(P_1P_2\)</span>。</p>
+<p>接着定义要拆分的问题，要拆分的问题为 <span class="math inline">\(N\)</span> 点离散傅里叶变换，将 <span class="math inline">\(f\left[ n \right]\)</span> 转换为 <span class="math inline">\(F\left[ m \right]\)</span>：</p>
+<p><span class="math display">\[
+F\left[ m \right] =\sum_{n=0}^{N-1}{f\left[ n \right] e^{-i\frac{2\pi}{N}mn}}\,\,m,n=0,1,\cdots ,N-1
+\]</span></p>
+<p>直观地说，这个 <span class="math inline">\(N\)</span> 点离散傅里叶变换，将由 <span class="math inline">\(n\)</span> 作为参数的函数 <span class="math inline">\(f\left[ n \right]\)</span> ，转换成由 <span class="math inline">\(m\)</span> 作为参数的函数 <span class="math inline">\(F\left[ m \right]\)</span>，并且 <span class="math inline">\(m,n\)</span> 都有 <span class="math inline">\(N\)</span> 个可能的数值。</p>
+<p>待定义好要拆分的问题，便可以开始讨论如何进行拆分，基本概念是将有 <span class="math inline">\(N\)</span> 个可能的数值的 <span class="math inline">\(m,n\)</span> ，分别化为使用两个参数进行描述的函数 <span class="math inline">\(m=\left[ m_1, m_2 \right], n=\left[ n_1, n_2 \right]\)</span>，并借此将原问题化为二维度离散傅里叶变换，便可使用数个较小的离散傅里叶变换问题描述整个过程。</p>
+<p>而一种很直觉的转换方式，便是透过将 <span class="math inline">\(m,n\)</span> 分别除以 <span class="math inline">\(P_2,P_1\)</span>，以商数与余数来做为参数描述 <span class="math inline">\(m,n\)</span> 的值：</p>
+<p><span class="math display">\[
+\begin{matrix}
+    n=n_1P_1+n_2&amp;       m=m_1+m_2P_2\\
+    n_1,m_1=0,1,\cdots ,P_2-1&amp;      n_2,m_2=0,1,\cdots ,P_1-1\\
+\end{matrix}
+\]</span></p>
+<p>其中 <span class="math inline">\(n_1\)</span> 作为将 <span class="math inline">\(n\)</span> 除以 <span class="math inline">\(P_1\)</span> 的商数，与作为 <span class="math inline">\(m\)</span> 除以 <span class="math inline">\(P_2\)</span> 的余数的 <span class="math inline">\(m_1\)</span> 相同，具有 <span class="math inline">\(P_2\)</span> 个可能数值，同理 <span class="math inline">\(n_2\)</span> 与 <span class="math inline">\(m_2\)</span> 有 <span class="math inline">\(P_1\)</span> 个可能数值。</p>
+<p>将上诉的参数代换及 <span class="math inline">\(N=P_1P_2\)</span> 带入原式，可以得到：</p>
+<p><span class="math display">\[
+F\left[ m_1+m_2P_2 \right] =\sum_{n_1=0}^{P_2-1}{\sum_{n_2=0}^{P_1-1}{f\left[ n_1P_1+n_2 \right] e^{-i\frac{2\pi}{P_1P_2}\left( m_1+m_2P_2 \right) \left( n_1P_1+n_2 \right)}}}
+\]</span></p>
+<p>将右边的指数部分乘开并分项化简可以得到：</p>
+<p><span class="math display">\[
+F\left[ m_1+m_2P_2 \right] =\sum_{n_1=0}^{P_2-1}{\sum_{n_2=0}^{P_1-1}{f\left[ n_1P_1+n_2 \right] e^{-i\frac{2\pi}{P_2}m_1n_1}e^{-i\frac{2\pi}{P_1}m_2n_2}e^{-i\frac{2\pi}{P_1P_2}m_1n_2}e^{-i2\pi m_2n_1}}}
+\]</span></p>
+<p>最后透过 <span class="math inline">\(e^{-i2\pi}=1\)</span> 与 <span class="math inline">\(P_1P_2=N\)</span>，可以得到：</p>
+<p><span class="math display">\[
+F\left[ m_1+m_2P_2 \right] =\sum_{n_1=0}^{P_2-1}{\sum_{n_2=0}^{P_1-1}{f\left[ n_1P_1+n_2 \right] e^{-i\frac{2\pi}{P_2}m_1n_1}e^{-i\frac{2\pi}{P_1}m_2n_2}e^{-i\frac{2\pi}{N}m_1n_2}}}
+\]</span></p>
+<p>观察上式，并加上括号辅助厘清运算顺序我们可以得到：</p>
+<p><span class="math display">\[
+F\left[ m_1+m_2P_2 \right] =\sum_{n_2=0}^{P_1-1}{\left\{ \left\{ \sum_{n_1=0}^{P_2-1}{f\left[ n_1P_1+n_2 \right] e^{-i\frac{2\pi}{P_2}m_1n_1}} \right\} e^{-i\frac{2\pi}{N}m_1n_2} \right\} e^{-i\frac{2\pi}{P_1}m_2n_2}}
+\]</span></p>
+<p>最内层的运算可以视为将双参数函数 <span class="math inline">\(f[n_1,n_2]\)</span> 中的一个参数 <span class="math inline">\(n_1\)</span>，透过离散傅里叶变换取代为由 <span class="math inline">\(m_1\)</span> 描述，得到一个新函数 <span class="math inline">\(G_1[m_1,n_2]\)</span>（这步因为对每个不同 <span class="math inline">\(n_2\)</span>，都需要做一次将 <span class="math inline">\(n_1\)</span> 取代为 <span class="math inline">\(m_1\)</span> 的转换，共需要 <span class="math inline">\(P_1\)</span> 个 <span class="math inline">\(P_2\)</span> 点离散傅里叶变换）：</p>
+<p><span class="math display">\[
+F\left[ m_1+m_2P_2 \right] =\sum_{n_2=0}^{P_1-1}{\left\{ G_1\left[ m_1,n_2 \right] e^{-i\frac{2\pi}{N}m_1n_2} \right\} e^{-i\frac{2\pi}{P_1}m_2n_2}}
+\]</span></p>
+<p>下一步运算可以视为单纯的乘法，将 <span class="math inline">\(G_1[m_1,n_2]\)</span> 与 <span class="math inline">\(e^{-i\frac{2\pi}{N}m_1n_2}\)</span> 相乘，得到 <span class="math inline">\(G_2[m1,n2]\)</span>（这步需要的计算量视 <span class="math inline">\(\frac{m_1n_2}{N}\)</span> 的特殊性而会有变化）：</p>
+<p><span class="math display">\[
+F\left[ m_1+m_2P_2 \right] =\sum_{n_2=0}^{P_1-1}{G_2\left[ m_1,n_2 \right] e^{-i\frac{2\pi}{P_1}m_2n_2}}
+\]</span></p>
+<p>最后的运算可以视为将函数 <span class="math inline">\(G_2[m_1,n_2]\)</span> 中的 <span class="math inline">\(n_2\)</span> ，透过离散傅里叶变换取代为由 <span class="math inline">\(m_2\)</span> 描述，得到一个新函数 <span class="math inline">\(G_3[m_1,m_2]\)</span>（这步因为对每个不同 <span class="math inline">\(m_1\)</span>，都需要做一次将 <span class="math inline">\(n_2\)</span> 取代为 <span class="math inline">\(m_2\)</span> 的转换，共需要 <span class="math inline">\(P_2\)</span> 个 <span class="math inline">\(P_1\)</span> 点离散傅里叶变换）：</p>
+<p><span class="math display">\[
+F\left[ m\left( =m_1+m_2P_2 \right) \right] =G_3\left[ m_1,m_2 \right]
+\]</span></p>
+<p>这样就仅使用 <span class="math inline">\(P_1\)</span> 与 <span class="math inline">\(P_2\)</span> 点离散傅里叶变换，描述了原先的 <span class="math inline">\(N\)</span> 点离散傅里叶变换。</p>
+<p>接下来举一个实际例子帮助理解上面的流程</p>
+<p>假设输入为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 2 3 4 5 6 7 8</span><br></pre></td></tr></table></figure>
+<p>这是一个 8 点的 FFT，直接调用 scipy 库里的 fft 求得答案为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.fft <span class="keyword">import</span> fft</span><br><span class="line"></span><br><span class="line">np.set_printoptions(precision=<span class="number">2</span>, suppress=<span class="literal">True</span>, linewidth=<span class="number">400</span>)</span><br><span class="line">x = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>])</span><br><span class="line">ans = fft(x)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;ans=&quot;</span>, ans)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ans= [36.-0.j   -4.+9.66j -4.+4.j   -4.+1.66j -4.-0.j   -4.-1.66j -4.-4.j   -4.-9.66j]</span><br></pre></td></tr></table></figure>
+<p>然后用我们上面提到的一般性分解来解决这个问题，将 8 分解为 4 乘 2，也就是 <span class="math inline">\(N=8,P_1=4,P_2=2\)</span>。</p>
+<p><span class="math display">\[
+\begin{matrix}
+    n=n_1*4+n_2&amp;        m=m_1+m_2*2\\
+    n_1,m_1=0,1&amp;        n_2,m_2=0,1,2,3\\
+\end{matrix}
+\]</span></p>
+<p><span class="math display">\[
+F\left[ m_1+m_2*2 \right] =\sum_{n_2=0}^3{\left\{ \left\{ \sum_{n_1=0}^1{f\left[ n_1*4+n_2 \right] e^{-i\frac{2\pi}{N_2}m_1n_1}} \right\} e^{-i\frac{2\pi}{N}m_1n_2} \right\} e^{-i\frac{2\pi}{N_1}m_2n_2}}
+\]</span></p>
+<p>最内层是</p>
+<p><span class="math display">\[
+G_1\left[ m_1,n_2 \right] =\sum_{n_1=0}^1{f\left[ n_1*4+n_2 \right] e^{-i\frac{2\pi}{N_2}m_1n_1}}
+\]</span></p>
+<p>可以列出每项 <span class="math inline">\(G_1\)</span> 由哪些 <span class="math inline">\(f\)</span> 得到：</p>
+<p><span class="math display">\[
+\begin{array}{l}
+    G_1\left[ 0,0 \right] \Leftarrow f\left[ 0,0 \right] \&amp;f\left[ 1,0 \right] ,G_1\left[ 1,0 \right] \Leftarrow f\left[ 0,0 \right] \&amp;f\left[ 1,0 \right]\\
+    G_1\left[ 0,1 \right] \Leftarrow f\left[ 0,1 \right] \&amp;f\left[ 1,1 \right] ,G_1\left[ 1,1 \right] \Leftarrow f\left[ 0,1 \right] \&amp;f\left[ 1,1 \right]\\
+    G_1\left[ 0,2 \right] \Leftarrow f\left[ 0,2 \right] \&amp;f\left[ 1,2 \right] ,G_1\left[ 1,2 \right] \Leftarrow f\left[ 0,2 \right] \&amp;f\left[ 1,2 \right]\\
+    G_1\left[ 0,3 \right] \Leftarrow f\left[ 0,3 \right] \&amp;f\left[ 1,3 \right] ,G_1\left[ 1,3 \right] \Leftarrow f\left[ 0,3 \right] \&amp;f\left[ 1,3 \right]\\
+\end{array}
+\]</span></p>
+<p>然后是乘以旋转因子：</p>
+<p><span class="math display">\[
+G_2\left[ m_1,n_2 \right] =G_1\left[ m_1,n_2 \right] e^{-i\frac{2\pi}{N}m_1n_2}
+\]</span></p>
+<p>最后是</p>
+<p><span class="math display">\[
+F\left[ m_1+m_2*2 \right] =G_3\left[ m_1,m_2 \right] =\sum_{n_2=0}^3{G_2\left[ m_1,n_2 \right] e^{-i\frac{2\pi}{N_1}m_2n_2}}
+\]</span></p>
+<p>同样列出每项 <span class="math inline">\(G_3\)</span> 由哪些 <span class="math inline">\(G_2\)</span> 得到：</p>
+<p><span class="math display">\[
+\begin{array}{l}
+    G_3\left[ 0,0 \right] \&amp;G_3\left[ 0,1 \right] \&amp;G_3\left[ 0,2 \right] \&amp;G_3\left[ 0,3 \right] \Leftarrow G_2\left[ 0,0 \right] \&amp;G_2\left[ 0,1 \right] \&amp;G_2\left[ 0,2 \right] \&amp;G_2\left[ 0,3 \right]\\
+    G_3\left[ 1,0 \right] \&amp;G_3\left[ 1,1 \right] \&amp;G_3\left[ 1,2 \right] \&amp;G_3\left[ 1,3 \right] \Leftarrow G_2\left[ 1,0 \right] \&amp;G_2\left[ 1,1 \right] \&amp;G_2\left[ 1,2 \right] \&amp;G_2\left[ 1,3 \right]\\
+\end{array}
+\]</span></p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cmath</span><br><span class="line"></span><br><span class="line">np.set_printoptions(precision=<span class="number">2</span>, suppress=<span class="literal">True</span>, linewidth=<span class="number">400</span>)</span><br><span class="line">x = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">DFT1</span>(<span class="params"><span class="built_in">input</span>, N, N1, N2</span>):</span><br><span class="line">    output = np.array([<span class="number">0</span> + <span class="number">0j</span>] * N)</span><br><span class="line">    <span class="keyword">for</span> n2 <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N1):  <span class="comment"># 对每个不同的n2，计算一次N2点FFT</span></span><br><span class="line">        <span class="keyword">for</span> m1 <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N2):</span><br><span class="line">            w = <span class="built_in">complex</span>(<span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">            wn = cmath.exp(-<span class="number">1j</span> * <span class="number">2</span> * cmath.pi * m1 / N2)</span><br><span class="line">            <span class="keyword">for</span> n1 <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N2):</span><br><span class="line">                output[m1 * N1 + n2] += <span class="built_in">input</span>[n1 * N1 + n2] * w</span><br><span class="line">                w *= wn</span><br><span class="line">    <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">DFT2</span>(<span class="params"><span class="built_in">input</span>, N, N1, N2</span>):</span><br><span class="line">    output = np.array([<span class="number">0</span> + <span class="number">0j</span>] * N)</span><br><span class="line">    <span class="keyword">for</span> m1 <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N2):  <span class="comment"># 对每个不同的n1，计算一次N1点FFT</span></span><br><span class="line">        <span class="keyword">for</span> m2 <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N1):</span><br><span class="line">            w = <span class="built_in">complex</span>(<span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">            wn = cmath.exp(-<span class="number">1j</span> * <span class="number">2</span> * cmath.pi * m2 / N1)</span><br><span class="line">            <span class="keyword">for</span> n2 <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N1):</span><br><span class="line">                output[m1 + m2 * N2] += (</span><br><span class="line">                    <span class="built_in">input</span>[m1 * N1 + n2] * w</span><br><span class="line">                )  <span class="comment"># 注意这里存储索引要写成m1+m2*N2，意为转置</span></span><br><span class="line">                w *= wn</span><br><span class="line">    <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">N = <span class="number">8</span></span><br><span class="line">N1 = <span class="number">4</span></span><br><span class="line">N2 = <span class="number">2</span></span><br><span class="line">f = x</span><br><span class="line">f = DFT1(f, N, N1, N2)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;G1=&quot;</span>, f)</span><br><span class="line"><span class="keyword">for</span> m1 <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N2):</span><br><span class="line">    <span class="keyword">for</span> n2 <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N1):</span><br><span class="line">        f[m1 * N1 + n2] *= cmath.exp(-<span class="number">1j</span> * <span class="number">2</span> * cmath.pi * m1 * n2 / N)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;G2=&quot;</span>, f)</span><br><span class="line">f = DFT2(f, N, N1, N2)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;G3=&quot;</span>, f)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">G1= [ 6.+0.j  8.+0.j 10.+0.j 12.+0.j -4.-0.j -4.-0.j -4.-0.j -4.-0.j]</span><br><span class="line">G2= [ 6.  +0.j    8.  +0.j   10.  +0.j   12.  +0.j   -4.  -0.j   -2.83+2.83j -0.  +4.j    2.83+2.83j]</span><br><span class="line">G3= [36.+0.j   -4.+9.66j -4.+4.j   -4.+1.66j -4.-0.j   -4.-1.66j -4.-4.j   -4.-9.66j]</span><br></pre></td></tr></table></figure>
+<p>好吧，我承认光看上面的公式和代码并不能直观地理解到底做了什么，所以下面我们结合一张图来直观的展示每一步的计算</p>
+<img data-src="/2023/02/19/FFT%E4%B8%8E%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B9%98%E6%B3%95/FFT%E4%B8%8E%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B9%98%E6%B3%95-20230223222749.png" class="">
+<p>输入为：</p>
+<p><span class="math display">\[
+f=\left[ \begin{matrix}
+    1&amp;      2&amp;      3&amp;      4\\
+    5&amp;      6&amp;      7&amp;      8\\
+\end{matrix} \right] 
+\]</span></p>
+<p>对输入的每一列做 DFT，也就是 4 次 2 点 DFT：</p>
+<p><span class="math display">\[
+G_1=\left[ \begin{matrix}
+    6+0j&amp;       8+0j&amp;       10+0j&amp;      12+0j\\
+    -4-0j&amp;      -4-0j&amp;      -4-0j&amp;      -4-0j\\
+\end{matrix} \right] 
+\]</span></p>
+<p>对每个位置的值乘以相应的旋转因子：</p>
+<p><span class="math display">\[
+G_2=\left[ \begin{matrix}
+    6+0j&amp;       8+0j&amp;       10+0j&amp;      12+0j\\
+    -4-0j&amp;      -2.83+2.83j&amp;        0+4j&amp;       2.83+2.83j\\
+\end{matrix} \right]
+\]</span></p>
+<p>转置：</p>
+<p><span class="math display">\[
+G_2=\left[ \begin{matrix}
+    6+0j&amp;       -4-0j\\
+    8+0j&amp;       -2.83+2.83j\\
+    10+0j&amp;      0+4j\\
+    12+0j&amp;      2.83+2.83j\\
+\end{matrix} \right]
+\]</span></p>
+<p>对 <span class="math inline">\(G_2\)</span> 的每一列做 DFT，也就是 2 次 4 点 DFT ：</p>
+<p><span class="math display">\[
+G_3=\left[ \begin{matrix}
+    36+0j&amp;      -4+9.66j\\
+    -4+4j&amp;      -4+1.66j\\
+    -4+0j&amp;      -4-1.66j\\
+    -4-4j&amp;      -4-9.66j\\
+\end{matrix} \right]
+\]</span></p>
+<p>验证代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cmath</span><br><span class="line"><span class="keyword">from</span> scipy.fft <span class="keyword">import</span> fft</span><br><span class="line"></span><br><span class="line">np.set_printoptions(precision=<span class="number">2</span>, suppress=<span class="literal">True</span>, linewidth=<span class="number">400</span>)</span><br><span class="line">x = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>])</span><br><span class="line">ans = fft(x)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;ans=&quot;</span>, ans)</span><br><span class="line">res = np.array([<span class="number">0</span> + <span class="number">0j</span>] * <span class="number">8</span>)</span><br><span class="line">res[::<span class="number">4</span>] = fft(x[::<span class="number">4</span>])</span><br><span class="line">res[<span class="number">1</span>::<span class="number">4</span>] = fft(x[<span class="number">1</span>::<span class="number">4</span>])</span><br><span class="line">res[<span class="number">2</span>::<span class="number">4</span>] = fft(x[<span class="number">2</span>::<span class="number">4</span>])</span><br><span class="line">res[<span class="number">3</span>::<span class="number">4</span>] = fft(x[<span class="number">3</span>::<span class="number">4</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;G1=&quot;</span>, res)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">2</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">4</span>):</span><br><span class="line">        res[i * <span class="number">4</span> + j] *= cmath.exp(-<span class="number">1j</span> * <span class="number">2</span> * cmath.pi * i * j / <span class="number">8</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;G2=&quot;</span>, res)</span><br><span class="line">res = res.reshape(<span class="number">2</span>, <span class="number">4</span>).transpose().flatten()</span><br><span class="line">res[::<span class="number">2</span>] = fft(res[::<span class="number">2</span>])</span><br><span class="line">res[<span class="number">1</span>::<span class="number">2</span>] = fft(res[<span class="number">1</span>::<span class="number">2</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;G3=&quot;</span>, res)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ans= [36.-0.j   -4.+9.66j -4.+4.j   -4.+1.66j -4.-0.j   -4.-1.66j -4.-4.j   -4.-9.66j]</span><br><span class="line">G1= [ 6.-0.j  8.-0.j 10.-0.j 12.-0.j -4.-0.j -4.-0.j -4.-0.j -4.-0.j]</span><br><span class="line">G2= [ 6.  +0.j    8.  +0.j   10.  +0.j   12.  +0.j   -4.  -0.j   -2.83+2.83j -0.  +4.j    2.83+2.83j]</span><br><span class="line">G3= [36.+0.j   -4.+9.66j -4.+4.j   -4.+1.66j -4.+0.j   -4.-1.66j -4.-4.j   -4.-9.66j]</span><br></pre></td></tr></table></figure>
+<p>两份代码 <span class="math inline">\(G_1,G_2,G_3\)</span> 均相同，说明计算过程的直观体现确实如上图所示。</p>
 <h1 id="参考资料">参考资料</h1>
 <ol type="1">
 <li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Y7411W73U/">〔manim | 算法 | 互动〕具体学习并实现快速傅里叶变换（FFT）| 多项式乘法 | 快速求卷积 | 学习区首发互动视频_哔哩哔哩_bilibili</a></li>
@@ -567,13 +710,13 @@ R\left( x \right) =\lfloor \frac{R\left( \lfloor x/2 \rfloor \right)}{2} \rfloor
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">174k</span>
+    <span title="站点总字数">181k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:38</span>
+    <span title="站点阅读时长">2:45</span>
   </span>
 </div>
 <div class="busuanzi-count">
