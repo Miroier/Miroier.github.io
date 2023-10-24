@@ -3636,9 +3636,6 @@ a^b\%c=\left( a\%c \right) ^b\%c
 		var gitalk = new Gitalk(gitalkConfig);
 	    gitalk.render("gitalk-container");
 	    </script>]]></content>
-      <categories>
-        <category>高性能并行编程与优化</category>
-      </categories>
   </entry>
   <entry>
     <title>FFT与多项式乘法</title>
