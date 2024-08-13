@@ -3269,7 +3269,7 @@ ab\%c &amp; =\left( tc+d \right) \left( kc+e \right) \%c\\
     <url>/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/</url>
     <content><![CDATA[<p>本文将首先从公式出发，讲解 3-pass safe softmax、 2-pass online
 softmax 以及 1-pass FlashAttention 的原理。然后结合论文介绍
-FlashAttention 1、2、3。</p>
+FlashAttention 1/2/3。</p>
 <span id="more"></span>
 <p>Self-Attention 的计算公式如下（其中，<span
 class="math inline">\(O,Q,K,V\)</span> 都是 <span
