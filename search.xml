@@ -3641,8 +3641,9 @@ batch_size 和 head 上做并行，这样当 batch_size
 <img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-11.png" class="" title="Alt text">
 <p><strong>调整 warp 划分策略。</strong></p>
 <img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-12.png" class="" title="Alt text">
-<p>FA1 中，warp1 的结果依赖于 warp234，这样 warp 之间就需要通信，但是
-FA2 中每个 warp 间的计算是无关的。</p>
+<p>FA1 中，在计算 QK^T 的结果与 V 的乘积时，需要跨 warp 做
+reduction，这样 warp 之间就需要通信，所以 FA2 中调整了 warp
+的划分策略，每个 warp 间的计算是无关的，减少同步开销。</p>
 <p>FA2 的代码实现可以参考 [[FlashAttention CUTLASS 实现]]</p>
 <h1 id="flashattention3">FlashAttention3</h1>
 <p>FlashAttention 3 针对 Hopper 架构做了针对性的优化，包括
