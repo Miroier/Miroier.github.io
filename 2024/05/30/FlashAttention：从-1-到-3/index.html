@@ -28,19 +28,24 @@
 <meta property="og:site_name" content="Seclusion">
 <meta property="og:description" content="本文将首先从公式出发，讲解 3-pass safe softmax、 2-pass online softmax 以及 1-pass FlashAttention 的原理。然后结合论文介绍 FlashAttention 1&#x2F;2&#x2F;3。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/FlashAttention.png">
-<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/FlashAttention%EF%BC%9A%E4%BB%8E%201%20%E5%88%B0%202-20240807214241.png">
-<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/FlashAttention%EF%BC%9A%E4%BB%8E%201%20%E5%88%B0%202-20240812211441.png">
-<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/FlashAttention%EF%BC%9A%E4%BB%8E%201%20%E5%88%B0%202-20240812211632.png">
-<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/FlashAttention%EF%BC%9A%E4%BB%8E%201%20%E5%88%B0%202-20240813205356.png">
-<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/FlashAttention%EF%BC%9A%E4%BB%8E%201%20%E5%88%B0%202-20240813203654.png">
-<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/FlashAttention%EF%BC%9A%E4%BB%8E%201%20%E5%88%B0%202-20240813203908.png">
-<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/FlashAttention%EF%BC%9A%E4%BB%8E%201%20%E5%88%B0%202-20240813214832.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-1.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-2.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-3.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-4.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-5.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-6.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-7.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-8.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-9.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-10.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-11.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-12.png">
 <meta property="article:published_time" content="2024-05-30T13:11:49.000Z">
 <meta property="article:modified_time" content="2024-05-30T13:11:49.000Z">
 <meta property="article:author" content="Miroier">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/FlashAttention.png">
+<meta name="twitter:image" content="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image.png">
 
 
 <link rel="canonical" href="http://yoursite.com/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/">
@@ -136,7 +141,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -149,6 +154,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8E-saft-softmax-%E5%88%B0-flashattention1"><span class="nav-text">从 saft softmax 到
+FlashAttention1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flashattention2"><span class="nav-text">FlashAttention2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#flashattention3"><span class="nav-text">FlashAttention3</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -306,14 +313,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>8k</span>
+      <span>8.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
+      <span>8 分钟</span>
     </span>
 </div>
 
@@ -327,13 +334,15 @@
 softmax 以及 1-pass FlashAttention 的原理。然后结合论文介绍
 FlashAttention 1/2/3。</p>
 <span id="more"></span>
+<h1 id="从-saft-softmax-到-flashattention1">从 saft softmax 到
+FlashAttention1</h1>
 <p>Self-Attention 的计算公式如下（其中，<span
 class="math inline">\(O,Q,K,V\)</span> 都是 <span
-class="math inline">\((L,D)\)</span> 形状的矩阵，<span
-class="math inline">\(L\)</span> 是 sequence length，<span
-class="math inline">\(D\)</span> 是 head
+class="math inline">\((N,d)\)</span> 形状的矩阵，<span
+class="math inline">\(N\)</span> 是 sequence length，<span
+class="math inline">\(d\)</span> 是 head
 dimension，为了简单起见，忽略了缩放因子 <span
-class="math inline">\(\frac{1}{\sqrt {D}}\)</span>）：</p>
+class="math inline">\(\frac{1}{\sqrt {d}}\)</span>）：</p>
 <p><span class="math display">\[
 O=\mathrm{softmax} (QK^T)V \tag{1}
 \]</span></p>
@@ -375,61 +384,64 @@ softmax</strong>。</p>
 <p>设 <span class="math inline">\(m_i\)</span> 表示 <span
 class="math inline">\(\max _{j=1}^{i}\left( x_j \right)\)</span>，<span
 class="math inline">\(m_0=-\infty\)</span>；<span
-class="math inline">\(d_i\)</span> 表示 <span
+class="math inline">\(l_i\)</span> 表示 <span
 class="math inline">\(\sum\nolimits_{j=1}^N{e^{x_j-m_N}}\)</span>，<span
-class="math inline">\(d_0=0\)</span>，<span
+class="math inline">\(l_0=0\)</span>，<span
 class="math inline">\(a_i\)</span> 表示最终结果</p>
 <p>第一次 pass 得到最大值 <span class="math inline">\(m_N\)</span>：</p>
 <p><span class="math display">\[
 m_i=\max \left( m_{i-1},x_i \right) \tag{7}
 \]</span></p>
-<p>第二次 pass 得到分母项 <span class="math inline">\(d_N\)</span>：</p>
+<p>第二次 pass 得到分母项 <span class="math inline">\(l_N\)</span>：</p>
 <p><span class="math display">\[
-d_i=d_{i-1}+e^{x_i-m_N} \tag{8}
+l_i=l_{i-1}+e^{x_i-m_N} \tag{8}
 \]</span></p>
 <p>第三次 pass 得到 <span class="math inline">\(a_i\)</span>：</p>
 <p><span class="math display">\[
-a_i=\frac{e^{x_i-m_N}}{d_N} \tag{9}
+a_i=\frac{e^{x_i-m_N}}{l_N} \tag{9}
 \]</span></p>
 <p>看上去公式 8 依赖于 <span class="math inline">\(m_N\)</span>，公式 9
 依赖于 <span class="math inline">\(m_N\)</span> 和 <span
-class="math inline">\(d_N\)</span>，似乎没有办法减少 pass
+class="math inline">\(l_N\)</span>，似乎没有办法减少 pass
 的次数？其实是可以的，这个技巧是用 <span
-class="math inline">\(d_{i}^{\prime}=\sum\nolimits_{j=1}^i{e^{x_j-m_i}}\)</span>
-替换 <span class="math inline">\(d_i\)</span>，它们的最终结果 <span
-class="math inline">\(d_{N}^{\prime}\)</span> 和 <span
-class="math inline">\(d_N\)</span> 是相同的，因此公式 9
+class="math inline">\(l_{i}^{\prime}=\sum\nolimits_{j=1}^i{e^{x_j-m_i}}\)</span>
+替换 <span class="math inline">\(l_i\)</span>，它们的最终结果 <span
+class="math inline">\(l_{N}^{\prime}\)</span> 和 <span
+class="math inline">\(l_N\)</span> 是相同的，因此公式 9
 可以简单替换一下写成 <span
-class="math inline">\(a_i=\frac{e^{x_i-m_N}}{d_{N}^{\prime}}\)</span>。</p>
-<p><span class="math inline">\(d_{i}^{\prime}\)</span>
+class="math inline">\(a_i=\frac{e^{x_i-m_N}}{l_{N}^{\prime}}\)</span>。</p>
+<p><span class="math inline">\(l_{i}^{\prime}\)</span>
 的更新方法是：</p>
 <p><span class="math display">\[
 \begin{align}
-    d_{i}^{\prime}&amp;=\sum_{j=1}^i{e^{x_j-m_i}}\\
+    l_{i}^{\prime}&amp;=\sum_{j=1}^i{e^{x_j-m_i}}\\
     &amp;=\left( \sum_{j=1}^{i-1}{e^{x_j-m_i}} \right) +e^{x_i-m_i}\\
     &amp;=\left( \sum_{j=1}^{i-1}{e^{x_j-m_{i-1}}} \right)
 e^{m_{i-1}-m_i}+e^{x_i-m_i}\\
-    &amp;=d_{i-1}^{\prime}e^{m_{i-1}-m_i}+e^{x_i-m_i}\\
+    &amp;=l_{i-1}^{\prime}e^{m_{i-1}-m_i}+e^{x_i-m_i}\\
 \end{align} \tag{10}
 \]</span></p>
-<p>可以看出 <span class="math inline">\(d_{i}^{\prime}\)</span>
+<p>可以看出 <span class="math inline">\(l_{i}^{\prime}\)</span>
 的更新就只依赖于 <span class="math inline">\(m_{i-1}\)</span> 和 <span
 class="math inline">\(m_i\)</span> 而不是依赖于 <span
 class="math inline">\(m_N\)</span>。</p>
 <p>这样就可以将公式 7 和公式 8 的两次 pass 合并为一次
 pass，这种算法也被称为 <strong>2-pass online softmax</strong>。</p>
 <p>第一次 pass 得到 <span class="math inline">\(m_N\)</span> 和 <span
-class="math inline">\(d_N\)</span>：</p>
+class="math inline">\(l_N\)</span>：</p>
 <p><span class="math display">\[
 \begin{align}
     m_i&amp;=\max \left( m_{i-1},x_i \right)\\
-    d_{i}^{\prime}&amp;=d_{i-1}^{\prime}e^{m_{i-1}-m_i}+e^{x_i-m_i}\\
+    l_{i}^{\prime}&amp;=l_{i-1}^{\prime}e^{m_{i-1}-m_i}+e^{x_i-m_i}\\
 \end{align}
 \]</span></p>
 <p>第二次 pass 得到 <span class="math inline">\(a_i\)</span>：</p>
 <p><span class="math display">\[
-a_i=\frac{e^{x_i-m_N}}{d_{N}^{\prime}}
+a_i=\frac{e^{x_i-m_N}}{l_{N}^{\prime}}
 \]</span></p>
+<p>第一次 pass 中，用 <span class="math inline">\(m_i\)</span> 对 <span
+class="math inline">\(l_{i-1}^{\prime}\)</span> 更新的行为在论文中叫做
+rescale，FA2 论文中还会提到这一点。</p>
 <p>但是这依然需要两次 pass，是否有方法能够实现一次 pass 的
 softmax？这实际上是不可能的，但是在 Self-Attention
 中，我们的目标并不是注意力分数 <span
@@ -451,19 +463,19 @@ class="math inline">\(o_i=\sum\nolimits_{j=1}^i{a_jV\left[ j,:
 \right]}\)</span> 是一个用来存 <span class="math inline">\(A[k,:i]\times
 V[:,:i]\)</span> 部分结果的行向量。</p>
 <p>第一次 pass，得到 <span class="math inline">\(m_N\)</span> 和 <span
-class="math inline">\(d_N\)</span>：</p>
+class="math inline">\(l_N\)</span>：</p>
 <p><span class="math display">\[
 \begin{align}
     x_i&amp;=Q[k,:]K^T[:,i]\\
     m_i&amp;=\max \left( m_{i-1},x_i \right)\\
-    d_{i}^{\prime}&amp;=d_{i-1}^{\prime}e^{m_{i-1}-m_i}+e^{x_i-m_i}\\
+    l_{i}^{\prime}&amp;=l_{i-1}^{\prime}e^{m_{i-1}-m_i}+e^{x_i-m_i}\\
 \end{align}
 \]</span></p>
 <p>第二次 pass，得到 <span
 class="math inline">\(\boldsymbol{o}_N\)</span>：</p>
 <p><span class="math display">\[
 \begin{align}
-    a_i&amp;=\frac{e^{x_i-m_N}}{d_{N}^{\prime}} \tag{11}\\
+    a_i&amp;=\frac{e^{x_i-m_N}}{l_{N}^{\prime}} \tag{11}\\
     \boldsymbol{o}_i&amp;=\boldsymbol{o}_{i-1}+a_iV[i,:] \tag{12}\\
 \end{align}
 \]</span></p>
@@ -474,18 +486,20 @@ O[k,:]=\boldsymbol{o}_N
 \]</span></p>
 <p>将公式 11 代入进公式 12，可以得到：</p>
 <p><span class="math display">\[
-\boldsymbol{o}_i=\sum_{j=1}^i{\frac{e^{x_j-m_N}}{d_{N}^{\prime}}V[j,:]}
+\boldsymbol{o}_i=\sum_{j=1}^i{\frac{e^{x_j-m_N}}{l_{N}^{\prime}}V[j,:]}
 \tag{13}
 \]</span></p>
+<p>下面是 <strong>Multi-pass Self-Attention</strong> 的示意图。</p>
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image.png" class="" title="Alt text">
 <p><span class="math inline">\(\boldsymbol{o}_N\)</span> 的结果依赖于
 <span class="math inline">\(m_N\)</span> 和 <span
-class="math inline">\(d_{N}^{\prime}\)</span>，这和之前在 <strong>3-pass
+class="math inline">\(l_{N}^{\prime}\)</span>，这和之前在 <strong>3-pass
 safe softmax</strong> 中遇到的问题很相似，因此解决技巧也是相似的，使用
 <span class="math inline">\(\boldsymbol{o}^{\prime}\)</span> 替换 <span
 class="math inline">\(\boldsymbol{o}\)</span>。</p>
 <p><span class="math display">\[
 \boldsymbol{o}_{i}^{\prime}=\left(
-\sum_{j=1}^i{\frac{e^{x_j-m_i}}{d_{i}^{\prime}}V[j,:]} \right)
+\sum_{j=1}^i{\frac{e^{x_j-m_i}}{l_{i}^{\prime}}V[j,:]} \right)
 \]</span></p>
 <p><span class="math inline">\(\boldsymbol{o}_N^{\prime}\)</span> 和
 <span class="math inline">\(\boldsymbol{o}_N\)</span> 显然相同，<span
@@ -494,39 +508,40 @@ class="math inline">\(\boldsymbol{o}_i^{\prime}\)</span>
 <p><span class="math display">\[
 \begin{align}
     \boldsymbol{o}_{i}^{\prime}&amp;=\left(
-\sum_{j=1}^i{\frac{e^{x_j-m_i}}{d_{i}^{\prime}}V[j,:]} \right)\\
+\sum_{j=1}^i{\frac{e^{x_j-m_i}}{l_{i}^{\prime}}V[j,:]} \right)\\
     &amp;=\left(
-\sum_{j=1}^{i-1}{\frac{e^{x_j-m_i}}{d_{i}^{\prime}}V[j,:]} \right)
-+\frac{e^{x_i-m_i}}{d_{i}^{\prime}}V[i,:]\\
+\sum_{j=1}^{i-1}{\frac{e^{x_j-m_i}}{l_{i}^{\prime}}V[j,:]} \right)
++\frac{e^{x_i-m_i}}{l_{i}^{\prime}}V[i,:]\\
     &amp;=\left(
-\sum_{j=1}^{i-1}{\frac{e^{x_j-m_{i-1}}}{d_{i-1}^{\prime}}\frac{e^{x_j-m_i}}{e^{x_j-m_{i-1}}}\frac{d_{i-1}^{\prime}}{d_{i}^{\prime}}V[j,:]}
-\right) +\frac{e^{x_i-m_i}}{d_{i}^{\prime}}V[i,:]\\
+\sum_{j=1}^{i-1}{\frac{e^{x_j-m_{i-1}}}{l_{i-1}^{\prime}}\frac{e^{x_j-m_i}}{e^{x_j-m_{i-1}}}\frac{l_{i-1}^{\prime}}{l_{i}^{\prime}}V[j,:]}
+\right) +\frac{e^{x_i-m_i}}{l_{i}^{\prime}}V[i,:]\\
     &amp;=\left(
-\sum_{j=1}^{i-1}{\frac{e^{x_j-m_{i-1}}}{d_{i-1}^{\prime}}V[j,:]} \right)
-\frac{d_{i-1}^{\prime}}{d_{i}^{\prime}}e^{m_{i-1}-m_i}+\frac{e^{x_i-m_i}}{d_{i}^{\prime}}V[i,:]\\
+\sum_{j=1}^{i-1}{\frac{e^{x_j-m_{i-1}}}{l_{i-1}^{\prime}}V[j,:]} \right)
+\frac{l_{i-1}^{\prime}}{l_{i}^{\prime}}e^{m_{i-1}-m_i}+\frac{e^{x_i-m_i}}{l_{i}^{\prime}}V[i,:]\\
     &amp;=\boldsymbol{o}_{i-1}^{\prime}
-\frac{d_{i-1}^{\prime}e^{m_{i-1}-m_i}}{d_{i}^{\prime}}+\frac{e^{x_i-m_i}}{d_{i}^{\prime}}V[i,:]\\
+\frac{l_{i-1}^{\prime}e^{m_{i-1}-m_i}}{l_{i}^{\prime}}+\frac{e^{x_i-m_i}}{l_{i}^{\prime}}V[i,:]\\
 \end{align} \tag{14}
 \]</span></p>
 <p><span class="math inline">\(\boldsymbol{o}_i^{\prime}\)</span> 依赖于
 <span
-class="math inline">\(m_i,m_{i-1},d_{i}^{\prime},d_{i-1}^{\prime}\)</span>
+class="math inline">\(m_i,m_{i-1},l_{i}^{\prime},l_{i-1}^{\prime}\)</span>
 而不是 <span
-class="math inline">\(m_N,d_{N}^{\prime}\)</span>。这样所有的计算只需要一次
+class="math inline">\(m_N,l_{N}^{\prime}\)</span>。这样所有的计算只需要一次
 pass 即可完成，这就是 <strong>FlashAttention</strong>：</p>
 <p><span class="math display">\[
 \begin{align}
     x_i&amp;=Q[k,:]K^T[:,i]\\
     m_i&amp;=\max \left( m_{i-1},x_i \right)\\
-    d_{i}^{\prime}&amp;=d_{i-1}^{\prime}e^{m_{i-1}-m_i}+e^{x_i-m_i}\\
-    \boldsymbol{o}_{i}^{\prime}&amp;=\boldsymbol{o}_{i-1}^{\prime}\frac{d_{i-1}^{\prime}e^{m_{i-1}-m_i}}{d_{i}^{\prime}}+\frac{e^{x_i-m_i}}{d_{i}^{\prime}}V[i,:]\\
-\end{align}
+    l_{i}^{\prime}&amp;=l_{i-1}^{\prime}e^{m_{i-1}-m_i}+e^{x_i-m_i}\\
+    \boldsymbol{o}_{i}^{\prime}&amp;=\boldsymbol{o}_{i-1}^{\prime}\frac{l_{i-1}^{\prime}e^{m_{i-1}-m_i}}{l_{i}^{\prime}}+\frac{e^{x_i-m_i}}{l_{i}^{\prime}}V[i,:]\\
+\end{align} \tag{15}
 \]</span></p>
 <p><span class="math display">\[
 O[k,:]=\boldsymbol{o}_N^{\prime}
 \]</span></p>
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-1.png" class="" title="Alt text">
 <p><span
-class="math inline">\(x_i,m_i,d_{i}^{\prime},\boldsymbol{o}_i^{\prime}\)</span>
+class="math inline">\(x_i,m_i,l_{i}^{\prime},\boldsymbol{o}_i^{\prime}\)</span>
 的存储占用较小，可以放入 GPU
 的共享内存中。并且由于该算法中的所有操作都是满足结合律的，因此与分块（tiling）兼容。</p>
 <p><strong>FlashAttention(Tiling)</strong></p>
@@ -546,33 +561,32 @@ class="math inline">\(x_i\)</span> 中的局部最大值。</p>
     m_{i}^{local}&amp;=\underset{j=1}{\overset{b}{\max}}\left(
 \boldsymbol{x}_i \right)\\
     m_i&amp;=\max \left( m_{i-1},m_{i}^{local} \right)\\
-    d_{i}^{\prime}&amp;=d_{i-1}^{\prime}e^{m_{i-1}-m_i}+\sum_{j=1}^b{e^{\boldsymbol{x}_i\left[
+    l_{i}^{\prime}&amp;=l_{i-1}^{\prime}e^{m_{i-1}-m_i}+\sum_{j=1}^b{e^{\boldsymbol{x}_i\left[
 j \right] -m_i}}\\
-    \boldsymbol{o}_{i}^{\prime}&amp;=\boldsymbol{o}_{i-1}^{\prime}\frac{d_{i-1}^{\prime}e^{m_{i-1}-m_i}}{d_{i}^{\prime}}+\sum_{j=1}^b{\frac{e^{\boldsymbol{x}_i\left[
-j \right] -m_i}}{d_{i}^{\prime}}V[j+\left( i-1 \right) b,:]}\\
-\end{align}
+    \boldsymbol{o}_{i}^{\prime}&amp;=\boldsymbol{o}_{i-1}^{\prime}\frac{d_{i-1}^{\prime}e^{m_{i-1}-m_i}}{l_{i}^{\prime}}+\sum_{j=1}^b{\frac{e^{\boldsymbol{x}_i\left[
+j \right] -m_i}}{l_{i}^{\prime}}V[j+\left( i-1 \right) b,:]}\\
+\end{align} \tag{16}
 \]</span></p>
 <p><span class="math display">\[
 O[k,:]=\boldsymbol{o}_{N/b}^{\prime}
 \]</span></p>
-<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/FlashAttention.png" class="" title="FlashAttention">
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-2.png" class="" title="Alt text">
 <p>上图说明了 FlashAttention 在硬件上的计算方式。蓝色的块表示驻留在 SRAM
 中的 tile，而红色的块对应于第 <span class="math inline">\(k\)</span>
-行。L 表示 sequence length，可以相当大（例如16k），D 表示 head
-dimension，通常在 Transformers 中较小（例如GPT3的128），b
-是可以控制的块大小。值得注意的是，整体 SRAM 内存占用仅依赖于 b 和
-D，而与 L 无关。因此，该算法能够扩展到较长的 sequence length
-而不会遇到内存问题。在计算过程中，从左到右遍历 <span
+行。L 表示 sequence length，可以相当大（例如16k），d 通常在 Transformers
+中较小（例如GPT3的128），b 是可以控制的块大小。值得注意的是，整体 SRAM
+内存占用仅依赖于 b 和 d，而与 N 无关。因此，该算法能够扩展到较长的
+sequence length 而不会遇到内存问题。在计算过程中，从左到右遍历 <span
 class="math inline">\(K^T\)</span> 和 <span
 class="math inline">\(A\)</span> ，从上到下遍历 <span
 class="math inline">\(V\)</span>，并相应地更新 <span
-class="math inline">\(m,d,O\)</span> 的状态。</p>
+class="math inline">\(m,l,O\)</span> 的状态。</p>
 <p>以上证明来自于 《From Online Softmax to
 FlashAttention》。理解了上述过程，FlashAttention1
 论文中的相应证明也就好理解了。<a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/642962397">万字长文详解FlashAttention
 v1/v2 - 知乎</a> 这篇文章中详细介绍了论文中的证明。</p>
-<p><img data-src="FlashAttention：从%201%20到%202-20240807214241.png" /></p>
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-3.png" class="" title="Alt text">
 <p>上图是 FlashAttention1 论文中的算法伪代码。对 <span
 class="math inline">\(Q,O\)</span> 沿着行方向分成 <span
 class="math inline">\(T_r\)</span> 块，每一块的大小是 <span
@@ -580,6 +594,21 @@ class="math inline">\(B_r\times d\)</span>，对 <span
 class="math inline">\(K,V\)</span> 沿着行方向分为 <span
 class="math inline">\(T_c\)</span> 块，每一块的大小为 <span
 class="math inline">\(B_c\times d\)</span>。</p>
+<p>伪代码中带波浪线的是局部值，<span class="math inline">\(\tilde{m}_{i
+j}\)</span> 即为下图中的 <span class="math inline">\(m_{i
+j}\)</span>，其它类似。第 11 行更新 <span
+class="math inline">\(l^{new}_i\)</span> 看上去和公式 16
+中的不太对应，这是因为在第 10 行，用 <span
+class="math inline">\(\tilde{m}_{i j}\)</span> 这个局部值计算得到 <span
+class="math inline">\(\tilde{P}_{i j}\)</span>，再得到 <span
+class="math inline">\(\tilde{l}_{i j}\)</span>，所以第 11 要用 <span
+class="math inline">\(m^{new}_i\)</span> 去更新 <span
+class="math inline">\(\tilde{l}_{i j}\)</span>。</p>
+<p>下图是伪代码的示意图，虚线上的数字对应伪代码中的行数。[[极简
+FlashAttention CUDA 实现]]
+这个仓库的代码和为代码能对应上，结合伪代码、代码、示意图，应该就能看懂
+FlashAttention1 的过程了。</p>
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-4.png" class="" title="Alt text">
 <p>这里分块参数 <span class="math inline">\(B_c,B_r\)</span> 的选取和
 SRAM 的大小 M 有关，<span class="math inline">\(B_c=\lceil \frac{M}{4d}
 \rceil ,B_r=\min \left( \lceil \frac{M}{4d} \rceil ,d
@@ -601,14 +630,13 @@ SRAM 的大小 M 有关，<span class="math inline">\(B_c=\lceil \frac{M}{4d}
 backward pass 的处理方式是重计算，和 forward 一样，将 Q、K、V 分块读取到
 SRAM 中，并计算得到当前块的中间结果。对比 Self-Attention 和
 FlashAttention 的伪代码：</p>
-<p><img data-src="FlashAttention：从%201%20到%202-20240812211441.png" /></p>
-<p><img data-src="FlashAttention：从%201%20到%202-20240812211632.png" /></p>
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-5.png" class="" title="Alt text">
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-6.png" class="" title="Alt text">
 <p>可以发现，在 FlashAttention backward pass 中，减少了对 <span
 class="math inline">\(S,dS,P,dP\)</span>
 这些中间结果的全局内存读写。虽然这样增加了计算量的开销，但是减少 IO
 开销的收益更大。</p>
-<p>IO 分析：假设 <span class="math inline">\(N\)</span> 表示 sequence
-length，<span class="math inline">\(d\)</span> 表示 head dimension。</p>
+<p>IO 分析：</p>
 <p>对于 Self-Attention 从算法 3 可知，第一行读 <span
 class="math inline">\(Q,K\)</span> 是 <span
 class="math inline">\(2Nd\)</span>，写 S 是 <span
@@ -630,23 +658,36 @@ class="math inline">\(T_c=\lceil \frac{4dN}{M} \rceil\)</span>
 次，忽略常数，IO 复杂度是 <span
 class="math inline">\(O(N^2d^2M^{-1})\)</span>。</p>
 <p>由于 M 远大于 d，所以 FA1 IO 复杂度远小于 Self-Attention。</p>
+<h1 id="flashattention2">FlashAttention2</h1>
 <p>FlashAttention2 的核心思路与 1
 相同，但是做了一些工程上的优化。这包括：</p>
 <p><strong>减少了非矩阵乘法运算，增加 Tensor Core
 使用比例。</strong></p>
-<p><img data-src="FlashAttention：从%201%20到%202-20240813205356.png" /></p>
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-7.png" class="" title="Alt text">
 <p>在 Tensor Core
-的帮助下，理论上计算复杂度更高的矩阵乘可能实际运行起来会更快。比如这个把
+的帮助下，理论上时间复杂度更高的矩阵乘可能实际运行起来会那些复杂度低的操作更快更快。比如这个把
 FFT 改成矩阵乘的工作 <a
 target="_blank" rel="noopener" href="https://arxiv.org/abs/2311.05908">[2311.05908] FlashFFTConv:
 Efficient Convolutions for Long Sequences with Tensor Cores</a>。</p>
 <p>在 FlashAttention 1 的 forward pass 中：</p>
-<p><img data-src="FlashAttention：从%201%20到%202-20240813203654.png" /></p>
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-8.png" class="" title="Alt text">
 <p>而在 FlashAttention 2 中：</p>
-<p><img data-src="FlashAttention：从%201%20到%202-20240813203908.png" /></p>
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-9.png" class="" title="Alt text">
 <p>区别是，在 2 中，不是迭代计算都执行 rescale 操作，而是在最后执行一次
 rescale 操作，这样就可以减少除法运算。以及保留了部分数据用于
 backpass。</p>
+<p>从公式 15 复制一份过来，然后修改成公式 17：</p>
+<p><span class="math display">\[
+\begin{align}
+    x_i&amp;=Q[k,:]K^T[:,i]\\
+    m_i&amp;=\max \left( m_{i-1},x_i \right)\\
+    l_{i}^{\prime}&amp;=l_{i-1}^{\prime}e^{m_{i-1}-m_i}+e^{x_i-m_i}\\
+    \boldsymbol{o}_{i}^{\prime}&amp;=\boldsymbol{o}_{i-1}^{\prime}e^{m_{i-1}-m_i}+e^{x_i-m_i}V[i,:]\\
+\end{align} \tag{17}
+\]</span></p>
+<p><span class="math display">\[
+O[k,:]=\frac{\boldsymbol{o}_N^{\prime}}{l_{N}^{\prime}}
+\]</span></p>
 <p><strong>调整了内外循环，Q 为外层循环，KV 为内层循环，减少 HBM
 读写。</strong></p>
 <p>在 FA1 中，先在外层循环 <span
@@ -659,11 +700,14 @@ batch_size 和 head 上做并行，这样当 batch_size
 计算资源。</p>
 <p>FA2 调整了循环顺序， 外层是 <span class="math inline">\(Q\)</span>
 循环，这样就可以在 seq len 上做并行，提高计算资源的使用率。</p>
-<p><img data-src="FlashAttention：从%201%20到%202%202024-08-13%2021.22.56.png" /></p>
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-10.png" class="" title="Alt text">
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-11.png" class="" title="Alt text">
 <p><strong>调整 warp 划分策略。</strong></p>
-<p><img data-src="FlashAttention：从%201%20到%202-20240813214832.png" /></p>
+<img data-src="/2024/05/30/FlashAttention%EF%BC%9A%E4%BB%8E-1-%E5%88%B0-3/image-12.png" class="" title="Alt text">
 <p>FA1 中，warp1 的结果依赖于 warp234，这样 warp 之间就需要通信，但是
 FA2 中每个 warp 间的计算是无关的。</p>
+<p>FA2 的代码实现可以参考 [[FlashAttention CUTLASS 实现]]</p>
+<h1 id="flashattention3">FlashAttention3</h1>
 <p>FlashAttention 3 针对 Hopper 架构做了针对性的优化，包括
 warp-specialized 的生产者-消费者流水线、将 softmax 计算与矩阵乘的异步
 WGMMA 计算重叠，FP8 低精度加速。</p>
